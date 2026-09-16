@@ -1,0 +1,9 @@
+{
+  "status": "verified",
+  "fixture": "Datos sintéticos; esquema productivo observado",
+  "mysql_version": "9.5.0",
+  "backup_sha256": "550c3982ce60eeae0fc906bba07adb8c9a800143b5df5e1ed410a27d7f54902c",
+  "all_original_data_hashes_equal": true,
+  "original_schema_restored": true,
+  "production_data_imported": false
+}

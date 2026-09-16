@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Mis Pendientes - Top Label{% endblock %}
+{% block content %}
+<h2 style="margin-bottom: 1rem;">Mis Pendientes y Tareas Asignadas</h2>
+<div class="table-card">
+  <table>
+    <thead><tr><th>Folio</th><th>Tarea</th><th>Prioridad</th><th>Estatus</th><th>Límite</th><th>Semáforo</th><th>Acción</th></tr></thead>
+    <tbody>
+      {% for t in tareas %}
+      <tr>
+        <td><strong>{{ t.codigo_folio }}</strong></td>
+        <td><strong>{{ t.titulo }}</strong></td>
+        <td><span class="badge">{{ t.prioridad.replace('_', ' ') }}</span></td>
+        <td>
+          <select class="select-control task-status-select" data-tarea-id="{{ t.id }}">
+            <option value="PENDIENTE" {% if t.estatus == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+            <option value="EN_PROCESO" {% if t.estatus == 'EN_PROCESO' %}selected{% endif %}>En Proceso</option>
+            <option value="BLOQUEADO" {% if t.estatus == 'BLOQUEADO' %}selected{% endif %}>Bloqueado</option>
+            <option value="COMPLETADO" {% if t.estatus == 'COMPLETADO' %}selected{% endif %}>Completado</option>
+          </select>
+        </td>
+        <td>{{ t.fecha_compromiso.strftime('%d/%m/%Y') }}</td>
+        <td><span id="semaforo-{{ t.id }}" class="badge badge-semaforo-{{ t.semaforo }}">{{ t.semaforo }}</span></td>
+        <td><button class="btn btn-outline btn-sm" onclick="abrirNotaPilar({{ t.id }})">+ Reporte</button></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" style="text-align: center; padding: 2rem;">No tienes tareas asignadas pendientes.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="modalNotaPilar" class="modal">
+  <div class="modal-content">
+    <h3>Reportar Avance o Bloqueo</h3>
+    <form id="formNotaPilar" method="POST" style="margin-top: 1rem;">
+      <div class="form-group">
+        <label>Tipo:</label>
+        <select name="tipo" class="select-control" style="width: 100%;">
+          <option value="AVANCE">Avance</option>
+          <option value="BLOQUEO">Bloqueo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Detalle:</label><textarea name="comentario" class="input-control" style="width: 100%; height: 80px;" required></textarea></div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function abrirNotaPilar(id) {
+  document.getElementById('formNotaPilar').action = `/tareas/${id}/agregar-nota`;
+  document.getElementById('modalNotaPilar').classList.add('active');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{
+  "mysql_version": "9.5.0",
+  "fixture": "Datos sintéticos en puerto 33316; esquema productivo migrado",
+  "status": "passed",
+  "cases": [
+    "seis rutas GET",
+    "lecturas sin backfill",
+    "asignacion multipilar",
+    "titular",
+    "tarea general",
+    "multiples apoyos",
+    "nota ENUM",
+    "estatus y bitacora"
+  ]
+}

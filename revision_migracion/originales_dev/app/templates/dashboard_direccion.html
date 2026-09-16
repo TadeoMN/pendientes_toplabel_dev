@@ -1,0 +1,621 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Dirección - Top Label{% endblock %}
+
+{% block content %}
+<!-- KPI Cards Superiores -->
+<div class="row g-3 mb-4">
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card shadow-sm border-0 border-start border-danger border-5 h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-muted small fw-bold text-uppercase">Vencidas / Bloqueadas</div>
+            <div class="fs-2 fw-bold text-danger">{{ conteo_rojo }}</div>
+          </div>
+          <span class="fs-4">⚠️</span>
+        </div>
+        <small class="text-muted">Requieren atención urgente</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card shadow-sm border-0 border-start border-warning border-5 h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-muted small fw-bold text-uppercase">Próximas (48 hrs)</div>
+            <div class="fs-2 fw-bold text-warning">{{ conteo_amarillo }}</div>
+          </div>
+          <span class="fs-4">⏳</span>
+        </div>
+        <small class="text-muted">Compromisos a vencer</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card shadow-sm border-0 border-start border-primary border-5 h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-muted small fw-bold text-uppercase">En Tiempo</div>
+            <div class="fs-2 fw-bold text-primary">{{ conteo_azul }}</div>
+          </div>
+          <span class="fs-4">📅</span>
+        </div>
+        <small class="text-muted">En curso según calendario</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card shadow-sm border-0 border-start border-success border-5 h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-muted small fw-bold text-uppercase">Completadas</div>
+            <div class="fs-2 fw-bold text-success">{{ conteo_verde }}</div>
+          </div>
+          <span class="fs-4">✅</span>
+        </div>
+        <small class="text-muted">Entregables concluidos</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filtros de Pilares Centrados -->
+<div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
+  <a href="{{ url_for('dashboard.direccion') }}" 
+     class="pilar-tab {% if not pilar_seleccionado %}active{% endif %}" 
+     style="--pilar-border: #0284c7;">
+    Todos los Pilares <span class="badge bg-light text-dark ms-1">{{ conteo_total }}</span>
+  </a>
+  {% for it in resumen_pilares %}
+    <a href="{{ url_for('dashboard.direccion', pilar_id=it.pilar.id) }}" 
+       class="pilar-tab {% if pilar_seleccionado == it.pilar.id %}active{% endif %}"
+       style="--pilar-border: {{ it.pilar.color_identificador }};">
+      {{ it.pilar.nombre }} <span class="badge bg-light text-dark ms-1">{{ it.total }}</span>
+      {% if it.rojas > 0 %}<span class="badge bg-danger ms-1">!</span>{% endif %}
+    </a>
+  {% endfor %}
+
+  {% if conteo_sin_pilar > 0 %}
+    <a href="{{ url_for('dashboard.direccion', pilar_id='sin_pilar') }}" 
+       class="pilar-tab {% if pilar_seleccionado == 'sin_pilar' %}active{% endif %}"
+       style="--pilar-border: #64748b;">
+      Sin Pilar <span class="badge bg-secondary text-white ms-1">{{ conteo_sin_pilar }}</span>
+    </a>
+  {% endif %}
+</div>
+
+<!-- MÓDULO DE TABLA DINÁMICA -->
+<div class="contenedor-tabla-modulo">
+  <!-- Barra de Filtros en una sola línea -->
+  <div class="card shadow-sm border-0 mb-3">
+    <div class="card-body py-2 px-3">
+      <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap flex-md-nowrap">
+        <div class="d-flex align-items-center gap-2 flex-grow-1 mb-0">
+          <input type="text" placeholder="Buscar por título, folio, responsable, pilar..." class="form-control form-control-sm tabla-buscador" style="max-width: 320px;">
+
+          <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="0">
+            <option value="">Semáforo: Todos</option>
+            <option value="ROJO">🔴 Solo Rojas</option>
+            <option value="AMARILLO">🟡 Solo Amarillas</option>
+            <option value="AZUL">🔵 Solo Azules</option>
+            <option value="VERDE">🟢 Solo Completadas</option>
+          </select>
+
+          <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="4">
+            <option value="">Prioridad: Todas</option>
+            <option value="Crítica">Crítica</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+
+          <button type="button" class="btn btn-outline-secondary btn-sm tabla-btn-limpiar">
+            🧹 Limpiar
+          </button>
+        </div>
+
+        <button class="btn btn-primary btn-sm px-3 text-nowrap" data-bs-toggle="modal" data-bs-target="#modalNuevaTarea">
+          + Asignar Nueva Tarea
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla con Scroll -->
+  <div class="card shadow-sm border-0">
+    <div class="table-scroll-container">
+      <table class="table table-hover align-middle mb-0 tabla-dinamica" id="tablaTareas">
+        <thead class="table-light text-muted small text-uppercase">
+          <tr>
+            <th class="text-center" style="width: 70px;">Semáforo</th>
+            <th class="th-sortable" data-col="1" style="width: 120px;">Folio <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-col="2" style="width: 170px;">Pilar / Responsable <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-col="3">Tarea / Compromiso <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-col="4" style="width: 110px;">Prioridad <span class="sort-icon">⇅</span></th>
+            <th style="width: 140px;">Estatus</th>
+            <th class="th-sortable" data-col="6" style="width: 120px;">Fecha Límite <span class="sort-icon">⇅</span></th>
+            <th style="width: 180px;">Pilares de Apoyo</th>
+            <th class="text-end" style="width: 160px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="fila-sin-resultados" style="display: none;">
+            <td colspan="9" class="text-center py-4 text-muted">
+              🔍 No se encontraron tareas que coincidan con los criterios de búsqueda.
+            </td>
+          </tr>
+
+          {% for t in tareas %}
+          <tr>
+            <td class="text-center" data-val="{{ t.semaforo }}">
+              <span id="semaforo-{{ t.id }}" 
+                    class="semaphore-dot {% if t.semaforo == 'ROJO' %}dot-rojo{% elif t.semaforo == 'AMARILLO' %}dot-amarillo{% elif t.semaforo == 'VERDE' %}dot-verde{% else %}dot-azul{% endif %}"
+                    title="{{ t.semaforo }}">
+              </span>
+            </td>
+            <td class="fw-bold">{{ t.codigo_folio or 'TL-' ~ t.id }}</td>
+            <td>
+              {% if t.pilar %}
+                <div class="fw-semibold">{{ t.pilar.nombre }}</div>
+              {% else %}
+                <span class="badge bg-secondary-subtle text-secondary border mb-1">Sin Pilar</span>
+              {% endif %}
+              <div class="text-muted small">{{ t.responsable.nombre_completo }}</div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <a href="javascript:void(0)" onclick="verDetalleTarea({{ t.id }})" class="fw-semibold text-decoration-none text-dark">
+                  {{ t.titulo }}
+                </a>
+                {% if t.bitacora|length > 0 %}
+                  <span class="badge bg-light text-secondary border small" onclick="verDetalleTarea({{ t.id }})" style="cursor: pointer;">
+                    💬 {{ t.bitacora|length }}
+                  </span>
+                {% endif %}
+              </div>
+              {% if t.descripcion %}
+                <div class="text-muted small text-truncate" style="max-width: 360px;">{{ t.descripcion }}</div>
+              {% endif %}
+            </td>
+            <td>
+              {% set prio_text = 'Crítica' if 'P0' in t.prioridad else 'Alta' if 'P1' in t.prioridad else 'Media' if 'P2' in t.prioridad else 'Baja' %}
+              <span class="badge {% if 'P0' in t.prioridad %}bg-danger{% elif 'P1' in t.prioridad %}bg-warning text-dark{% elif 'P2' in t.prioridad %}bg-info text-dark{% else %}bg-secondary{% endif %}">
+                {{ prio_text }}
+              </span>
+            </td>
+            <td>
+              <select class="form-select form-select-sm task-status-select w-auto" data-tarea-id="{{ t.id }}">
+                <option value="PENDIENTE" {% if t.estatus == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+                <option value="EN_PROCESO" {% if t.estatus == 'EN_PROCESO' %}selected{% endif %}>En Proceso</option>
+                <option value="BLOQUEADO" {% if t.estatus == 'BLOQUEADO' %}selected{% endif %}>Bloqueado</option>
+                <option value="COMPLETADO" {% if t.estatus == 'COMPLETADO' %}selected{% endif %}>Completado</option>
+              </select>
+            </td>
+            <td data-timestamp="{{ t.fecha_compromiso.strftime('%Y%m%d') }}">
+              <div class="small fw-semibold">{{ t.fecha_compromiso.strftime('%d/%m/%Y') }}</div>
+            </td>
+            <td>
+              {% if t.dependencias %}
+                <div class="dependencias-cell-box">
+                  {% for dep in t.dependencias %}
+                    <span class="badge py-1 px-2 border" 
+                          style="background-color: {{ dep.pilar.color_identificador }}; color: {{ dep.pilar.color_identificador | contraste }}; font-size: 0.72rem;" 
+                          title="Responsable: {{ dep.responsable.nombre_completo if dep.responsable else 'Área general' }}">
+                      {{ dep.pilar.nombre }}{% if dep.responsable %}: {{ dep.responsable.nombre_completo.split(' ')[0] }}{% endif %}
+                    </span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <span class="text-muted small">-</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <button class="btn btn-outline-primary btn-sm btn-accion me-1" onclick="verDetalleTarea({{ t.id }})">
+                Ver
+              </button>
+              <button class="btn btn-outline-secondary btn-sm btn-accion" onclick="abrirModalNota({{ t.id }}, '{{ t.titulo }}')">
+                + Nota
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación con «« y »» -->
+    <div class="card-footer bg-white border-0 py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="small text-muted tabla-info-paginacion">Cargando registros...</div>
+      <nav><ul class="pagination pagination-sm mb-0 tabla-controles-paginacion"></ul></nav>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================
+     MODAL DE FICHA TÉCNICA E HISTORIAL DE NOTAS
+=========================================================== -->
+<div class="modal fade" id="modalDetalleTarea" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-light">
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <span id="det_semaforo_dot" class="semaphore-dot"></span>
+            <span id="det_folio" class="badge bg-dark fs-6"></span>
+            <span id="det_pilar" class="badge text-white"></span>
+            <span id="det_prioridad" class="badge"></span>
+            <span id="det_estatus" class="badge bg-secondary"></span>
+          </div>
+          <h5 class="modal-title fw-bold text-dark" id="det_titulo"></h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-3 p-3 bg-light rounded-3 mb-4">
+          <div class="col-sm-6">
+            <div class="text-muted small fw-bold text-uppercase">Responsable Asignado</div>
+            <div class="fw-semibold text-dark fs-6" id="det_responsable"></div>
+          </div>
+          <div class="col-sm-6">
+            <div class="text-muted small fw-bold text-uppercase">Fecha Límite Compromiso</div>
+            <div class="fw-semibold text-dark fs-6" id="det_fecha_compromiso"></div>
+          </div>
+          <div class="col-12 border-top pt-2 mt-2">
+            <div class="text-muted small fw-bold text-uppercase mb-1">Pilares de Apoyo / Dependencias Requeridas:</div>
+            <div id="det_dependencias_lista" class="d-flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h6 class="fw-bold text-uppercase small text-muted mb-2">📋 Instrucciones Completas:</h6>
+          <div class="p-3 border rounded bg-white" id="det_descripcion" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.92rem;"></div>
+        </div>
+
+        <hr class="my-4 text-muted">
+
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-uppercase small text-muted mb-0">💬 Historial de Seguimiento (Bitácora):</h6>
+            <span class="badge bg-secondary-subtle text-secondary" id="det_conteo_notas">0 notas</span>
+          </div>
+          <div id="det_lista_bitacora" class="d-flex flex-column gap-2"></div>
+        </div>
+
+        <div class="card bg-light border-0">
+          <div class="card-body">
+            <h6 class="fw-bold small mb-2">➕ Agregar Nueva Nota a esta Tarea:</h6>
+            <form id="formNotaDirecta" onsubmit="enviarNotaModal(event)">
+              <input type="hidden" id="modal_nota_tarea_id">
+              <div class="row g-2 mb-2">
+                <div class="col-sm-4">
+                  <select id="modal_nota_tipo" class="form-select form-select-sm">
+                    <option value="AVANCE">Avance Operativo</option>
+                    <option value="BLOQUEO">Reportar Bloqueo</option>
+                    <option value="NOTA_REUNION">Acuerdo de Reunión Diaria</option>
+                  </select>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" id="modal_nota_comentario" class="form-control form-control-sm" placeholder="Escribe el avance, bloqueo o acuerdo..." required>
+                </div>
+              </div>
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary btn-sm px-3">Registrar Nota</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================
+     MODAL NUEVA TAREA (FILTRO EN CASCADA Y DEPENDENCIAS MÚLTIPLES)
+=========================================================== -->
+<div class="modal fade" id="modalNuevaTarea" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Asignar Nueva Tarea</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('tareas.crear') }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Título de la Tarea / Compromiso: *</label>
+            <input type="text" name="titulo" class="form-control" required placeholder="ej. Calibración de rodillos flexo">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Detalles / Instrucciones Completas:</label>
+            <textarea name="descripcion" class="form-control" rows="3" placeholder="Especificaciones técnicas, entregables esperados..."></textarea>
+          </div>
+
+          <!-- Selección en Cascada: Pilar y Responsable -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Pilar Destino:</label>
+              <select name="pilar_id" id="selectPilarDestino" class="form-select" onchange="filtrarResponsablesPorPilar()">
+                <option value="">Sin pilar asignado (General / Transversal)</option>
+                {% for p in pilares %}
+                  <option value="{{ p.id }}">{{ p.nombre }}</option>
+                {% endfor %}
+              </select>
+              <div class="text-muted" style="font-size: 0.72rem;">Opcional si es una tarea transversal.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Responsable Asignado: *</label>
+              <select name="responsable_id" id="selectResponsableDestino" class="form-select" required>
+                <option value="">Primero selecciona un pilar...</option>
+              </select>
+              <div class="text-muted" style="font-size: 0.72rem;">Solo muestra miembros de ese pilar.</div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label small fw-bold">Prioridad: *</label>
+              <select name="prioridad" class="form-select">
+                <option value="P0_CRITICA">Crítica (Urgente / Paro)</option>
+                <option value="P1_ALTA">Alta</option>
+                <option value="P2_MEDIA" selected>Media</option>
+                <option value="P3_BAJA">Baja</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-bold">Fecha Límite: *</label>
+              <input type="date" name="fecha_compromiso" class="form-control" required>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: MÚLTIPLES PILARES DE APOYO (DINÁMICO) -->
+          <div class="p-3 bg-light rounded border mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label small fw-bold text-dark mb-0">🤝 Pilares de Apoyo / Dependencias (Opcional):</label>
+              <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaApoyo()">
+                + Agregar Pilar de Apoyo
+              </button>
+            </div>
+            <div class="text-muted small mb-2" style="font-size: 0.75rem;">
+              Puedes añadir múltiples departamentos de apoyo y opcionalmente designar a un responsable específico.
+            </div>
+
+            <div id="contenedorFilasApoyo" class="d-flex flex-column gap-2">
+              <!-- Filas dinámicas generadas con JS -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar y Asignar Tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Agregar Nota Simple -->
+<div class="modal fade" id="modalNota" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="modalNotaTitulo">Agregar Nota de Avance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formNota" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Tipo de Nota:</label>
+            <select name="tipo" class="form-select">
+              <option value="AVANCE">Avance Operativo</option>
+              <option value="BLOQUEO">Reportar Bloqueo</option>
+              <option value="NOTA_REUNION">Acuerdo de Reunión Diaria</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Comentario:</label>
+            <textarea name="comentario" class="form-control" rows="3" required placeholder="Escribe el avance o impedimento..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Registrar Nota</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Datos serializados de usuarios y pilares para la lógica en cascada
+const USUARIOS_SISTEMA = {{ usuarios_json|tojson }};
+const PILARES_SISTEMA = {{ pilares_json|tojson }};
+
+// 1. Filtrar Responsables según el Pilar Destino seleccionado
+function filtrarResponsablesPorPilar() {
+  const selectPilar = document.getElementById('selectPilarDestino');
+  if (!selectPilar) return;
+
+  const pilarVal = selectPilar.value;
+  const selectResp = document.getElementById('selectResponsableDestino');
+  if (!selectResp) return;
+
+  selectResp.innerHTML = '';
+  selectResp.disabled = false;
+
+  // CASO A: Sin pilar seleccionado (General / Transversal)
+  if (!pilarVal) {
+    selectResp.innerHTML = '<option value="">Seleccionar Responsable...</option>';
+
+    // 1. Personal sin ningún pilar asignado
+    const usuariosSinPilar = USUARIOS_SISTEMA.filter(u => u.activo && (!u.pilares || u.pilares.length === 0));
+    if (usuariosSinPilar.length > 0) {
+      const optGroupSin = document.createElement('optgroup');
+      optGroupSin.label = "👤 Personal sin Pilar Asignado";
+      usuariosSinPilar.forEach(u => {
+        optGroupSin.innerHTML += `<option value="${u.id}">${u.nombre_completo} (@${u.username})</option>`;
+      });
+      selectResp.appendChild(optGroupSin);
+    }
+
+    // 2. Colaboradores de otros pilares
+    const otrosUsuarios = USUARIOS_SISTEMA.filter(u => u.activo && u.pilares && u.pilares.length > 0);
+    if (otrosUsuarios.length > 0) {
+      const optGroupOtros = document.createElement('optgroup');
+      optGroupOtros.label = "👥 Colaboradores del Sistema";
+      otrosUsuarios.forEach(u => {
+        optGroupOtros.innerHTML += `<option value="${u.id}">${u.nombre_completo}</option>`;
+      });
+      selectResp.appendChild(optGroupOtros);
+    }
+    return;
+  }
+
+  // CASO B: Pilar específico seleccionado
+  const pilarId = parseInt(pilarVal);
+
+  const miembrosPilar = USUARIOS_SISTEMA.filter(u => {
+    return u.activo && u.pilares && u.pilares.some(p => String(p.id) === String(pilarId));
+  });
+
+  // Ordenar: Líderes primero
+  miembrosPilar.sort((a, b) => {
+    const pA = a.pilares.find(p => String(p.id) === String(pilarId));
+    const pB = b.pilares.find(p => String(p.id) === String(pilarId));
+    return (pB && pB.es_lider ? 1 : 0) - (pA && pA.es_lider ? 1 : 0);
+  });
+
+  const usuariosSinPilar = USUARIOS_SISTEMA.filter(u => {
+    const perteneceAlPilar = u.pilares && u.pilares.some(p => String(p.id) === String(pilarId));
+    return u.activo && !perteneceAlPilar && (!u.pilares || u.pilares.length === 0);
+  });
+
+  selectResp.innerHTML = '<option value="">Seleccionar Responsable...</option>';
+
+  if (miembrosPilar.length > 0) {
+    const optGroupPilar = document.createElement('optgroup');
+    optGroupPilar.label = "👥 Miembros del Pilar";
+    miembrosPilar.forEach(u => {
+      const pData = u.pilares.find(p => String(p.id) === String(pilarId));
+      const esLider = pData && pData.es_lider;
+      const tag = esLider ? `⭐ ${u.nombre_completo} (Líder)` : `👤 ${u.nombre_completo} (Colaborador)`;
+      optGroupPilar.innerHTML += `<option value="${u.id}">${tag}</option>`;
+    });
+    selectResp.appendChild(optGroupPilar);
+  } else {
+    selectResp.innerHTML += '<option value="" disabled>⚠️ Este pilar aún no tiene miembros asignados</option>';
+  }
+
+  if (usuariosSinPilar.length > 0) {
+    const optGroupSin = document.createElement('optgroup');
+    optGroupSin.label = "👤 Personal sin Pilar Asignado";
+    usuariosSinPilar.forEach(u => {
+      optGroupSin.innerHTML += `<option value="${u.id}">${u.nombre_completo}</option>`;
+    });
+    selectResp.appendChild(optGroupSin);
+  }
+}
+
+// 2. Generador Dinámico de Filas de Apoyo / Dependencia
+function agregarFilaApoyo() {
+  const cont = document.getElementById('contenedorFilasApoyo');
+  const filaId = 'apoyo_' + Date.now();
+
+  const div = document.createElement('div');
+  div.className = 'row g-2 align-items-center p-2 bg-white rounded border';
+  div.id = filaId;
+
+  let opcionesPilares = '<option value="">Seleccionar Pilar de Apoyo...</option>';
+  PILARES_SISTEMA.forEach(p => {
+    opcionesPilares += `<option value="${p.id}">${p.nombre}</option>`;
+  });
+
+  div.innerHTML = `
+    <div class="col-sm-5">
+      <select name="apoyo_pilar_id[]" class="form-select form-select-sm select-apoyo-pilar" required onchange="filtrarRespApoyo('${filaId}')">
+        ${opcionesPilares}
+      </select>
+    </div>
+    <div class="col-sm-6">
+      <select name="apoyo_responsable_id[]" class="form-select form-select-sm select-apoyo-resp" disabled>
+        <option value="">A nivel área (Sin responsable específico)</option>
+      </select>
+    </div>
+    <div class="col-sm-1 text-end">
+      <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="document.getElementById('${filaId}').remove()" title="Quitar apoyo">
+        ✕
+      </button>
+    </div>
+  `;
+  cont.appendChild(div);
+}
+
+// Filtrar responsables opcionales del pilar de apoyo añadido
+function filtrarRespApoyo(filaId) {
+  const fila = document.getElementById(filaId);
+  if (!fila) return;
+
+  const selectPilar = fila.querySelector('.select-apoyo-pilar');
+  const selectResp = fila.querySelector('.select-apoyo-resp');
+  const pilarIdStr = selectPilar.value;
+
+  selectResp.innerHTML = '<option value="">A nivel área (Sin responsable específico)</option>';
+
+  if (!pilarIdStr) {
+    selectResp.disabled = true;
+    return;
+  }
+
+  // Filtrar usando la lista de asignaciones N:M
+  const miembros = USUARIOS_SISTEMA.filter(u => {
+    return u.activo && u.pilares && u.pilares.some(p => String(p.id) === String(pilarIdStr));
+  });
+
+  if (miembros.length > 0) {
+    selectResp.disabled = false;
+    
+    // Ordenar: líderes primero
+    miembros.sort((a, b) => {
+      const pA = a.pilares.find(p => String(p.id) === String(pilarIdStr));
+      const pB = b.pilares.find(p => String(p.id) === String(pilarIdStr));
+      return (pB && pB.es_lider ? 1 : 0) - (pA && pA.es_lider ? 1 : 0);
+    });
+
+    miembros.forEach(m => {
+      const pData = m.pilares.find(p => String(p.id) === String(pilarIdStr));
+      const esLider = pData && pData.es_lider;
+      const tag = esLider ? `⭐ ${m.nombre_completo} (Líder)` : `👤 ${m.nombre_completo}`;
+      selectResp.innerHTML += `<option value="${m.id}">${tag}</option>`;
+    });
+  } else {
+    // Si el pilar no tiene colaboradores aún, permitir dejarlo a nivel área
+    selectResp.disabled = false;
+    selectResp.innerHTML = '<option value="">A nivel área (Sin miembros registrados)</option>';
+  }
+}
+
+function abrirModalNota(tareaId, titulo) {
+  document.getElementById('modalNotaTitulo').textContent = `Nota para: ${titulo}`;
+  document.getElementById('formNota').action = `/tareas/${tareaId}/agregar-nota`;
+  new bootstrap.Modal(document.getElementById('modalNota')).show();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const modalNuevaTarea = document.getElementById('modalNuevaTarea');
+  if (modalNuevaTarea) {
+    modalNuevaTarea.addEventListener('show.bs.modal', () => {
+      filtrarResponsablesPorPilar();
+    });
+  }
+});
+</script>
+{% endblock %}

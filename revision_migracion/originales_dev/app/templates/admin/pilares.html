@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Pilares - Top Label{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h3 class="fw-bold mb-1">Pilares de la Organización</h3>
+    <p class="text-muted small mb-0">Administra las áreas operativas de Top Label, a sus líderes y colaboradores.</p>
+  </div>
+  <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoPilar">
+    + Nuevo Pilar
+  </button>
+</div>
+
+<div class="row g-3">
+  {% for p in pilares %}
+  <div class="col-12 col-md-6 col-xl-4">
+    <div class="card shadow-sm border-0 h-100 border-top border-4" style="border-top-color: {{ p.color_identificador }} !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="fw-bold mb-0">{{ p.nombre }}</h5>
+          <span class="badge rounded-pill" style="background-color: {{ p.color_identificador }}; color: #fff;">
+            {{ p.tareas|length }} pendientes
+          </span>
+        </div>
+        
+        <p class="text-muted small" style="min-height: 38px;">
+          {{ p.descripcion or 'Sin descripción registrada.' }}
+        </p>
+
+        <div class="p-2 bg-light rounded mb-3">
+          <div class="small fw-bold text-muted text-uppercase" style="font-size: 0.72rem;">Líder / Responsable:</div>
+          <div class="fw-semibold text-dark">
+            {% if p.responsable %}
+              ⭐ {{ p.responsable.nombre_completo }}
+            {% else %}
+              <span class="text-danger small">⚠️ Sin líder asignado</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+          <!-- Botón que abre el modal de miembros de este pilar -->
+          <button class="btn btn-sm btn-light border text-secondary" onclick="verMiembrosPilar({{ p.id }})">
+            👥 {{ p.miembros|length }} miembro(s)
+          </button>
+
+          <button class="btn btn-outline-secondary btn-sm" onclick='abrirModalEditarPilar({{ p.to_dict()|tojson }}, {{ p.responsable_id or "null" }})'>
+            Editar Pilar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ==========================================================
+     MODAL PARA VISUALIZAR LOS MIEMBROS DE UN PILAR
+=========================================================== -->
+<div class="modal fade" id="modalVerMiembros" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-2">
+          <span id="miembros_color_dot" class="p-2 rounded-circle d-inline-block"></span>
+          <h5 class="modal-title fw-bold" id="miembros_pilar_titulo">Miembros del Pilar</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-3">
+        <div class="list-group list-group-flush" id="lista_miembros_contenedor">
+          <!-- Renderizado dinámico -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuevo Pilar -->
+<div class="modal fade" id="modalNuevoPilar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Registrar Nuevo Pilar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('admin.crear_pilar') }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Nombre del Pilar: *</label>
+            <input type="text" name="nombre" class="form-control" required placeholder="ej. Mantenimiento">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Descripción:</label>
+            <textarea name="descripcion" class="form-control" rows="2" placeholder="Objetivo o alcance del área"></textarea>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-8">
+              <label class="form-label small fw-bold">Líder / Responsable:</label>
+              <select name="responsable_id" class="form-select">
+                <option value="">Sin asignar</option>
+                {% for u in usuarios %}
+                  <option value="{{ u.id }}">{{ u.nombre_completo }} (@{{ u.username }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-4">
+              <label class="form-label small fw-bold">Color:</label>
+              <input type="color" name="color_identificador" class="form-control form-control-color w-100" value="#2563eb">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar Pilar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Editar Pilar -->
+<div class="modal fade" id="modalEditarPilar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Editar Pilar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formEditarPilar" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Nombre del Pilar:</label>
+            <input type="text" id="edit_pilar_nombre" name="nombre" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Descripción:</label>
+            <textarea id="edit_pilar_descripcion" name="descripcion" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-8">
+              <label class="form-label small fw-bold">Líder / Responsable:</label>
+              <select id="edit_pilar_responsable_id" name="responsable_id" class="form-select">
+                <option value="">Sin asignar</option>
+                {% for u in usuarios %}
+                  <option value="{{ u.id }}">{{ u.nombre_completo }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-4">
+              <label class="form-label small fw-bold">Color:</label>
+              <input type="color" id="edit_pilar_color" name="color_identificador" class="form-control form-control-color w-100">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+async function verMiembrosPilar(pilarId) {
+  try {
+    const res = await fetch(`/admin/pilares/${pilarId}/miembros`);
+    if (!res.ok) throw new Error("Error al obtener miembros");
+    const data = await res.json();
+
+    document.getElementById('miembros_pilar_titulo').textContent = `Miembros: ${data.pilar}`;
+    document.getElementById('miembros_color_dot').style.backgroundColor = data.color;
+
+    const cont = document.getElementById('lista_miembros_contenedor');
+    cont.innerHTML = '';
+
+    if (data.miembros.length === 0) {
+      cont.innerHTML = `
+        <div class="text-center py-4 text-muted small">
+          No hay colaboradores asignados a este pilar todavía.
+        </div>
+      `;
+    } else {
+      data.miembros.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'list-group-item d-flex justify-content-between align-items-center py-2 px-1';
+
+        const badgeJerarquia = m.es_responsable
+          ? '<span class="badge bg-success-subtle text-success border border-success">⭐ Líder</span>'
+          : '<span class="badge bg-light text-secondary border">👤 Colaborador</span>';
+
+        item.innerHTML = `
+          <div>
+            <div class="fw-bold text-dark">${m.nombre_completo}</div>
+            <small class="text-muted">@${m.username} ${m.email ? '• ' + m.email : ''}</small>
+          </div>
+          <div>
+            ${badgeJerarquia}
+          </div>
+        `;
+        cont.appendChild(item);
+      });
+    }
+
+    new bootstrap.Modal(document.getElementById('modalVerMiembros')).show();
+  } catch (err) {
+    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo cargar la lista de miembros.' });
+  }
+}
+
+function abrirModalEditarPilar(p, respId) {
+  document.getElementById('formEditarPilar').action = `/admin/pilares/${p.id}/editar`;
+  document.getElementById('edit_pilar_nombre').value = p.nombre;
+  document.getElementById('edit_pilar_descripcion').value = p.descripcion || '';
+  document.getElementById('edit_pilar_color').value = p.color || '#2563eb';
+  document.getElementById('edit_pilar_responsable_id').value = respId || '';
+  new bootstrap.Modal(document.getElementById('modalEditarPilar')).show();
+}
+</script>
+{% endblock %}

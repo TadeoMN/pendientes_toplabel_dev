@@ -1,0 +1,108 @@
+﻿{
+    "database":  "toplabel_pendientes_prod",
+    "target":  "C:\\sites\\pendientes_toplabel",
+    "status":  "codigo_verificado",
+    "backup":  "C:\\sites\\pendientes_toplabel_dev\\revision_migracion\\publicaciones\\codigo_20260914_183516_42a20ef4\\app_antes.zip",
+    "backup_sha256":  "C2A7B5F8CA97CA74AD62F7A30567375A6A8DE2D7782B27EC2CA66A94F14AD101",
+    "files":  [
+                  {
+                      "relative":  "models.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\models.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\models.py",
+                      "before":  "1F196A0B4E46B290FCB883A6509130C8666253059EE23E5714F00AF2F579A7F5",
+                      "after":  "C900F3E77832505E54186D06D55396785FF8F145FAE756CA5A947BACF0335602"
+                  },
+                  {
+                      "relative":  "__init__.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\__init__.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\__init__.py",
+                      "before":  "B3DD1343C39E01E7447A5F08EEE4A887EA4D9EF8A93A4402D9DE1AA4A41ECCB1",
+                      "after":  "4EB40CB69E01D52CA2F1F3B522976FAAE75F597F7F873CB6BB26B7CC7DF7912F"
+                  },
+                  {
+                      "relative":  "routes\\admin.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\routes\\admin.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\routes\\admin.py",
+                      "before":  "71B6889FCB09132D44B2A29F2F0318CDBE5A7B1F5642443CE855134047181A8C",
+                      "after":  "9C483612AD39CE06814DFD7930B179076FF8AC3C6EC4B1FC3A280FB76B1F567A"
+                  },
+                  {
+                      "relative":  "routes\\api.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\routes\\api.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\routes\\api.py",
+                      "before":  "69522844345C74BAE03247A22F64216B84C0888E7416340187B4966311101C78",
+                      "after":  "A806E9EF04E72F5D3E66B51FF0C26CFA6E37E2D1F69B83976D980091F36B0763"
+                  },
+                  {
+                      "relative":  "routes\\dashboard.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\routes\\dashboard.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\routes\\dashboard.py",
+                      "before":  "A4F2A31D760FA868C83FC527879BB7B68CC953FD6F5F6C3307F81DFBDCB78DD2",
+                      "after":  "8801E87F3DCB5ED3AFA6CFD3532E09AD9AA7A2E3A24CCB98F4F25D7AC6FFB0BD"
+                  },
+                  {
+                      "relative":  "routes\\tareas.py",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\routes\\tareas.py",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\routes\\tareas.py",
+                      "before":  "7A26640C3FC6C4569FAAAAC75371B0EDF2B597D5D34E1E32342BBDE35EAA75A4",
+                      "after":  "9E6CEA022BD1C6353B05863E50A8CF769E42C0CA9CA0BE161372E6474D1A66AA"
+                  },
+                  {
+                      "relative":  "static\\css\\main.css",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\static\\css\\main.css",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\static\\css\\main.css",
+                      "before":  "84F4E2D9266E35D9398339C3A0A49ED87C890FF4B52C7D54A51C0A8E8BB3DBB5",
+                      "after":  "E6FC4E37AAD2A7D53045F4A33D8327B6507C281F5CB5FE250F15D3E3C6F8629D"
+                  },
+                  {
+                      "relative":  "static\\js\\app.js",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\static\\js\\app.js",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\static\\js\\app.js",
+                      "before":  "E23839487A4D659163D3578F031FA608EA582A606DC82B74128FB5AFAD91DBBD",
+                      "after":  "16677460887EAC2FAD682623DAB39CB5AC5DD7412C57BBEA10904594D0DDC630"
+                  },
+                  {
+                      "relative":  "templates\\base.html",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\templates\\base.html",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\templates\\base.html",
+                      "before":  "21232AE153DF67CA5FE608DBCA25E5FCB7CF52E5C6535DD16E4F841F8C92A349",
+                      "after":  "62218C39DF7DD924789C3E819AAC3DB9F6641C8DFA73852F878827ADED6D92DB"
+                  },
+                  {
+                      "relative":  "templates\\dashboard_direccion.html",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\templates\\dashboard_direccion.html",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\templates\\dashboard_direccion.html",
+                      "before":  "520D1DC208D17BE831F7720A5C08EC71E256FCC97FD35458EE997D8FB14EA296",
+                      "after":  "131D76C162D8B3F1DBAC2FC586F33CF6FE941E6AD80EDC0AC97C9A5B273B37FE"
+                  },
+                  {
+                      "relative":  "templates\\admin\\pilares.html",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\templates\\admin\\pilares.html",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\templates\\admin\\pilares.html",
+                      "before":  "D373BDAF3543D8BE9018E9578C820906FDAC9CF056C27551F0F23A50983B5CEB",
+                      "after":  "65E4A1047454E027FA6027234A62851BA76EBC92AD353B42CBBD7B662F7DFBF2"
+                  },
+                  {
+                      "relative":  "templates\\admin\\usuarios.html",
+                      "source":  "C:\\sites\\pendientes_toplabel_dev\\app\\templates\\admin\\usuarios.html",
+                      "target":  "C:\\sites\\pendientes_toplabel\\app\\templates\\admin\\usuarios.html",
+                      "before":  "EBC42308E1AF80E0D7C5FEAC900201A5029C4AC6992FF7428B48B79ADBC664BB",
+                      "after":  "7BE047388735EC4016B221572DA157054D2288C8A1EED9F001E1BA200EC39DFB"
+                  }
+              ],
+    "copied":  [
+                   "models.py",
+                   "__init__.py",
+                   "routes\\admin.py",
+                   "routes\\api.py",
+                   "routes\\dashboard.py",
+                   "routes\\tareas.py",
+                   "static\\css\\main.css",
+                   "static\\js\\app.js",
+                   "templates\\base.html",
+                   "templates\\dashboard_direccion.html",
+                   "templates\\admin\\pilares.html",
+                   "templates\\admin\\usuarios.html"
+               ],
+    "maintenance_required":  true
+}

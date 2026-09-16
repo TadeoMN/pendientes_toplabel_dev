@@ -1,0 +1,216 @@
+
+:root {
+  --primary: #0284c7; --primary-hover: #0369a1; --bg-main: #f8fafc; --bg-card: #ffffff;
+  --text-main: #0f172a; --text-muted: #64748b; --border-color: #e2e8f0;
+  --radius: 8px; --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg-main); color: var(--text-main); }
+.navbar { background: #fff; border-bottom: 1px solid var(--border-color); padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+.nav-brand { font-weight: 700; text-decoration: none; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; }
+.logo-tag { background: var(--primary); color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; }
+.container { max-width: 1250px; margin: 1.5rem auto; padding: 0 1rem; }
+.btn { padding: 0.45rem 0.9rem; border-radius: var(--radius); border: 1px solid transparent; cursor: pointer; text-decoration: none; font-size: 0.88rem; font-weight: 500; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-outline { background: transparent; border-color: var(--border-color); color: var(--text-main); }
+.btn-sm { padding: 0.25rem 0.6rem; font-size: 0.8rem; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.kpi-card { background: #fff; padding: 1.2rem; border-radius: var(--radius); border: 1px solid var(--border-color); border-left: 5px solid #cbd5e1; }
+.kpi-card.rojo { border-left-color: #ef4444; }
+.kpi-card.amarillo { border-left-color: #f59e0b; }
+.kpi-card.azul { border-left-color: #3b82f6; }
+.kpi-card.verde { border-left-color: #10b981; }
+.kpi-value { font-size: 1.8rem; font-weight: 700; display: block; margin: 0.2rem 0; }
+.pillars-bar { display: flex; gap: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; }
+.pillar-pill { padding: 0.35rem 0.8rem; background: #fff; border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.85rem; text-decoration: none; color: var(--text-main); }
+.pillar-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.control-bar { background: #fff; padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+.input-control, .select-control { padding: 0.45rem 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); font-size: 0.88rem; }
+.table-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border-color); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+th, td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); }
+th { background: #f1f5f9; color: var(--text-muted); font-weight: 600; }
+.badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.badge-semaforo-ROJO { background: #fee2e2; color: #991b1b; }
+.badge-semaforo-AMARILLO { background: #fef3c7; color: #92400e; }
+.badge-semaforo-AZUL { background: #dbeafe; color: #1e40af; }
+.badge-semaforo-VERDE { background: #d1fae5; color: #065f46; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+.alert { padding: 0.75rem 1rem; border-radius: var(--radius); margin-bottom: 1rem; font-size: 0.9rem; }
+.alert-success { background: #d1fae5; color: #065f46; }
+.alert-danger { background: #fee2e2; color: #991b1b; }
+.modal {z-index: 1060 !important;}
+.modal-dialog {z-index: 1065 !important;}
+.modal-backdrop {z-index: 1050 !important;}
+
+/* Pestañas de Pilares Centradas con Borde Inferior Asignado */
+.pilar-tab {
+  background: #ffffff;
+  border-bottom: 3px solid var(--pilar-border, #0284c7) !important;
+  border-radius: 6px;
+  padding: 0.35rem 0.85rem;
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease-in-out;
+}
+
+.pilar-tab:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pilar-tab.active {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.pilar-tab span {
+  font-weight: 900;
+}
+
+/* Icono del Semáforo (Círculo de color sin texto) */
+.semaphore-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  vertical-align: middle;
+}
+
+.dot-rojo { background-color: #ef4444; }
+.dot-amarillo { background-color: #f59e0b; }
+.dot-verde { background-color: #10b981; }
+.dot-azul { background-color: #3b82f6; }
+
+/* Cabeceras de Tabla Ordenables */
+th.th-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+th.th-sortable:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.sort-icon {
+  font-size: 0.75rem;
+  margin-left: 3px;
+  opacity: 0.5;
+}
+
+/* Contenedor de Tabla con Scroll Fijo */
+.table-scroll-container {
+  max-height: 540px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* Encabezados de tabla congelados (Sticky Header) */
+.table-scroll-container table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f8fafc !important;
+  box-shadow: inset 0 -2px 0 #cbd5e1;
+}
+
+/* Estandarización de Botones de la Columna de Acciones */
+.btn-accion {
+  width: 68px !important;
+  height: 31px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* Botón Limpiar estilizado */
+.tabla-btn-limpiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+/* Encabezados ordenables */
+th.th-sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+th.th-sortable:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a;
+}
+
+.sort-icon {
+  font-size: 0.75rem;
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+/* Contenedor de Scroll Fijo */
+.table-scroll-container {
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.table-scroll-container table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f8fafc !important;
+  box-shadow: inset 0 -2px 0 #cbd5e1;
+}
+
+/* Contenedor de Dependencias con Altura Fija y Mini-Scroll */
+.dependencias-cell-box {
+  max-height: 48px;
+  max-width: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-content: flex-start;
+  padding-right: 3px;
+}
+
+/* Barra de scroll discreta y elegante */
+.dependencias-cell-box::-webkit-scrollbar {
+  width: 4px;
+}
+.dependencias-cell-box::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.dependencias-cell-box::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Forzar que las celdas de la tabla estén siempre centradas verticalmente */
+table.tabla-dinamica tbody tr td {
+  vertical-align: middle;
+}

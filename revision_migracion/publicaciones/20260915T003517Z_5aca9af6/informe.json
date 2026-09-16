@@ -1,0 +1,1720 @@
+{
+  "migration": "20260914_estructura_multipilares_v1",
+  "started_utc": "2026-09-15T00:35:17.813058+00:00",
+  "mode": "apply",
+  "database": "toplabel_pendientes_prod",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "status": "verified",
+  "steps": [
+    {
+      "id": "crear_usuarios_pilares",
+      "status": "verified",
+      "started_utc": "2026-09-15T00:35:17.919952+00:00",
+      "finished_utc": "2026-09-15T00:35:17.954362+00:00"
+    },
+    {
+      "id": "crear_tareas_dependencias",
+      "status": "verified",
+      "started_utc": "2026-09-15T00:35:17.961314+00:00",
+      "finished_utc": "2026-09-15T00:35:17.993938+00:00"
+    },
+    {
+      "id": "permitir_tarea_sin_pilar",
+      "status": "verified",
+      "started_utc": "2026-09-15T00:35:18.001531+00:00",
+      "finished_utc": "2026-09-15T00:35:18.052466+00:00"
+    }
+  ],
+  "warning": "DDL con commit implícito; no hay rollback global. No importa ni convierte datos.",
+  "server": {
+    "db": "toplabel_pendientes_prod",
+    "version": "9.5.0",
+    "server_uuid": "711be163-b8f2-11f0-9fa3-10ffe06f7b03"
+  },
+  "schema_before": {
+    "server": {
+      "db": "toplabel_pendientes_prod",
+      "version": "9.5.0",
+      "server_uuid": "711be163-b8f2-11f0-9fa3-10ffe06f7b03"
+    },
+    "defaults": {
+      "DEFAULT_CHARACTER_SET_NAME": "utf8mb4",
+      "DEFAULT_COLLATION_NAME": "utf8mb4_0900_ai_ci"
+    },
+    "tables": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      }
+    ],
+    "columns": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "tarea_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "usuario_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "comentario",
+        "COLUMN_TYPE": "text",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "tipo",
+        "COLUMN_TYPE": "enum('AVANCE','BLOQUEO','CAMBIO_ESTATUS','NOTA_REUNION')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "AVANCE",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "fecha_registro",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "nombre",
+        "COLUMN_TYPE": "varchar(50)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "descripcion",
+        "COLUMN_TYPE": "varchar(150)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "color_identificador",
+        "COLUMN_TYPE": "varchar(7)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "#2563eb",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "responsable_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "codigo_folio",
+        "COLUMN_TYPE": "varchar(20)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "titulo",
+        "COLUMN_TYPE": "varchar(200)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "descripcion",
+        "COLUMN_TYPE": "text",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "responsable_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "creado_por_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "prioridad",
+        "COLUMN_TYPE": "enum('P0_CRITICA','P1_ALTA','P2_MEDIA','P3_BAJA')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "P2_MEDIA",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "estatus",
+        "COLUMN_TYPE": "enum('PENDIENTE','EN_PROCESO','BLOQUEADO','COMPLETADO','CANCELADO')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "PENDIENTE",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_inicio",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_compromiso",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_cierre",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fuente",
+        "COLUMN_TYPE": "varchar(30)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "DIRECCION",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "created_at",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "updated_at",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "nombre_completo",
+        "COLUMN_TYPE": "varchar(100)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "username",
+        "COLUMN_TYPE": "varchar(50)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "email",
+        "COLUMN_TYPE": "varchar(100)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "password_hash",
+        "COLUMN_TYPE": "varchar(255)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "rol",
+        "COLUMN_TYPE": "varchar(20)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "COLABORADOR",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "es_responsable",
+        "COLUMN_TYPE": "tinyint(1)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "0",
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "activo",
+        "COLUMN_TYPE": "tinyint(1)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "1",
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      }
+    ],
+    "indexes": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "tarea_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "tarea_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "usuario_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "usuario_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "fk_pilar_responsable",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "responsable_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "nombre",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "nombre",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "codigo_folio",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "codigo_folio",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "creado_por_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "creado_por_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "pilar_dependencia_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "responsable_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "responsable_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "email",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "email",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "username",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "username",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      }
+    ],
+    "fks": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "CONSTRAINT_NAME": "bitacora_tareas_ibfk_1",
+        "COLUMN_NAME": "tarea_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "tareas",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "CONSTRAINT_NAME": "bitacora_tareas_ibfk_2",
+        "COLUMN_NAME": "usuario_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "CONSTRAINT_NAME": "fk_pilar_responsable",
+        "COLUMN_NAME": "responsable_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "SET NULL",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_1",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_2",
+        "COLUMN_NAME": "responsable_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_3",
+        "COLUMN_NAME": "creado_por_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_4",
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "CONSTRAINT_NAME": "usuarios_ibfk_1",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "SET NULL",
+        "UPDATE_RULE": "NO ACTION"
+      }
+    ],
+    "extras": {
+      "triggers": 0,
+      "routines": 0,
+      "events": 0
+    },
+    "checks": []
+  },
+  "data_before": {
+    "bitacora_tareas": {
+      "rows": 0,
+      "sha256": "96dd796558ab8af8620d33e489a636f17a3874b1dd160b1fdeb766962e004272"
+    },
+    "pilares": {
+      "rows": 9,
+      "sha256": "0ae2e1f80a73deaae6a8634d6b4e7d78758b71e68b881b1a0f51b0cbfb32b198"
+    },
+    "tareas": {
+      "rows": 3,
+      "sha256": "5f77c3cc2fc1dbdacf77ed5947cd36fa23262641320ba6fbd4d6287add3d12ac"
+    },
+    "usuarios": {
+      "rows": 19,
+      "sha256": "e20fd93ad550f2e48b972a144c860c80e73f41bbf47fe0143301b92264d5db34"
+    }
+  },
+  "plan": [
+    {
+      "id": "crear_usuarios_pilares",
+      "sql": "CREATE TABLE `usuarios_pilares` (\n  `id` INT NOT NULL AUTO_INCREMENT,\n  `usuario_id` INT NOT NULL,\n  `pilar_id` INT NOT NULL,\n  `es_lider` TINYINT(1) NULL DEFAULT 0,\n  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_usuario_pilar` (`usuario_id`, `pilar_id`),\n  KEY `ix_usuarios_pilares_pilar_id` (`pilar_id`),\n  CONSTRAINT `fk_usuarios_pilares_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_usuarios_pilares_pilar` FOREIGN KEY (`pilar_id`) REFERENCES `pilares` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"
+    },
+    {
+      "id": "crear_tareas_dependencias",
+      "sql": "CREATE TABLE `tareas_dependencias` (\n  `id` INT NOT NULL AUTO_INCREMENT,\n  `tarea_id` INT NOT NULL,\n  `pilar_id` INT NOT NULL,\n  `responsable_id` INT NULL DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `ix_tareas_dependencias_tarea_id` (`tarea_id`),\n  KEY `ix_tareas_dependencias_pilar_id` (`pilar_id`),\n  KEY `ix_tareas_dependencias_responsable_id` (`responsable_id`),\n  CONSTRAINT `fk_tareas_dependencias_tarea` FOREIGN KEY (`tarea_id`) REFERENCES `tareas` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_tareas_dependencias_pilar` FOREIGN KEY (`pilar_id`) REFERENCES `pilares` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_tareas_dependencias_responsable` FOREIGN KEY (`responsable_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"
+    },
+    {
+      "id": "permitir_tarea_sin_pilar",
+      "sql": "ALTER TABLE `tareas` MODIFY COLUMN `pilar_id` INT NULL DEFAULT NULL"
+    }
+  ],
+  "plan_sha256": "b69405f61ac6e475ab91f882576441b633f42e4d84aaacaec6f73c7d5d8a74e3",
+  "backup": {
+    "path": "C:\\sites\\pendientes_toplabel_dev\\revision_migracion\\publicaciones\\20260915T003517Z_5aca9af6\\respaldo_antes.sql",
+    "bytes": 13008,
+    "sha256": "7b471e0f2361da1d941f15ec8afe9f9d9b425e186128537a7f585fe76aa999e0",
+    "returncode": 0,
+    "tables_verified": [
+      "bitacora_tareas",
+      "pilares",
+      "tareas",
+      "usuarios"
+    ],
+    "restore_tested": false,
+    "note": "Salida completa y hash verificados; ensayar restauración por separado."
+  },
+  "schema_after": {
+    "server": {
+      "db": "toplabel_pendientes_prod",
+      "version": "9.5.0",
+      "server_uuid": "711be163-b8f2-11f0-9fa3-10ffe06f7b03"
+    },
+    "defaults": {
+      "DEFAULT_CHARACTER_SET_NAME": "utf8mb4",
+      "DEFAULT_COLLATION_NAME": "utf8mb4_0900_ai_ci"
+    },
+    "tables": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "TABLE_TYPE": "BASE TABLE",
+        "ENGINE": "InnoDB",
+        "TABLE_COLLATION": "utf8mb4_0900_ai_ci"
+      }
+    ],
+    "columns": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "tarea_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "usuario_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "comentario",
+        "COLUMN_TYPE": "text",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "tipo",
+        "COLUMN_TYPE": "enum('AVANCE','BLOQUEO','CAMBIO_ESTATUS','NOTA_REUNION')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "AVANCE",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "COLUMN_NAME": "fecha_registro",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "nombre",
+        "COLUMN_TYPE": "varchar(50)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "descripcion",
+        "COLUMN_TYPE": "varchar(150)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "color_identificador",
+        "COLUMN_TYPE": "varchar(7)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "#2563eb",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "COLUMN_NAME": "responsable_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "codigo_folio",
+        "COLUMN_TYPE": "varchar(20)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "titulo",
+        "COLUMN_TYPE": "varchar(200)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "descripcion",
+        "COLUMN_TYPE": "text",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "responsable_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "creado_por_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "prioridad",
+        "COLUMN_TYPE": "enum('P0_CRITICA','P1_ALTA','P2_MEDIA','P3_BAJA')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "P2_MEDIA",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "estatus",
+        "COLUMN_TYPE": "enum('PENDIENTE','EN_PROCESO','BLOQUEADO','COMPLETADO','CANCELADO')",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "PENDIENTE",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_inicio",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_compromiso",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fecha_cierre",
+        "COLUMN_TYPE": "date",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "fuente",
+        "COLUMN_TYPE": "varchar(30)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "DIRECCION",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "created_at",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "COLUMN_NAME": "updated_at",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "COLUMN_NAME": "tarea_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "COLUMN_NAME": "responsable_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "nombre_completo",
+        "COLUMN_TYPE": "varchar(100)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "username",
+        "COLUMN_TYPE": "varchar(50)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "email",
+        "COLUMN_TYPE": "varchar(100)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "password_hash",
+        "COLUMN_TYPE": "varchar(255)",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "rol",
+        "COLUMN_TYPE": "varchar(20)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "COLABORADOR",
+        "EXTRA": "",
+        "COLLATION_NAME": "utf8mb4_0900_ai_ci",
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "es_responsable",
+        "COLUMN_TYPE": "tinyint(1)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "0",
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "COLUMN_NAME": "activo",
+        "COLUMN_TYPE": "tinyint(1)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "1",
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "COLUMN_NAME": "id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "auto_increment",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "COLUMN_NAME": "usuario_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "COLUMN_NAME": "pilar_id",
+        "COLUMN_TYPE": "int",
+        "IS_NULLABLE": "NO",
+        "COLUMN_DEFAULT": null,
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "COLUMN_NAME": "es_lider",
+        "COLUMN_TYPE": "tinyint(1)",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "0",
+        "EXTRA": "",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "COLUMN_NAME": "created_at",
+        "COLUMN_TYPE": "timestamp",
+        "IS_NULLABLE": "YES",
+        "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+        "EXTRA": "DEFAULT_GENERATED",
+        "COLLATION_NAME": null,
+        "COLUMN_COMMENT": "",
+        "GENERATION_EXPRESSION": ""
+      }
+    ],
+    "indexes": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "tarea_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "tarea_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "INDEX_NAME": "usuario_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "usuario_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "fk_pilar_responsable",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "responsable_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "nombre",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "nombre",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "codigo_folio",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "codigo_folio",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "creado_por_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "creado_por_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "pilar_dependencia_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "INDEX_NAME": "responsable_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "responsable_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "INDEX_NAME": "ix_tareas_dependencias_pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "INDEX_NAME": "ix_tareas_dependencias_responsable_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "responsable_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "INDEX_NAME": "ix_tareas_dependencias_tarea_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "tarea_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "email",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "email",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "INDEX_NAME": "username",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "username",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "INDEX_NAME": "ix_usuarios_pilares_pilar_id",
+        "NON_UNIQUE": 1,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "INDEX_NAME": "PRIMARY",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "INDEX_NAME": "uq_usuario_pilar",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 1,
+        "COLUMN_NAME": "usuario_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "INDEX_NAME": "uq_usuario_pilar",
+        "NON_UNIQUE": 0,
+        "SEQ_IN_INDEX": 2,
+        "COLUMN_NAME": "pilar_id",
+        "SUB_PART": null,
+        "IS_VISIBLE": "YES",
+        "EXPRESSION": null
+      }
+    ],
+    "fks": [
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "CONSTRAINT_NAME": "bitacora_tareas_ibfk_1",
+        "COLUMN_NAME": "tarea_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "tareas",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "bitacora_tareas",
+        "CONSTRAINT_NAME": "bitacora_tareas_ibfk_2",
+        "COLUMN_NAME": "usuario_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "pilares",
+        "CONSTRAINT_NAME": "fk_pilar_responsable",
+        "COLUMN_NAME": "responsable_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "SET NULL",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_1",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_2",
+        "COLUMN_NAME": "responsable_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_3",
+        "COLUMN_NAME": "creado_por_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas",
+        "CONSTRAINT_NAME": "tareas_ibfk_4",
+        "COLUMN_NAME": "pilar_dependencia_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "NO ACTION",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "CONSTRAINT_NAME": "fk_tareas_dependencias_pilar",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "CONSTRAINT_NAME": "fk_tareas_dependencias_responsable",
+        "COLUMN_NAME": "responsable_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "SET NULL",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "tareas_dependencias",
+        "CONSTRAINT_NAME": "fk_tareas_dependencias_tarea",
+        "COLUMN_NAME": "tarea_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "tareas",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "usuarios",
+        "CONSTRAINT_NAME": "usuarios_ibfk_1",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "SET NULL",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "CONSTRAINT_NAME": "fk_usuarios_pilares_pilar",
+        "COLUMN_NAME": "pilar_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "pilares",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      },
+      {
+        "TABLE_NAME": "usuarios_pilares",
+        "CONSTRAINT_NAME": "fk_usuarios_pilares_usuario",
+        "COLUMN_NAME": "usuario_id",
+        "REFERENCED_TABLE_SCHEMA": "toplabel_pendientes_prod",
+        "REFERENCED_TABLE_NAME": "usuarios",
+        "REFERENCED_COLUMN_NAME": "id",
+        "DELETE_RULE": "CASCADE",
+        "UPDATE_RULE": "NO ACTION"
+      }
+    ],
+    "extras": {
+      "triggers": 0,
+      "routines": 0,
+      "events": 0
+    },
+    "checks": []
+  },
+  "data_after": {
+    "bitacora_tareas": {
+      "rows": 0,
+      "sha256": "96dd796558ab8af8620d33e489a636f17a3874b1dd160b1fdeb766962e004272"
+    },
+    "pilares": {
+      "rows": 9,
+      "sha256": "0ae2e1f80a73deaae6a8634d6b4e7d78758b71e68b881b1a0f51b0cbfb32b198"
+    },
+    "tareas": {
+      "rows": 3,
+      "sha256": "5f77c3cc2fc1dbdacf77ed5947cd36fa23262641320ba6fbd4d6287add3d12ac"
+    },
+    "tareas_dependencias": {
+      "rows": 0,
+      "sha256": "8a71d750adc868d531438c57681b3ba0c82f58f65f586668fcc3560d8601634c"
+    },
+    "usuarios": {
+      "rows": 19,
+      "sha256": "e20fd93ad550f2e48b972a144c860c80e73f41bbf47fe0143301b92264d5db34"
+    },
+    "usuarios_pilares": {
+      "rows": 0,
+      "sha256": "b60b01be90fb3ddb5c66cca67655a6d8dca597cfa8f0813d211eccb991fb7bef"
+    }
+  },
+  "finished_utc": "2026-09-15T00:35:18.065392+00:00"
+}
