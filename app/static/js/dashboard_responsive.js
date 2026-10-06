@@ -57,7 +57,7 @@ function iniciarVistasTareas(root, elegida) {
     if (pilar) {
       const alerta=panel.querySelector('.tareas-pilar-alert');
       const texto=pilar.selectedOptions[0]?.textContent || '';
-      alerta.hidden=!texto.includes('⚠'); alerta.textContent=texto.includes('⚠') ? texto.slice(texto.indexOf('⚠')) : '';
+      alerta.hidden=!texto.includes('vencidas/bloqueadas'); alerta.textContent=texto.includes('vencidas/bloqueadas') ? texto : '';
     }
     if (!direccion || panel.hidden) return;
     const semaforo=panel.querySelector('[data-filtro=semaforo]');
