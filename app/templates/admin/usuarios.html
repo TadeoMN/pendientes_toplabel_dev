@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Gestión de Usuarios - Top Label{% endblock %}
+{% block title %}Gestión de usuarios - Top Label{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -9,7 +9,7 @@
     <p class="text-muted small mb-0">Gestiona accesos, contraseñas, pilares asignados y jerarquías operativas.</p>
   </div>
   <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario" {% if not current_user.puede('usuarios.crear') %}disabled{% endif %}>
-    + Nuevo Usuario
+    + Nuevo usuario
   </button>
 </div>
 
@@ -47,11 +47,11 @@
       <table class="table small table-hover align-middle mb-0 tabla-dinamica" id="tablaUsuarios">
         <thead class="table-light text-muted small text-uppercase">
           <tr>
-            <th class="th-sortable" data-col="0" style="width: 140px;"><button type="button" class="th-sort-btn">Clave / Usuario <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
-            <th class="th-sortable" data-col="1"><button type="button" class="th-sort-btn">Nombre Completo <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
-            <th class="th-sortable" data-col="2"><button type="button" class="th-sort-btn">Correo Electrónico <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+            <th class="th-sortable" data-col="0" style="width: 140px;"><button type="button" class="th-sort-btn">Clave / usuario <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+            <th class="th-sortable" data-col="1"><button type="button" class="th-sort-btn">Nombre completo <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+            <th class="th-sortable" data-col="2"><button type="button" class="th-sort-btn">Correo electrónico <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
             <th class="th-sortable" data-col="3" style="width: 140px;"><button type="button" class="th-sort-btn">Rol <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
-            <th style="width: 240px;">Pilares Asignados</th>
+            <th style="width: 240px;">Pilares asignados</th>
             <th style="width: 100px;">Estado</th>
             <th class="text-end" style="width: 160px;">Acciones</th>
           </tr>
@@ -128,33 +128,33 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h2 class="h5 modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar Nuevo Usuario</h2>
+        <h2 class="h5 modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar nuevo usuario</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
         <div class="modal-body">
           <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label for="nu_nombre_completo" class="form-label small fw-bold">Nombre Completo *</label>
+            <label for="nu_nombre_completo" class="form-label small fw-bold">Nombre completo *</label>
             <input type="text" name="nombre_completo" class="form-control" required placeholder="ej. Mario Martínez" id="nu_nombre_completo">
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label for="nu_username" class="form-label small fw-bold">Clave de Usuario *</label>
+              <label for="nu_username" class="form-label small fw-bold">Clave de usuario *</label>
               <input type="text" name="username" class="form-control" required placeholder="ej. mmartinez" id="nu_username">
             </div>
             <div class="col-6">
-              <label for="nu_email" class="form-label small fw-bold">Correo Electrónico <span class="text-muted fw-normal">(Opcional)</span></label>
+              <label for="nu_email" class="form-label small fw-bold">Correo electrónico <span class="text-muted fw-normal">(Opcional)</span></label>
               <input type="email" name="email" class="form-control" placeholder="correo@toplabel.com" id="nu_email">
             </div>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label for="nu_password" class="form-label small fw-bold">Contraseña Inicial *</label>
+              <label for="nu_password" class="form-label small fw-bold">Contraseña inicial *</label>
               <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••" id="nu_password">
             </div>
             <div class="col-6">
-              <label for="nu_rol_id" class="form-label small fw-bold">Rol en Sistema *</label>
+              <label for="nu_rol_id" class="form-label small fw-bold">Rol en el sistema *</label>
               <select name="rol_id" class="form-select" required id="nu_rol_id">
                 {% for rol in roles %}{% if current_user.puede('usuarios.roles') or rol.codigo == 'COLABORADOR' %}
                 <option value="{{ rol.id }}" {% if rol.codigo == 'COLABORADOR' %}selected{% endif %}>{{ rol.nombre }}</option>
@@ -166,7 +166,7 @@
           <!-- SECCIÓN: ASIGNACIÓN DINÁMICA DE PILARES -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares Asignados y Jerarquía:</div>
+              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares asignados y jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresNuevo')">
                 + Agregar otro pilar
               </button>
@@ -180,7 +180,7 @@
               <div class="row g-2 align-items-center p-2 bg-white rounded border fila-pilar-item">
                 <div class="col-sm-6">
                   <select id="nu_pilar" aria-label="Pilar" aria-describedby="nu_pilares_ayuda" name="usuario_pilar_id[]" class="form-select form-select-sm">
-                    <option value="">Seleccionar Pilar...</option>
+                    <option value="">Seleccionar pilar…</option>
                     {% for p in pilares %}
                       <option value="{{ p.id }}">{{ p.nombre }}</option>
                     {% endfor %}
@@ -188,8 +188,8 @@
                 </div>
                 <div class="col-sm-5">
                   <select id="nu_rol_pilar" aria-label="Rol en el pilar" aria-describedby="nu_pilares_ayuda" name="usuario_rol_pilar[]" class="form-select form-select-sm">
-                    <option value="COLABORADOR">Colaborador / Miembro</option>
-                    <option value="LIDER">Líder de Pilar</option>
+                    <option value="COLABORADOR">Colaborador</option>
+                    <option value="LIDER">Líder de pilar</option>
                   </select>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -203,7 +203,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary btn-sm">Crear Usuario</button>
+          <button type="submit" class="btn btn-primary btn-sm">Crear usuario</button>
         </div>
       </form>
     </div>
@@ -217,19 +217,19 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h2 class="h5 modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar Usuario</h2>
+        <h2 class="h5 modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar usuario</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formEditarUsuario" method="POST">
         <div class="modal-body">
           <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label for="edit_nombre" class="form-label small fw-bold">Nombre Completo *</label>
+            <label for="edit_nombre" class="form-label small fw-bold">Nombre completo *</label>
             <input type="text" id="edit_nombre" name="nombre_completo" class="form-control" required>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label for="edit_username" class="form-label small fw-bold">Clave de Usuario *</label>
+              <label for="edit_username" class="form-label small fw-bold">Clave de usuario *</label>
               <input type="text" id="edit_username" name="username" class="form-control" required>
             </div>
             <div class="col-6">
@@ -239,7 +239,7 @@
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label for="edit_rol" class="form-label small fw-bold">Rol en Sistema *</label>
+              <label for="edit_rol" class="form-label small fw-bold">Rol en el sistema *</label>
               <select id="edit_rol" name="rol_id" class="form-select" required>
                 {% for rol in roles %}<option value="{{ rol.id }}">{{ rol.nombre }}</option>{% endfor %}
               </select>
@@ -247,7 +247,7 @@
             <div class="col-6 d-flex align-items-end">
               <div class="form-check form-switch mb-2">
                 <input class="form-check-input" type="checkbox" name="activo" value="1" id="edit_activo">
-                <label class="form-check-label small fw-bold" for="edit_activo">Usuario Activo en sistema</label>
+                <label class="form-check-label small fw-bold" for="edit_activo">Usuario activo en el sistema</label>
               </div>
             </div>
           </div>
@@ -255,7 +255,7 @@
           <!-- ASIGNACIÓN DINÁMICA DE PILARES (EDICIÓN) -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares Asignados y Jerarquía:</div>
+              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares asignados y jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresEdit')">
                 + Agregar otro pilar
               </button>
@@ -267,7 +267,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
         </div>
       </form>
     </div>
@@ -279,20 +279,20 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h2 class="h5 modal-title fw-bold" id="modalPassTitulo">Cambiar Contraseña</h2>
+        <h2 class="h5 modal-title fw-bold" id="modalPassTitulo">Cambiar contraseña</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formPassword" method="POST">
         <div class="modal-body">
           <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label for="cp_password" class="form-label small fw-bold">Nueva Contraseña *</label>
+            <label for="cp_password" class="form-label small fw-bold">Nueva contraseña *</label>
             <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••" id="cp_password">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary btn-sm">Actualizar Contraseña</button>
+          <button type="submit" class="btn btn-primary btn-sm">Actualizar contraseña</button>
         </div>
       </form>
     </div>
@@ -322,8 +322,8 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
     </div>
     <div class="col-sm-5">
       <select id="usuario_rol_pilar_${secuencia}" aria-label="Rol en el pilar" name="usuario_rol_pilar[]" class="form-select form-select-sm select-rol-item">
-        <option value="COLABORADOR" ${!esLider ? 'selected' : ''}>Colaborador / Miembro</option>
-        <option value="LIDER" ${esLider ? 'selected' : ''}>Líder de Pilar</option>
+        <option value="COLABORADOR" ${!esLider ? 'selected' : ''}>Colaborador</option>
+        <option value="LIDER" ${esLider ? 'selected' : ''}>Líder de pilar</option>
       </select>
     </div>
     <div class="col-sm-1 text-end">
@@ -334,7 +334,7 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
   `;
 
   const selectorPilar = div.querySelector('.select-pilar-item');
-  selectorPilar.appendChild(new Option('Seleccionar Pilar...', ''));
+  selectorPilar.appendChild(new Option('Seleccionar pilar…', ''));
   OPCIONES_PILARES.forEach(p => selectorPilar.appendChild(new Option(p.nombre, p.id)));
   cont.appendChild(div);
 
@@ -378,7 +378,7 @@ function abrirModalEditar(u) {
 }
 
 function abrirModalPassword(id, nombre) {
-  document.getElementById('modalPassTitulo').textContent = `Cambiar Contraseña: ${nombre}`;
+  document.getElementById('modalPassTitulo').textContent = `Cambiar contraseña: ${nombre}`;
   document.getElementById('formPassword').action = `/admin/usuarios/${id}/password`;
   new bootstrap.Modal(document.getElementById('modalPassword')).show();
 }

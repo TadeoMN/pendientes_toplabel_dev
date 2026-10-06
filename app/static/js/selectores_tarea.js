@@ -21,7 +21,7 @@ const SelectoresTarea = (() => {
     select.value = actual?.id ?? '';
   }
   function responsables(select, usuarios, pilarId, actual = null) {
-    select.replaceChildren(new Option('Seleccionar Responsable...', ''));
+    select.replaceChildren(new Option('Selecciona un responsable', ''));
     select.disabled = false;
     const activos = usuarios.filter(u => u.activo);
     const sinPilar = activos.filter(u => !(u.pilares || []).length);
@@ -34,24 +34,24 @@ const SelectoresTarea = (() => {
       select.appendChild(elemento);
     }
     if (!pilarId) {
-      grupo('Personal sin Pilar Asignado', sinPilar, true);
-      grupo('Colaboradores del Sistema', activos.filter(u => (u.pilares || []).length));
+      grupo('Personal sin pilar asignado', sinPilar, true);
+      grupo('Colaboradores del sistema', activos.filter(u => (u.pilares || []).length));
     } else {
       const miembros = activos.filter(u => pertenece(u, pilarId));
-      grupo('Miembros del Pilar', miembros);
+      grupo('Miembros del pilar', miembros);
       if (!miembros.length) {
         const aviso = new Option('Este pilar aún no tiene miembros asignados', '');
         aviso.disabled = true;
         select.appendChild(aviso);
       }
-      grupo('Personal sin Pilar Asignado', sinPilar);
+      grupo('Personal sin pilar asignado', sinPilar);
     }
     conservarActual(select, actual);
   }
   function responsablesApoyo(select, usuarios, pilarId, actual = null) {
     const miembros = ordenar(usuarios.filter(u => u.activo && pertenece(u, pilarId)), pilarId);
     select.replaceChildren(new Option(pilarId && !miembros.length
-      ? 'A nivel área (Sin miembros registrados)' : 'A nivel área (Sin responsable específico)', ''));
+      ? 'A nivel área (sin miembros registrados)' : 'A nivel área (sin responsable específico)', ''));
     select.disabled = !pilarId;
     if (pilarId) miembros.forEach(u => select.add(new Option(etiqueta(u, pilarId), u.id)));
     conservarActual(select, actual);
@@ -80,7 +80,7 @@ const SelectoresTarea = (() => {
     if (ayuda) fila.querySelectorAll('select').forEach(select => select.setAttribute('aria-describedby', ayuda));
     const pilar = fila.querySelector('.select-apoyo-pilar');
     const responsable = fila.querySelector('.select-apoyo-resp');
-    pilares(pilar, listaPilares, apoyo.pilar_id, 'Seleccionar Pilar de Apoyo...');
+    pilares(pilar, listaPilares, apoyo.pilar_id, 'Selecciona un pilar de apoyo…');
     responsablesApoyo(responsable, usuarios, apoyo.pilar_id,
       {id: apoyo.responsable_id, nombre: apoyo.responsable_nombre});
     pilar.addEventListener('change', () => responsablesApoyo(responsable, usuarios, pilar.value));

@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h2 class="h5 modal-title fw-bold" id="modalNuevaTareaTitulo">Asignar Nueva Tarea</h2>
+        <h2 class="h5 modal-title fw-bold" id="modalNuevaTareaTitulo">Asignar nueva tarea</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form enctype="multipart/form-data" method="POST" action="{{ url_for('tareas.crear') }}">
@@ -10,18 +10,18 @@
         <div class="modal-body">
           <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label for="nt_titulo" class="form-label small fw-bold">Título de la Tarea / Compromiso *</label>
+            <label for="nt_titulo" class="form-label small fw-bold">Título de la tarea / compromiso *</label>
             <input type="text" name="titulo" class="form-control" required placeholder="ej. Calibración de rodillos flexo" id="nt_titulo">
           </div>
           <div class="mb-3">
-            <label for="nt_descripcion" class="form-label small fw-bold">Detalles / Instrucciones Completas</label>
+            <label for="nt_descripcion" class="form-label small fw-bold">Detalles / instrucciones completas</label>
             <textarea name="descripcion" class="form-control" rows="3" placeholder="Especificaciones técnicas, entregables esperados..." id="nt_descripcion"></textarea>
           </div>
 
           <!-- Selección en Cascada: Pilar y Responsable -->
           <div class="row g-2 mb-3">
             <div class="col-md-6">
-              <label for="selectPilarDestino" class="form-label small fw-bold">Pilar Destino</label>
+              <label for="selectPilarDestino" class="form-label small fw-bold">Pilar destino</label>
               <select name="pilar_id" id="selectPilarDestino" aria-describedby="nt_pilar_ayuda" class="form-select" onchange="filtrarResponsablesPorPilar()">
                 <option value="">Sin pilar asignado (General / Transversal)</option>
                 {% for p in pilares %}
@@ -31,9 +31,9 @@
               <div class="form-text" id="nt_pilar_ayuda">Opcional si es una tarea transversal.</div>
             </div>
             <div class="col-md-6">
-              <label for="selectResponsableDestino" class="form-label small fw-bold">Responsable Asignado *</label>
+              <label for="selectResponsableDestino" class="form-label small fw-bold">Responsable asignado *</label>
               <select name="responsable_id" id="selectResponsableDestino" aria-describedby="nt_responsable_ayuda" class="form-select" required>
-                <option value="">Primero selecciona un pilar...</option>
+                <option value="">Selecciona un responsable</option>
               </select>
               <div class="form-text" id="nt_responsable_ayuda">Miembros del pilar y personal sin pilar asignado.</div>
             </div>
@@ -50,7 +50,7 @@
               </select>
             </div>
             <div class="col-6">
-              <label for="nt_fecha_compromiso" class="form-label small fw-bold">Fecha Límite *</label>
+              <label for="nt_fecha_compromiso" class="form-label small fw-bold">Fecha límite *</label>
               <input type="date" name="fecha_compromiso" class="form-control" required id="nt_fecha_compromiso">
             </div>
           </div>
@@ -58,9 +58,9 @@
           <!-- SECCIÓN: MÚLTIPLES PILARES DE APOYO (DINÁMICO) -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de Apoyo / Dependencias (Opcional):</div>
+              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de apoyo / dependencias (opcional):</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaApoyo()">
-                <i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Agregar Pilar de Apoyo
+                <i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Agregar pilar de apoyo
               </button>
             </div>
             <div class="form-text mb-2" id="nt_apoyos_ayuda">
@@ -77,7 +77,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk fa-fw" aria-hidden="true"></i> Guardar y Asignar Tarea</button>
+          <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk fa-fw" aria-hidden="true"></i> Guardar y asignar tarea</button>
         </div>
       </form>
     </div>

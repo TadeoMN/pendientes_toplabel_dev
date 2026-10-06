@@ -335,7 +335,7 @@ async function verDetalleTarea(tareaId) {
       });
     }
 
-    // 4. Instrucciones Completas sin truncar
+    // 4. Instrucciones completas sin truncar
     document.getElementById('det_descripcion').textContent = t.descripcion;
 
     // 5. Historial de Notas

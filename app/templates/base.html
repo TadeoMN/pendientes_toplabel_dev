@@ -49,8 +49,8 @@
               Administración
             </a>
             <ul class="dropdown-menu border-0 shadow-sm">
-              {% if current_user.puede('usuarios.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.usuarios' %}active{% endif %}" {% if request.endpoint == 'admin.usuarios' %}aria-current="page"{% endif %} href="{{ url_for('admin.usuarios') }}">Gestión de Usuarios</a></li>{% endif %}
-              {% if current_user.puede('pilares.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.pilares' %}active{% endif %}" {% if request.endpoint == 'admin.pilares' %}aria-current="page"{% endif %} href="{{ url_for('admin.pilares') }}">Gestión de Pilares</a></li>{% endif %}
+              {% if current_user.puede('usuarios.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.usuarios' %}active{% endif %}" {% if request.endpoint == 'admin.usuarios' %}aria-current="page"{% endif %} href="{{ url_for('admin.usuarios') }}">Gestión de usuarios</a></li>{% endif %}
+              {% if current_user.puede('pilares.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.pilares' %}active{% endif %}" {% if request.endpoint == 'admin.pilares' %}aria-current="page"{% endif %} href="{{ url_for('admin.pilares') }}">Gestión de pilares</a></li>{% endif %}
               {% if current_user.puede('roles.gestionar') %}<li><a class="dropdown-item {% if request.endpoint == 'roles.gestionar' %}active{% endif %}" {% if request.endpoint == 'roles.gestionar' %}aria-current="page"{% endif %} href="{{ url_for('roles.gestionar') }}">Roles y permisos</a></li>{% endif %}
               {% if current_user.puede('auditoria.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'roles.auditoria' %}active{% endif %}" {% if request.endpoint == 'roles.auditoria' %}aria-current="page"{% endif %} href="{{ url_for('roles.auditoria') }}">Auditoría</a></li>{% endif %}
               {% if current_user.puede('archivos.configurar') %}<li><a class="dropdown-item {% if request.endpoint == 'archivos.configurar' %}active{% endif %}" {% if request.endpoint == 'archivos.configurar' %}aria-current="page"{% endif %} href="{{ url_for('archivos.configurar') }}">Límites de archivos</a></li>{% endif %}
@@ -59,7 +59,7 @@
           {% endif %}
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'dashboard.mis_pendientes' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.mis_pendientes') }}" {% if request.endpoint == 'dashboard.mis_pendientes' %}aria-current="page"{% endif %}>
-              Mis Pendientes
+              Mis pendientes
             </a>
           </li>
         </ul>
@@ -72,7 +72,7 @@
               {{ current_user.nombres_roles }} {% if pilares_usuario %}({{ pilares_usuario | map(attribute='nombre') | join(', ') }}){% endif %}
             </div>
           </div>
-          <button type="button" data-logout-url="{{ url_for('auth.logout') }}" class="btn btn-outline-secondary btn-sm logout-button">Cerrar Sesión</button>
+          <button type="button" data-logout-url="{{ url_for('auth.logout') }}" class="btn btn-outline-secondary btn-sm logout-button">Cerrar sesión</button>
         </div>
         </div>
       </div>
@@ -92,7 +92,7 @@
         <strong class="text-light">Top Label</strong> • Desarrollado por SakeMN
       </div>
       <div>
-        <span class="badge bg-light text-secondary border">Red Interna</span>
+        <span class="badge bg-light text-secondary border">Red interna</span>
         <span class="ms-2">v1.2</span>
       </div>
     </div>

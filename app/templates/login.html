@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Iniciar Sesión - Top Label{% endblock %}
+{% block title %}Acceso al sistema - Top Label{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center align-items-center" style="min-height: 75vh;">
@@ -10,12 +10,12 @@
         <div class="text-center mb-4">
           <img src="{{ url_for('static', filename='images/TOPLABEL.png') }}" alt="Top Label Logo" class="mb-3" style="max-width: 150px;">
           <h1 class="h4 fw-bold mb-1">Acceso al sistema</h1>
-          <p class="text-muted small">Control de Pendientes</p>
+          <p class="text-muted small">Control de pendientes</p>
         </div>
 
         <form method="POST" action="{{ url_for('auth.login') }}">
           <div class="mb-3">
-            <label for="username" class="form-label small fw-bold">Usuario o Correo:</label>
+            <label for="username" class="form-label small fw-bold">Usuario o correo:</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="usuario o correo" autocomplete="username" required autofocus>
           </div>
 
@@ -24,11 +24,11 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
           </div>
 
-          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Ingresar al Panel</button>
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Ingresar al sistema</button>
         </form>
 
         <div class="text-center mt-4">
-          <small class="text-muted">Red Interna • Top Label</small>
+          <small class="text-muted">Red interna • Top Label</small>
         </div>
       </div>
     </div>
