@@ -192,15 +192,17 @@ async function verMiembrosPilar(pilarId) {
           ? '<span class="badge bg-success-subtle text-success border border-success">⭐ Líder</span>'
           : '<span class="badge bg-light text-secondary border">👤 Colaborador</span>';
 
-        item.innerHTML = `
-          <div>
-            <div class="fw-bold text-dark">${m.nombre_completo}</div>
-            <small class="text-muted">@${m.username} ${m.email ? '• ' + m.email : ''}</small>
-          </div>
-          <div>
-            ${badgeJerarquia}
-          </div>
-        `;
+        const datos = document.createElement('div');
+        const nombre = document.createElement('div');
+        nombre.className = 'fw-bold text-dark';
+        nombre.textContent = m.nombre_completo;
+        const contacto = document.createElement('small');
+        contacto.className = 'text-muted';
+        contacto.textContent = `@${m.username} ${m.email ? '• ' + m.email : ''}`;
+        datos.append(nombre, contacto);
+        const jerarquia = document.createElement('div');
+        jerarquia.innerHTML = badgeJerarquia; // Solo insignias fijas, sin datos del servidor.
+        item.append(datos, jerarquia);
         cont.appendChild(item);
       });
     }

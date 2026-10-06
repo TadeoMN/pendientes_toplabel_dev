@@ -294,12 +294,11 @@
 
 <script>
 // Opciones globales de pilares para generar filas dinámicas
-const OPCIONES_PILARES_HTML = `
-  <option value="">Seleccionar Pilar...</option>
+const OPCIONES_PILARES = [
   {% for p in pilares %}
-    <option value="{{ p.id }}">{{ p.nombre }}</option>
+    {id: {{ p.id|tojson }}, nombre: {{ p.nombre|tojson }}},
   {% endfor %}
-`;
+];
 
 // Función universal para agregar una fila de pilar
 function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
@@ -310,7 +309,6 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
   div.innerHTML = `
     <div class="col-sm-6">
       <select name="usuario_pilar_id[]" class="form-select form-select-sm select-pilar-item" required>
-        ${OPCIONES_PILARES_HTML}
       </select>
     </div>
     <div class="col-sm-5">
@@ -326,6 +324,9 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
     </div>
   `;
 
+  const selectorPilar = div.querySelector('.select-pilar-item');
+  selectorPilar.appendChild(new Option('Seleccionar Pilar...', ''));
+  OPCIONES_PILARES.forEach(p => selectorPilar.appendChild(new Option(p.nombre, p.id)));
   cont.appendChild(div);
 
   if (pilarId) {
