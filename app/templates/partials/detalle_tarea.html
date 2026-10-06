@@ -15,6 +15,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body p-4">
+        <ul class="nav nav-tabs mb-3" role="tablist" aria-label="Secciones de la tarea">
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link active" id="det_tab_detalle" data-bs-toggle="tab" data-bs-target="#det_panel_detalle" role="tab" aria-controls="det_panel_detalle" aria-selected="true">Detalle</button></li>
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" id="det_tab_bitacora" data-bs-toggle="tab" data-bs-target="#det_panel_bitacora" role="tab" aria-controls="det_panel_bitacora" aria-selected="false">Bitácora <span class="badge bg-secondary-subtle text-secondary" id="det_conteo_notas">0 notas</span></button></li>
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" id="det_tab_archivos" data-bs-toggle="tab" data-bs-target="#det_panel_archivos" role="tab" aria-controls="det_panel_archivos" aria-selected="false">Archivos</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="det_panel_detalle" role="tabpanel" aria-labelledby="det_tab_detalle" tabindex="0">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 pb-2">
           <small class="text-muted">Creación: <span id="det_fecha_creacion"></span></small>
           <button type="button" id="det_editar" class="btn btn-primary btn-sm" hidden><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Editar tarea</button>
@@ -42,13 +49,8 @@
           </div>
         </div>
 
-        <section class="my-3"><h3 class="h6">Archivos de la tarea</h3><div id="det_adjuntos"></div></section>
-        <form id="formAdjuntosTarea" enctype="multipart/form-data">
-          {% with archivos_prefijo='det_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}
-          <button type="submit" class="btn btn-outline-primary btn-sm">Adjuntar a la tarea</button>
-        </form>
-        <hr class="my-4 text-muted">
-
+          </div>
+          <div class="tab-pane" id="det_panel_bitacora" role="tabpanel" aria-labelledby="det_tab_bitacora" tabindex="0">
         <section id="seccion_nota" class="card bg-light border-0 mb-4">
           <div class="card-body">
             <h3 id="nota_titulo" class="h6 fw-bold">Agregar nota</h3>
@@ -73,9 +75,18 @@
         <div class="mb-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="h6 fw-bold text-uppercase small text-muted mb-0"><i class="fa-solid fa-comments fa-fw" aria-hidden="true"></i> Historial de seguimiento (bitácora):</h3>
-            <span class="badge bg-secondary-subtle text-secondary" id="det_conteo_notas">0 notas</span>
           </div>
           <div id="det_lista_bitacora" class="d-flex flex-column gap-2"></div>
+        </div>
+          </div>
+          <div class="tab-pane" id="det_panel_archivos" role="tabpanel" aria-labelledby="det_tab_archivos" tabindex="0">
+        <section class="my-3"><h3 class="h6">Archivos de la tarea</h3><div id="det_adjuntos"></div></section>
+        <form id="formAdjuntosTarea" enctype="multipart/form-data">
+          {% with archivos_prefijo='det_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}
+          <button type="submit" class="btn btn-outline-primary btn-sm">Adjuntar a la tarea</button>
+        </form>
+
+          </div>
         </div>
       </div>
       <div class="modal-footer bg-light">

@@ -7,12 +7,11 @@ No se hizo merge, push ni despliegue; no se modificó la copia de producción.
 
 ## Estado de la etapa
 
-Las ocho tareas están implementadas. Pasaron las pruebas automatizadas y las
-comprobaciones indicadas abajo en el navegador integrado. La verificación completa
-de la etapa sigue pendiente por Lighthouse/Chrome, NVDA y una cuenta con rol Dirección.
-Las etapas 2, 3 y 4 no se iniciaron: la instrucción exige verificar cada etapa antes
-de pasar a la siguiente. Se solicitó al usuario elegir entre habilitar Chrome o
-continuar con las pruebas disponibles y dejar Lighthouse pendiente; aún falta respuesta.
+Las ocho tareas están implementadas y verificadas con las pruebas disponibles.
+Actualización posterior: el usuario proporcionó la cuenta de Dirección, confirmó
+el acceso por `http://192.168.100.24:5010` y pidió dejar Lighthouse para el final.
+Se continuó en ese orden con las etapas 2, 3 y 4. El resultado vigente y las
+limitaciones de Chrome, Lighthouse y NVDA se encuentran en `VERIFICACION_UI_FINAL.md`.
 
 ## Tareas y archivos
 

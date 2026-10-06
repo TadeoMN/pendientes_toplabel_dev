@@ -39,7 +39,11 @@ async function abrirNotaTarea(id, opciones = {}) {
     return;
   }
   prepararNotaTarea(t, opciones.destino || null);
-  const enfocar = () => document.getElementById('seccion_nota').scrollIntoView({block:'start',behavior:comportamientoScroll()});
+  bootstrap.Tab.getOrCreateInstance(document.getElementById('det_tab_bitacora')).show();
+  const enfocar = () => {
+    document.getElementById('seccion_nota').scrollIntoView({block:'start',behavior:comportamientoScroll()});
+    document.getElementById('modal_nota_comentario').focus({preventScroll:true});
+  };
   const modal = document.getElementById('modalDetalleTarea');
   modal.addEventListener('shown.bs.modal', enfocar, {once:true});
   enfocar();
@@ -70,6 +74,9 @@ async function enviarNotaModal(event) {
   finally { notaGuardando = false; boton.disabled = false; }
 }
 document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('modalDetalleTarea')?.addEventListener('show.bs.modal', () => {
+    bootstrap.Tab.getOrCreateInstance(document.getElementById('det_tab_detalle')).show();
+  });
   document.getElementById('modal_nota_tipo')?.addEventListener('change',actualizarEfectoNota);
   document.getElementById('nota_cambiar_bloqueo')?.addEventListener('change',actualizarEfectoNota);
   document.getElementById('modalDetalleTarea')?.addEventListener('hide.bs.modal', e => {if (notaGuardando) e.preventDefault();});
