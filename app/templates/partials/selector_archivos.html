@@ -1,7 +1,7 @@
 <div class="mb-3 selector-archivos">
-  <label class="form-label small fw-bold d-block">Archivos adjuntos
-    <input type="file" name="archivos" class="form-control mt-1" multiple accept=".png,.jpg,.jpeg,.webp,.pdf,.docx,.xlsx,.txt,.csv,.mp3,.mp4,.mov">
+  <label for="{{ archivos_prefijo }}" class="form-label small fw-bold d-block">Archivos adjuntos
+    <input id="{{ archivos_prefijo }}" aria-describedby="{{ archivos_prefijo }}_ayuda" type="file" name="archivos" class="form-control mt-1" multiple accept=".png,.jpg,.jpeg,.webp,.pdf,.docx,.xlsx,.txt,.csv,.mp3,.mp4,.mov">
   </label>
-  <div class="form-text">Puedes seleccionar varios archivos y agregar más antes de guardar. Los límites se validan con los archivos existentes del registro.</div>
+  <div class="form-text" id="{{ archivos_prefijo }}_ayuda">Puedes seleccionar varios archivos y agregar más antes de guardar. Los límites se validan con los archivos existentes del registro.</div>
   <ul class="list-group mt-2 lista-archivos-pendientes"></ul>
 </div>

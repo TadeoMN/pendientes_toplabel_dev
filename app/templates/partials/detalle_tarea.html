@@ -43,7 +43,7 @@
 
         <section class="my-3"><h6>Archivos de la tarea</h6><div id="det_adjuntos"></div></section>
         <form id="formAdjuntosTarea" enctype="multipart/form-data">
-          {% include 'partials/selector_archivos.html' %}
+          {% with archivos_prefijo='det_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}
           <button type="submit" class="btn btn-outline-primary btn-sm">Adjuntar a la tarea</button>
         </form>
         <hr class="my-4 text-muted">
@@ -62,7 +62,7 @@
               <p id="nota_efecto" class="small text-muted" aria-live="polite"></p>
               <label for="modal_nota_comentario" class="form-label">Comentario / motivo</label>
               <textarea name="comentario" id="modal_nota_comentario" class="form-control mb-3" rows="3" required placeholder="Describe el avance, problema, bloqueo, acuerdo u observación…"></textarea>
-              <div id="nota_selector_archivos">{% include 'partials/selector_archivos.html' %}</div>
+              <div id="nota_selector_archivos">{% with archivos_prefijo='nota_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}</div>
               <div id="nota_error" class="alert alert-danger" role="alert" hidden></div>
               <div class="text-end"><button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-comment-medical fa-fw" aria-hidden="true"></i> Guardar nota</button></div>
             </form>

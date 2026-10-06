@@ -7,40 +7,41 @@
       <form enctype="multipart/form-data" method="POST" action="{{ url_for('tareas.crear') }}">
         <input type="hidden" name="volver" value="{{ 'mis_pendientes' if request.endpoint == 'dashboard.mis_pendientes' else 'inicio' }}">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Título de la Tarea / Compromiso: *</label>
-            <input type="text" name="titulo" class="form-control" required placeholder="ej. Calibración de rodillos flexo">
+            <label for="nt_titulo" class="form-label small fw-bold">Título de la Tarea / Compromiso *</label>
+            <input type="text" name="titulo" class="form-control" required placeholder="ej. Calibración de rodillos flexo" id="nt_titulo">
           </div>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Detalles / Instrucciones Completas:</label>
-            <textarea name="descripcion" class="form-control" rows="3" placeholder="Especificaciones técnicas, entregables esperados..."></textarea>
+            <label for="nt_descripcion" class="form-label small fw-bold">Detalles / Instrucciones Completas</label>
+            <textarea name="descripcion" class="form-control" rows="3" placeholder="Especificaciones técnicas, entregables esperados..." id="nt_descripcion"></textarea>
           </div>
 
           <!-- Selección en Cascada: Pilar y Responsable -->
           <div class="row g-2 mb-3">
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Pilar Destino:</label>
-              <select name="pilar_id" id="selectPilarDestino" class="form-select" onchange="filtrarResponsablesPorPilar()">
+              <label for="selectPilarDestino" class="form-label small fw-bold">Pilar Destino</label>
+              <select name="pilar_id" id="selectPilarDestino" aria-describedby="nt_pilar_ayuda" class="form-select" onchange="filtrarResponsablesPorPilar()">
                 <option value="">Sin pilar asignado (General / Transversal)</option>
                 {% for p in pilares %}
                   <option value="{{ p.id }}">{{ p.nombre }}</option>
                 {% endfor %}
               </select>
-              <div class="text-muted" style="font-size: 0.72rem;">Opcional si es una tarea transversal.</div>
+              <div class="form-text" id="nt_pilar_ayuda">Opcional si es una tarea transversal.</div>
             </div>
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Responsable Asignado: *</label>
-              <select name="responsable_id" id="selectResponsableDestino" class="form-select" required>
+              <label for="selectResponsableDestino" class="form-label small fw-bold">Responsable Asignado *</label>
+              <select name="responsable_id" id="selectResponsableDestino" aria-describedby="nt_responsable_ayuda" class="form-select" required>
                 <option value="">Primero selecciona un pilar...</option>
               </select>
-              <div class="text-muted" style="font-size: 0.72rem;">Miembros del pilar y personal sin pilar asignado.</div>
+              <div class="form-text" id="nt_responsable_ayuda">Miembros del pilar y personal sin pilar asignado.</div>
             </div>
           </div>
 
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label small fw-bold">Prioridad: *</label>
-              <select name="prioridad" class="form-select">
+              <label for="nt_prioridad" class="form-label small fw-bold">Prioridad *</label>
+              <select name="prioridad" class="form-select" id="nt_prioridad">
                 <option value="P0_CRITICA">Crítica (Urgente / Paro)</option>
                 <option value="P1_ALTA">Alta</option>
                 <option value="P2_MEDIA" selected>Media</option>
@@ -48,20 +49,20 @@
               </select>
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Fecha Límite: *</label>
-              <input type="date" name="fecha_compromiso" class="form-control" required>
+              <label for="nt_fecha_compromiso" class="form-label small fw-bold">Fecha Límite *</label>
+              <input type="date" name="fecha_compromiso" class="form-control" required id="nt_fecha_compromiso">
             </div>
           </div>
 
           <!-- SECCIÓN: MÚLTIPLES PILARES DE APOYO (DINÁMICO) -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de Apoyo / Dependencias (Opcional):</label>
+              <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de Apoyo / Dependencias (Opcional):</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaApoyo()">
                 <i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Agregar Pilar de Apoyo
               </button>
             </div>
-            <div class="text-muted small mb-2" style="font-size: 0.75rem;">
+            <div class="form-text mb-2" id="nt_apoyos_ayuda">
               Puedes añadir múltiples departamentos de apoyo y opcionalmente designar a un responsable específico.
             </div>
 
@@ -70,7 +71,7 @@
             </div>
           </div>
           {% if current_user.puede('archivos.subir') %}
-          {% include 'partials/selector_archivos.html' %}
+          {% with archivos_prefijo='nt_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}
           {% endif %}
         </div>
         <div class="modal-footer">
@@ -100,7 +101,7 @@ function filtrarResponsablesPorPilar() {
 
 function agregarFilaApoyo() {
   document.getElementById('contenedorFilasApoyo').appendChild(
-    SelectoresTarea.filaApoyo(PILARES_SISTEMA, USUARIOS_SISTEMA));
+    SelectoresTarea.filaApoyo(PILARES_SISTEMA, USUARIOS_SISTEMA, {}, 'nt_apoyos_ayuda'));
 }
 
 document.addEventListener('DOMContentLoaded', () => {

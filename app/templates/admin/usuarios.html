@@ -132,28 +132,29 @@
       </div>
       <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Nombre Completo: *</label>
-            <input type="text" name="nombre_completo" class="form-control" required placeholder="ej. Mario Martínez">
+            <label for="nu_nombre_completo" class="form-label small fw-bold">Nombre Completo *</label>
+            <input type="text" name="nombre_completo" class="form-control" required placeholder="ej. Mario Martínez" id="nu_nombre_completo">
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label small fw-bold">Clave de Usuario: *</label>
-              <input type="text" name="username" class="form-control" required placeholder="ej. mmartinez">
+              <label for="nu_username" class="form-label small fw-bold">Clave de Usuario *</label>
+              <input type="text" name="username" class="form-control" required placeholder="ej. mmartinez" id="nu_username">
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Correo Electrónico: <span class="text-muted fw-normal">(Opcional)</span></label>
-              <input type="email" name="email" class="form-control" placeholder="correo@toplabel.com">
+              <label for="nu_email" class="form-label small fw-bold">Correo Electrónico <span class="text-muted fw-normal">(Opcional)</span></label>
+              <input type="email" name="email" class="form-control" placeholder="correo@toplabel.com" id="nu_email">
             </div>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label small fw-bold">Contraseña Inicial: *</label>
-              <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••">
+              <label for="nu_password" class="form-label small fw-bold">Contraseña Inicial *</label>
+              <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••" id="nu_password">
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Rol en Sistema: *</label>
-              <select name="rol_id" class="form-select" required>
+              <label for="nu_rol_id" class="form-label small fw-bold">Rol en Sistema *</label>
+              <select name="rol_id" class="form-select" required id="nu_rol_id">
                 {% for rol in roles %}{% if current_user.puede('usuarios.roles') or rol.codigo == 'COLABORADOR' %}
                 <option value="{{ rol.id }}" {% if rol.codigo == 'COLABORADOR' %}selected{% endif %}>{{ rol.nombre }}</option>
                 {% endif %}{% endfor %}
@@ -164,12 +165,12 @@
           <!-- SECCIÓN: ASIGNACIÓN DINÁMICA DE PILARES -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label small fw-bold text-dark mb-0">🏢 Pilares Asignados y Jerarquía:</label>
+              <div class="form-label small fw-bold text-dark mb-0">🏢 Pilares Asignados y Jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresNuevo')">
                 + Agregar otro pilar
               </button>
             </div>
-            <div class="text-muted small mb-2" style="font-size: 0.75rem;">
+            <div class="form-text mb-2" id="nu_pilares_ayuda">
               Selecciona el pilar y su rol en esa área. Puedes agregar más de un pilar si el usuario colabora en varios departamentos.
             </div>
 
@@ -177,7 +178,7 @@
               <!-- Primera fila por defecto -->
               <div class="row g-2 align-items-center p-2 bg-white rounded border fila-pilar-item">
                 <div class="col-sm-6">
-                  <select name="usuario_pilar_id[]" class="form-select form-select-sm">
+                  <select id="nu_pilar" aria-label="Pilar" aria-describedby="nu_pilares_ayuda" name="usuario_pilar_id[]" class="form-select form-select-sm">
                     <option value="">Seleccionar Pilar...</option>
                     {% for p in pilares %}
                       <option value="{{ p.id }}">{{ p.nombre }}</option>
@@ -185,7 +186,7 @@
                   </select>
                 </div>
                 <div class="col-sm-5">
-                  <select name="usuario_rol_pilar[]" class="form-select form-select-sm">
+                  <select id="nu_rol_pilar" aria-label="Rol en el pilar" aria-describedby="nu_pilares_ayuda" name="usuario_rol_pilar[]" class="form-select form-select-sm">
                     <option value="COLABORADOR">👤 Colaborador / Miembro</option>
                     <option value="LIDER">⭐ Líder de Pilar</option>
                   </select>
@@ -219,23 +220,24 @@
       </div>
       <form id="formEditarUsuario" method="POST">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Nombre Completo: *</label>
+            <label for="edit_nombre" class="form-label small fw-bold">Nombre Completo *</label>
             <input type="text" id="edit_nombre" name="nombre_completo" class="form-control" required>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label small fw-bold">Clave de Usuario: *</label>
+              <label for="edit_username" class="form-label small fw-bold">Clave de Usuario *</label>
               <input type="text" id="edit_username" name="username" class="form-control" required>
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Correo: <span class="text-muted fw-normal">(Opcional)</span></label>
+              <label for="edit_email" class="form-label small fw-bold">Correo <span class="text-muted fw-normal">(Opcional)</span></label>
               <input type="email" id="edit_email" name="email" class="form-control" placeholder="Sin correo">
             </div>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label small fw-bold">Rol en Sistema: *</label>
+              <label for="edit_rol" class="form-label small fw-bold">Rol en Sistema *</label>
               <select id="edit_rol" name="rol_id" class="form-select" required>
                 {% for rol in roles %}<option value="{{ rol.id }}">{{ rol.nombre }}</option>{% endfor %}
               </select>
@@ -251,7 +253,7 @@
           <!-- ASIGNACIÓN DINÁMICA DE PILARES (EDICIÓN) -->
           <div class="p-3 bg-light rounded border mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label small fw-bold text-dark mb-0">🏢 Pilares Asignados y Jerarquía:</label>
+              <div class="form-label small fw-bold text-dark mb-0">🏢 Pilares Asignados y Jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresEdit')">
                 + Agregar otro pilar
               </button>
@@ -279,9 +281,10 @@
       </div>
       <form id="formPassword" method="POST">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Nueva Contraseña: *</label>
-            <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••">
+            <label for="cp_password" class="form-label small fw-bold">Nueva Contraseña *</label>
+            <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••" id="cp_password">
           </div>
         </div>
         <div class="modal-footer">
@@ -295,6 +298,7 @@
 
 <script>
 // Opciones globales de pilares para generar filas dinámicas
+let secuenciaPilaresUsuario = 0;
 const OPCIONES_PILARES = [
   {% for p in pilares %}
     {id: {{ p.id|tojson }}, nombre: {{ p.nombre|tojson }}},
@@ -303,17 +307,18 @@ const OPCIONES_PILARES = [
 
 // Función universal para agregar una fila de pilar
 function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
+  const secuencia = ++secuenciaPilaresUsuario;
   const cont = document.getElementById(contenedorId);
   const div = document.createElement('div');
   div.className = 'row g-2 align-items-center p-2 bg-white rounded border fila-pilar-item';
 
   div.innerHTML = `
     <div class="col-sm-6">
-      <select name="usuario_pilar_id[]" class="form-select form-select-sm select-pilar-item" required>
+      <select id="usuario_pilar_${secuencia}" aria-label="Pilar" name="usuario_pilar_id[]" class="form-select form-select-sm select-pilar-item" required>
       </select>
     </div>
     <div class="col-sm-5">
-      <select name="usuario_rol_pilar[]" class="form-select form-select-sm select-rol-item">
+      <select id="usuario_rol_pilar_${secuencia}" aria-label="Rol en el pilar" name="usuario_rol_pilar[]" class="form-select form-select-sm select-rol-item">
         <option value="COLABORADOR" ${!esLider ? 'selected' : ''}>👤 Colaborador / Miembro</option>
         <option value="LIDER" ${esLider ? 'selected' : ''}>⭐ Líder de Pilar</option>
       </select>

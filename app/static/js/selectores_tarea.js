@@ -1,5 +1,6 @@
 // Mismas opciones, grupos y cascadas para crear y editar tareas.
 const SelectoresTarea = (() => {
+  let secuenciaApoyos = 0;
   const pertenece = (usuario, pilarId) => (usuario.pilares || []).some(p => String(p.id) === String(pilarId));
   const esLider = (usuario, pilarId) => (usuario.pilares || []).some(p => p.es_lider && (!pilarId || String(p.id) === String(pilarId)));
   const nombre = usuario => usuario.nombre_completo;
@@ -60,21 +61,23 @@ const SelectoresTarea = (() => {
     lista.forEach(p => select.add(new Option(p.nombre, p.id)));
     select.value = seleccionado ?? '';
   }
-  function filaApoyo(listaPilares, usuarios, apoyo = {}) {
+  function filaApoyo(listaPilares, usuarios, apoyo = {}, ayuda = null) {
+    const secuencia = ++secuenciaApoyos;
     const fila = document.createElement('div');
     fila.className = 'row g-2 align-items-center p-2 bg-white rounded border mx-0';
     fila.innerHTML = `
       <div class="col-sm-5">
-        <select name="apoyo_pilar_id[]" class="form-select form-select-sm select-apoyo-pilar" aria-label="Pilar de apoyo" required></select>
+        <select id="apoyo_pilar_${secuencia}" name="apoyo_pilar_id[]" class="form-select form-select-sm select-apoyo-pilar" aria-label="Pilar de apoyo" required></select>
       </div>
       <div class="col-sm-6">
-        <select name="apoyo_responsable_id[]" class="form-select form-select-sm select-apoyo-resp" aria-label="Responsable de apoyo"></select>
+        <select id="apoyo_responsable_${secuencia}" name="apoyo_responsable_id[]" class="form-select form-select-sm select-apoyo-resp" aria-label="Responsable de apoyo"></select>
       </div>
       <div class="col-sm-1 text-end">
         <button type="button" class="btn btn-outline-danger btn-sm p-1" title="Quitar apoyo" aria-label="Quitar apoyo">
           <i class="fa-solid fa-trash-can fa-fw" aria-hidden="true"></i>
         </button>
       </div>`;
+    if (ayuda) fila.querySelectorAll('select').forEach(select => select.setAttribute('aria-describedby', ayuda));
     const pilar = fila.querySelector('.select-apoyo-pilar');
     const responsable = fila.querySelector('.select-apoyo-resp');
     pilares(pilar, listaPilares, apoyo.pilar_id, 'Seleccionar Pilar de Apoyo...');

@@ -89,18 +89,19 @@
       </div>
       <form method="POST" action="{{ url_for('admin.crear_pilar') }}">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Nombre del Pilar: *</label>
-            <input type="text" name="nombre" class="form-control" required placeholder="ej. Mantenimiento">
+            <label for="np_nombre" class="form-label small fw-bold">Nombre del Pilar *</label>
+            <input type="text" name="nombre" class="form-control" required placeholder="ej. Mantenimiento" id="np_nombre">
           </div>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Descripción:</label>
-            <textarea name="descripcion" class="form-control" rows="2" placeholder="Objetivo o alcance del área"></textarea>
+            <label for="np_descripcion" class="form-label small fw-bold">Descripción</label>
+            <textarea name="descripcion" class="form-control" rows="2" placeholder="Objetivo o alcance del área" id="np_descripcion"></textarea>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-8">
-              <label class="form-label small fw-bold">Titular del pilar:</label>
-              <select name="responsable_id" class="form-select">
+              <label for="np_responsable_id" class="form-label small fw-bold">Titular del pilar</label>
+              <select name="responsable_id" class="form-select" id="np_responsable_id">
                 <option value="">Sin asignar</option>
                 {% for u in usuarios %}
                   <option value="{{ u.id }}">{{ u.nombre_completo }} (@{{ u.username }})</option>
@@ -108,8 +109,8 @@
               </select>
             </div>
             <div class="col-4">
-              <label class="form-label small fw-bold">Color:</label>
-              <input type="color" name="color_identificador" class="form-control form-control-color w-100" value="#2563eb">
+              <label for="np_color_identificador" class="form-label small fw-bold">Color</label>
+              <input type="color" name="color_identificador" class="form-control form-control-color w-100" value="#2563eb" id="np_color_identificador">
             </div>
           </div>
         </div>
@@ -131,17 +132,18 @@
       </div>
       <form id="formEditarPilar" method="POST">
         <div class="modal-body">
+          <p class="form-text mt-0">Los campos con * son obligatorios</p>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Nombre del Pilar:</label>
+            <label for="edit_pilar_nombre" class="form-label small fw-bold">Nombre del Pilar *</label>
             <input type="text" id="edit_pilar_nombre" name="nombre" class="form-control" required>
           </div>
           <div class="mb-3">
-            <label class="form-label small fw-bold">Descripción:</label>
+            <label for="edit_pilar_descripcion" class="form-label small fw-bold">Descripción</label>
             <textarea id="edit_pilar_descripcion" name="descripcion" class="form-control" rows="2"></textarea>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-8">
-              <label class="form-label small fw-bold">Titular del pilar:</label>
+              <label for="edit_pilar_responsable_id" class="form-label small fw-bold">Titular del pilar</label>
               <select id="edit_pilar_responsable_id" name="responsable_id" class="form-select">
                 <option value="">Sin asignar</option>
                 {% for u in usuarios %}
@@ -150,7 +152,7 @@
               </select>
             </div>
             <div class="col-4">
-              <label class="form-label small fw-bold">Color:</label>
+              <label for="edit_pilar_color" class="form-label small fw-bold">Color</label>
               <input type="color" id="edit_pilar_color" name="color_identificador" class="form-control form-control-color w-100">
             </div>
           </div>
