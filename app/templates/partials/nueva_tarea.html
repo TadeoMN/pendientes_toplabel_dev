@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalNuevaTarea" tabindex="-1" aria-labelledby="modalNuevaTareaTitulo">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h2 class="h5 modal-title fw-bold" id="modalNuevaTareaTitulo">Asignar nueva tarea</h2>
@@ -40,7 +40,7 @@
           </div>
 
           <div class="row g-2 mb-3">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nt_prioridad" class="form-label small fw-bold">Prioridad *</label>
               <select name="prioridad" class="form-select" id="nt_prioridad">
                 <option value="P0_CRITICA">Crítica (Urgente / Paro)</option>
@@ -49,7 +49,7 @@
                 <option value="P3_BAJA">Baja</option>
               </select>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nt_fecha_compromiso" class="form-label small fw-bold">Fecha límite *</label>
               <input type="date" name="fecha_compromiso" class="form-control" required id="nt_fecha_compromiso">
             </div>

@@ -125,7 +125,7 @@
      MODAL NUEVO USUARIO (CON FILAS DINÁMICAS DE PILARES)
 =========================================================== -->
 <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-labelledby="modalNuevoUsuarioTitulo">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h2 class="h5 modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar nuevo usuario</h2>
@@ -139,21 +139,21 @@
             <input type="text" name="nombre_completo" class="form-control" required placeholder="ej. Mario Martínez" id="nu_nombre_completo">
           </div>
           <div class="row g-2 mb-3">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nu_username" class="form-label small fw-bold">Clave de usuario *</label>
               <input type="text" name="username" class="form-control" required placeholder="ej. mmartinez" id="nu_username">
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nu_email" class="form-label small fw-bold">Correo electrónico <span class="text-muted fw-normal">(Opcional)</span></label>
               <input type="email" name="email" class="form-control" placeholder="correo@toplabel.com" id="nu_email">
             </div>
           </div>
           <div class="row g-2 mb-3">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nu_password" class="form-label small fw-bold">Contraseña inicial *</label>
               <input type="password" name="password" class="form-control" autocomplete="new-password" required placeholder="••••••••" id="nu_password">
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="nu_rol_id" class="form-label small fw-bold">Rol en el sistema *</label>
               <select name="rol_id" class="form-select" required id="nu_rol_id">
                 {% for rol in roles %}{% if current_user.puede('usuarios.roles') or rol.codigo == 'COLABORADOR' %}
@@ -178,7 +178,7 @@
             <div id="contenedorPilaresNuevo" class="d-flex flex-column gap-2">
               <!-- Primera fila por defecto -->
               <div class="row g-2 align-items-center p-2 bg-white rounded border fila-pilar-item">
-                <div class="col-sm-6">
+                <div class="col-12 col-sm-5">
                   <select id="nu_pilar" aria-label="Pilar" aria-describedby="nu_pilares_ayuda" name="usuario_pilar_id[]" class="form-select form-select-sm">
                     <option value="">Seleccionar pilar…</option>
                     {% for p in pilares %}
@@ -186,13 +186,13 @@
                     {% endfor %}
                   </select>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-10 col-sm-6">
                   <select id="nu_rol_pilar" aria-label="Rol en el pilar" aria-describedby="nu_pilares_ayuda" name="usuario_rol_pilar[]" class="form-select form-select-sm">
                     <option value="COLABORADOR">Colaborador</option>
                     <option value="LIDER">Líder de pilar</option>
                   </select>
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-2 col-sm-1 text-end">
                   <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
                     <i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i>
                   </button>
@@ -214,7 +214,7 @@
      MODAL EDITAR USUARIO (CON FILAS DINÁMICAS DE PILARES)
 =========================================================== -->
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioTitulo">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h2 class="h5 modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar usuario</h2>
@@ -228,23 +228,23 @@
             <input type="text" id="edit_nombre" name="nombre_completo" class="form-control" required>
           </div>
           <div class="row g-2 mb-3">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="edit_username" class="form-label small fw-bold">Clave de usuario *</label>
               <input type="text" id="edit_username" name="username" class="form-control" required>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="edit_email" class="form-label small fw-bold">Correo <span class="text-muted fw-normal">(Opcional)</span></label>
               <input type="email" id="edit_email" name="email" class="form-control" placeholder="Sin correo">
             </div>
           </div>
           <div class="row g-2 mb-3">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <label for="edit_rol" class="form-label small fw-bold">Rol en el sistema *</label>
               <select id="edit_rol" name="rol_id" class="form-select" required>
                 {% for rol in roles %}<option value="{{ rol.id }}">{{ rol.nombre }}</option>{% endfor %}
               </select>
             </div>
-            <div class="col-6 d-flex align-items-end">
+            <div class="col-12 col-sm-6 d-flex align-items-end">
               <div class="form-check form-switch mb-2">
                 <input class="form-check-input" type="checkbox" name="activo" value="1" id="edit_activo">
                 <label class="form-check-label small fw-bold" for="edit_activo">Usuario activo en el sistema</label>
@@ -316,17 +316,17 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
   div.className = 'row g-2 align-items-center p-2 bg-white rounded border fila-pilar-item';
 
   div.innerHTML = `
-    <div class="col-sm-6">
+    <div class="col-12 col-sm-5">
       <select id="usuario_pilar_${secuencia}" aria-label="Pilar" name="usuario_pilar_id[]" class="form-select form-select-sm select-pilar-item" required>
       </select>
     </div>
-    <div class="col-sm-5">
+    <div class="col-10 col-sm-6">
       <select id="usuario_rol_pilar_${secuencia}" aria-label="Rol en el pilar" name="usuario_rol_pilar[]" class="form-select form-select-sm select-rol-item">
         <option value="COLABORADOR" ${!esLider ? 'selected' : ''}>Colaborador</option>
         <option value="LIDER" ${esLider ? 'selected' : ''}>Líder de pilar</option>
       </select>
     </div>
-    <div class="col-sm-1 text-end">
+    <div class="col-2 col-sm-1 text-end">
       <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
         <i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i>
       </button>

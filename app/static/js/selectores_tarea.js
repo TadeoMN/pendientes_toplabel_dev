@@ -66,13 +66,13 @@ const SelectoresTarea = (() => {
     const fila = document.createElement('div');
     fila.className = 'row g-2 align-items-center p-2 bg-white rounded border mx-0';
     fila.innerHTML = `
-      <div class="col-sm-5">
+      <div class="col-10 col-sm-6">
         <select id="apoyo_pilar_${secuencia}" name="apoyo_pilar_id[]" class="form-select form-select-sm select-apoyo-pilar" aria-label="Pilar de apoyo" required></select>
       </div>
-      <div class="col-sm-6">
+      <div class="col-12 col-sm-5">
         <select id="apoyo_responsable_${secuencia}" name="apoyo_responsable_id[]" class="form-select form-select-sm select-apoyo-resp" aria-label="Responsable de apoyo"></select>
       </div>
-      <div class="col-sm-1 text-end">
+      <div class="col-2 col-sm-1 text-end">
         <button type="button" class="btn btn-outline-danger btn-sm p-1" title="Quitar apoyo" aria-label="Quitar apoyo">
           <i class="fa-solid fa-trash-can fa-fw" aria-hidden="true"></i>
         </button>
