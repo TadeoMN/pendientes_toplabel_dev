@@ -3,7 +3,7 @@
 {% block title %}Gestión de usuarios - Top Label{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
   <div>
     <h1 class="h3 fw-bold mb-1">Gestión de usuarios</h1>
     <p class="text-muted small mb-0">Gestiona accesos, contraseñas, pilares asignados y jerarquías operativas.</p>
@@ -18,17 +18,17 @@
   <!-- Filtros en una sola línea -->
   <div class="card shadow-sm border-0 mb-3">
     <div class="card-body py-2 px-3">
-      <div class="d-flex align-items-center gap-2 flex-wrap flex-md-nowrap" role="search">
-        <input type="text" aria-label="Buscar usuarios" placeholder="Buscar por clave, nombre o correo..." class="form-control form-control-sm tabla-buscador" style="max-width: 320px;">
+      <div class="tareas-filtros mb-0" role="search">
+        <input type="text" aria-label="Buscar usuarios" placeholder="Buscar por clave, nombre o correo..." class="form-control form-control-sm tabla-buscador">
 
-        <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="3" aria-label="Filtrar por rol">
+        <select class="form-select form-select-sm tabla-filtro-select" data-col="3" aria-label="Filtrar por rol">
           <option value="">Rol: Todos</option>
           {% for rol in roles %}
           <option value="{{ rol.nombre }}">{{ rol.nombre }}</option>
           {% endfor %}
         </select>
 
-        <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="5" aria-label="Filtrar por estado">
+        <select class="form-select form-select-sm tabla-filtro-select" data-col="5" aria-label="Filtrar por estado">
           <option value="">Estado: Todos</option>
           <option value="Activo">Activos</option>
           <option value="Inactivo">Inactivos</option>
@@ -165,7 +165,7 @@
 
           <!-- SECCIÓN: ASIGNACIÓN DINÁMICA DE PILARES -->
           <div class="p-3 bg-light rounded border mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2">
               <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares asignados y jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresNuevo')">
                 + Agregar otro pilar
@@ -254,7 +254,7 @@
 
           <!-- ASIGNACIÓN DINÁMICA DE PILARES (EDICIÓN) -->
           <div class="p-3 bg-light rounded border mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2">
               <div class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-building fa-fw" aria-hidden="true"></i> Pilares asignados y jerarquía:</div>
               <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaPilar('contenedorPilaresEdit')">
                 + Agregar otro pilar
