@@ -124,11 +124,12 @@
 <!-- ==========================================================
      MODAL NUEVO USUARIO (CON FILAS DINÁMICAS DE PILARES)
 =========================================================== -->
-<div class="modal fade" id="modalNuevoUsuario" tabindex="-1">
+<div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-labelledby="modalNuevoUsuarioTitulo">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Registrar Nuevo Usuario</h5>
+        <h5 class="modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar Nuevo Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
         <div class="modal-body">
@@ -212,11 +213,12 @@
 <!-- ==========================================================
      MODAL EDITAR USUARIO (CON FILAS DINÁMICAS DE PILARES)
 =========================================================== -->
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1">
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioTitulo">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Editar Usuario</h5>
+        <h5 class="modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formEditarUsuario" method="POST">
         <div class="modal-body">
@@ -273,11 +275,12 @@
 </div>
 
 <!-- Modal Password -->
-<div class="modal fade" id="modalPassword" tabindex="-1">
+<div class="modal fade" id="modalPassword" tabindex="-1" aria-labelledby="modalPassTitulo">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h5 class="modal-title fw-bold" id="modalPassTitulo">Cambiar Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formPassword" method="POST">
         <div class="modal-body">

@@ -59,7 +59,7 @@
 <!-- ==========================================================
      MODAL PARA VISUALIZAR LOS MIEMBROS DE UN PILAR
 =========================================================== -->
-<div class="modal fade" id="modalVerMiembros" tabindex="-1">
+<div class="modal fade" id="modalVerMiembros" tabindex="-1" aria-labelledby="miembros_pilar_titulo">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
@@ -67,6 +67,7 @@
           <span id="miembros_color_dot" class="p-2 rounded-circle d-inline-block"></span>
           <h5 class="modal-title fw-bold" id="miembros_pilar_titulo">Miembros del Pilar</h5>
         </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body p-3">
         <div class="list-group list-group-flush" id="lista_miembros_contenedor">
@@ -81,11 +82,12 @@
 </div>
 
 <!-- Modal Nuevo Pilar -->
-<div class="modal fade" id="modalNuevoPilar" tabindex="-1">
+<div class="modal fade" id="modalNuevoPilar" tabindex="-1" aria-labelledby="modalNuevoPilarTitulo">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Registrar Nuevo Pilar</h5>
+        <h5 class="modal-title fw-bold" id="modalNuevoPilarTitulo">Registrar Nuevo Pilar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_pilar') }}">
         <div class="modal-body">
@@ -124,11 +126,12 @@
 </div>
 
 <!-- Modal Editar Pilar -->
-<div class="modal fade" id="modalEditarPilar" tabindex="-1">
+<div class="modal fade" id="modalEditarPilar" tabindex="-1" aria-labelledby="modalEditarPilarTitulo">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Editar Pilar</h5>
+        <h5 class="modal-title fw-bold" id="modalEditarPilarTitulo">Editar Pilar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formEditarPilar" method="POST">
         <div class="modal-body">

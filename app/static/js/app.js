@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const origenModal = new WeakMap();
+  document.addEventListener('show.bs.modal', evento => {
+    origenModal.set(evento.target, evento.relatedTarget || document.activeElement);
+  });
+  document.addEventListener('hidden.bs.modal', evento => {
+    const origen = origenModal.get(evento.target);
+    if (origen?.isConnected && origen !== document.body) origen.focus();
+    origenModal.delete(evento.target);
+  });
   // 1. Inicializar todas las tablas del sistema automáticamente
   initMotorTablasDinamicas();
   // 2. Inicializar cambio de estatus
