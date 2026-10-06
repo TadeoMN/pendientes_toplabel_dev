@@ -275,3 +275,11 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
   .tareas-filtros > * { flex:1 1 100% !important; width:100% !important; min-height:44px; }
   .tareas-tab { padding:.75rem; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

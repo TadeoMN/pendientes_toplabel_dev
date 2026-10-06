@@ -39,7 +39,7 @@ async function abrirNotaTarea(id, opciones = {}) {
     return;
   }
   prepararNotaTarea(t, opciones.destino || null);
-  const enfocar = () => document.getElementById('seccion_nota').scrollIntoView({block:'start',behavior:'smooth'});
+  const enfocar = () => document.getElementById('seccion_nota').scrollIntoView({block:'start',behavior:comportamientoScroll()});
   const modal = document.getElementById('modalDetalleTarea');
   modal.addEventListener('shown.bs.modal', enfocar, {once:true});
   enfocar();

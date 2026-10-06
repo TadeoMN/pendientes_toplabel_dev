@@ -47,7 +47,7 @@ function iniciarVistasTareas(root, elegida) {
   const direccion = root.dataset.ambito === 'direccion';
   const tabs = Array.from(root.querySelectorAll('[data-pestana]'));
   const panelActivo = () => root.querySelector('[role=tabpanel]:not([hidden])');
-  const desplazarTabla = panel => panel.querySelector('.tareas-filtros').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+  const desplazarTabla = panel => panel.querySelector('.tareas-filtros').scrollIntoView({block:'start',behavior:comportamientoScroll()});
   function sincronizar(panel) {
     const pilar = panel.querySelector('[data-filtro=pilar_id]');
     panel.querySelectorAll('[data-pilar-filtro]').forEach(button=>{

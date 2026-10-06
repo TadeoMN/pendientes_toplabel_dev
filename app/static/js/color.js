@@ -14,3 +14,7 @@ function colorTextoSobre(hex) {
   const contrasteOscuro = (Math.max(fondo, textoOscuro) + 0.05) / (Math.min(fondo, textoOscuro) + 0.05);
   return blanco >= contrasteOscuro ? '#ffffff' : oscuro;
 }
+
+function comportamientoScroll() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
