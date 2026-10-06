@@ -283,7 +283,18 @@ async function verDetalleTarea(tareaId) {
       t.semaforo === 'AMARILLO' ? 'dot-amarillo' :
       t.semaforo === 'VERDE' ? 'dot-verde' : 'dot-azul'
     );
-    dot.title = t.semaforo;
+    const estadosSemaforo = {
+      ROJO: ['Vencida o bloqueada', 'exclamation'], AMARILLO: ['Por vencer', 'clock'],
+      AZUL: ['En tiempo', 'minus'], VERDE: ['Completada', 'check']
+    };
+    const [etiquetaSemaforo, iconoSemaforo] = estadosSemaforo[t.semaforo] || estadosSemaforo.AZUL;
+    dot.title = etiquetaSemaforo;
+    dot.setAttribute('role', 'img');
+    dot.setAttribute('aria-label', etiquetaSemaforo);
+    const iconoEstado = document.createElement('i');
+    iconoEstado.className = `fa-solid fa-${iconoSemaforo}`;
+    iconoEstado.setAttribute('aria-hidden', 'true');
+    dot.replaceChildren(iconoEstado);
 
     // Función auxiliar para contraste automático de texto (blanco o negro según fondo)
     function getContrast(hex) {

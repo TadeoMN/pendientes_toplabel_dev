@@ -80,9 +80,14 @@ th { background: #f1f5f9; color: var(--text-muted); font-weight: 600; }
 
 /* Icono del Semáforo (Círculo de color sin texto) */
 .semaphore-dot {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
+  display: inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  font-size:0.8rem;
+  color:#0f172a;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(0,0,0,0.15);
   vertical-align: middle;

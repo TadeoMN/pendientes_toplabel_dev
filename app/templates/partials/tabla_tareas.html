@@ -1,3 +1,5 @@
+{% set etiquetas_semaforo = {'ROJO':'Vencida o bloqueada','AMARILLO':'Por vencer','AZUL':'En tiempo','VERDE':'Completada'} %}
+{% set iconos_semaforo = {'ROJO':'exclamation','AMARILLO':'clock','AZUL':'minus','VERDE':'check'} %}
 <div class="card border-0 shadow-sm">
 <div class="table-scroll-container" role="region" tabindex="0" aria-label="Tabla de {{ nombre|lower }}; desplazamiento horizontal" data-drag-scroll>
 <table class="table table-hover align-middle mb-0 tabla-dinamica tareas-tabla">
@@ -9,7 +11,7 @@
     <th class="th-sortable" data-col="6"><button type="button" class="th-sort-btn">Fecha límite <span class="sort-icon" aria-hidden="true">⇅</span></button></th><th>Pilares de apoyo</th><th>Acciones</th>
   </tr></thead>
   <tbody>{% for t in tareas %}<tr data-tarea-detalle="{{ t.id }}" data-pilar="{{ t.pilar_id if t.pilar_id else 'sin_pilar' }}" data-semaforo="{{ t.semaforo }}">
-    <td class="text-center" data-val="{{ t.semaforo }}"><span class="semaphore-dot {{ {'ROJO':'dot-rojo','AMARILLO':'dot-amarillo','AZUL':'dot-azul','VERDE':'dot-verde'}[t.semaforo] }}" title="{{ t.semaforo }}" aria-label="{{ t.semaforo }}"></span></td>
+    <td class="text-center" data-val="{{ t.semaforo }}"><span class="semaphore-dot {{ {'ROJO':'dot-rojo','AMARILLO':'dot-amarillo','AZUL':'dot-azul','VERDE':'dot-verde'}[t.semaforo] }}" role="img" title="{{ etiquetas_semaforo[t.semaforo] }}" aria-label="{{ etiquetas_semaforo[t.semaforo] }}"><i class="fa-solid fa-{{ iconos_semaforo[t.semaforo] }}" aria-hidden="true"></i></span></td>
     <td class="fw-semibold text-nowrap">{{ t.codigo_folio or 'TL-' ~ t.id }}</td>
     <td><div class="fw-semibold">{{ t.pilar.nombre if t.pilar else 'Sin pilar' }}</div><div class="small text-muted">{{ t.responsable.nombre_completo }}</div></td>
     <td><div class="d-flex align-items-start gap-2"><button type="button" class="tarea-titulo" data-ver-tarea="{{ t.id }}">{{ t.titulo }}</button>
