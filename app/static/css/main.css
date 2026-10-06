@@ -81,6 +81,7 @@ small, .small, .form-text { font-size:max(.8rem, .875em); }
 .skip-link:focus { z-index:1031; }
 
 /* Tablas */
+.tareas-tabla td:nth-child(2), .tareas-tabla td:nth-child(7), .tabla-info-paginacion { font-variant-numeric:tabular-nums; }
 .semaphore-dot { display: inline-flex;
   align-items:center;
   justify-content:center;
