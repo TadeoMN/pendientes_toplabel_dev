@@ -72,7 +72,7 @@
               {{ current_user.nombres_roles }} {% if pilares_usuario %}({{ pilares_usuario | map(attribute='nombre') | join(', ') }}){% endif %}
             </div>
           </div>
-          <button type="button" data-logout-url="{{ url_for('auth.logout') }}" class="btn btn-outline-danger btn-sm logout-button">Cerrar Sesión</button>
+          <button type="button" data-logout-url="{{ url_for('auth.logout') }}" class="btn btn-outline-secondary btn-sm logout-button">Cerrar Sesión</button>
         </div>
         </div>
       </div>

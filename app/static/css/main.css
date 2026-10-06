@@ -75,7 +75,7 @@
 
 /* Navegación */
 .app-menu { --bs-offcanvas-width: min(320px, 88vw); }
-.logout-button { border-color: #dc3545; white-space: nowrap; }
+.logout-button { white-space: nowrap; }
 .skip-link:focus { z-index:1031; }
 
 /* Tablas */
