@@ -101,12 +101,14 @@
               {% endif %}
             </td>
             <td class="text-end">
-              <button class="btn btn-outline-primary btn-sm btn-accion me-1" onclick='abrirModalEditar({{ u.to_dict()|tojson }})' {% if not current_user.puede('usuarios.editar') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
+              <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-outline-primary btn-sm btn-accion" onclick='abrirModalEditar({{ u.to_dict()|tojson }})' {% if not current_user.puede('usuarios.editar') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
                 Editar
               </button>
               <button class="btn btn-outline-secondary btn-sm btn-accion" onclick='abrirModalPassword({{ u.id }}, {{ u.nombre_completo|tojson }})' {% if not current_user.puede('usuarios.password') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
                 Clave
               </button>
+              </div>
             </td>
           </tr>
           {% endfor %}
@@ -193,7 +195,7 @@
                   </select>
                 </div>
                 <div class="col-2 col-sm-1 text-end">
-                  <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
+                  <button type="button" class="btn btn-outline-danger btn-sm boton-quitar-fila" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
                     <i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -327,7 +329,7 @@ function agregarFilaPilar(contenedorId, pilarId = '', esLider = false) {
       </select>
     </div>
     <div class="col-2 col-sm-1 text-end">
-      <button type="button" class="btn btn-outline-danger btn-sm p-1" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
+      <button type="button" class="btn btn-outline-danger btn-sm boton-quitar-fila" onclick="this.closest('.fila-pilar-item').remove()" title="Quitar pilar" aria-label="Quitar pilar">
         <i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i>
       </button>
     </div>

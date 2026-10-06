@@ -244,6 +244,15 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 #modalDetalleTarea #det_dependencias_lista .badge { white-space: normal; text-align: left; }
 
 /* Media queries */
+@media (max-width: 575.98px) {
+  .btn-sm, .form-select-sm, .form-control-sm { min-height:44px; font-size:1rem; }
+  .btn-accion { height:auto !important; min-height:44px; font-size:1rem !important; }
+  .pagination .page-link { min-width:44px; min-height:44px; display:flex; align-items:center; justify-content:center; }
+  input, select, textarea { font-size:16px; }
+  .boton-quitar-fila { min-width:44px; }
+  .modal-footer { gap:.5rem; }
+}
+
 @media (max-width: 767.98px) {
   .table-scroll-container { max-height:none; overflow-y:visible; }
   .tareas-tabla { min-width:0; table-layout:auto; display:block; }

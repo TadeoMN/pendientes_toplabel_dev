@@ -73,7 +73,7 @@ const SelectoresTarea = (() => {
         <select id="apoyo_responsable_${secuencia}" name="apoyo_responsable_id[]" class="form-select form-select-sm select-apoyo-resp" aria-label="Responsable de apoyo"></select>
       </div>
       <div class="col-2 col-sm-1 text-end">
-        <button type="button" class="btn btn-outline-danger btn-sm p-1" title="Quitar apoyo" aria-label="Quitar apoyo">
+        <button type="button" class="btn btn-outline-danger btn-sm boton-quitar-fila" title="Quitar apoyo" aria-label="Quitar apoyo">
           <i class="fa-solid fa-trash-can fa-fw" aria-hidden="true"></i>
         </button>
       </div>`;
