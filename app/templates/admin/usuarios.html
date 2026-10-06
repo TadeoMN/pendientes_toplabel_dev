@@ -92,7 +92,7 @@
                 <span class="text-muted small">Sin pilares asignados</span>
               {% endif %}
             </td>
-            <td>
+            <td data-val="{{ 'Activo' if u.activo else 'Inactivo' }}">
               {% if u.activo %}
                 <span class="badge bg-success">Activo</span>
               {% else %}
