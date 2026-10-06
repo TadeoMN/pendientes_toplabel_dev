@@ -116,8 +116,14 @@
           {% for category, message in messages %}
             Swal.fire({
               icon: '{{ "success" if category == "success" else "error" if category == "danger" else "warning" if category == "warning" else "info" }}',
-              title: '{{ message }}',
-              timer: 3000,
+              titleText: {{ message|tojson }},
+              {% if category == 'danger' %}
+              showCloseButton: true,
+              closeButtonAriaLabel: 'Cerrar mensaje',
+              {% else %}
+              timer: 5000,
+              timerProgressBar: true,
+              {% endif %}
               showConfirmButton: false,
               toast: true,
               position: 'top-end'
