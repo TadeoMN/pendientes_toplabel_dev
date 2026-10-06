@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
+  <a href="#contenido" class="skip-link visually-hidden-focusable btn btn-primary position-absolute top-0 start-0 m-2">Saltar al contenido</a>
 
   {% if current_user.is_authenticated %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
@@ -37,27 +38,27 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           {% if current_user.puede('panel.ver') %}
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'dashboard.direccion' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.direccion') }}">
+            <a class="nav-link {% if request.endpoint == 'dashboard.direccion' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.direccion') }}" {% if request.endpoint == 'dashboard.direccion' %}aria-current="page"{% endif %}>
               Panel de Dirección
             </a>
           </li>
           {% endif %}
           {% if current_user.puede('usuarios.ver') or current_user.puede('pilares.ver') or current_user.puede('roles.gestionar') or current_user.puede('archivos.configurar') or current_user.puede('auditoria.ver') %}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle {% if 'admin.' in request.endpoint %}active fw-bold{% endif %}" href="#" role="button" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle {% if 'admin.' in request.endpoint %}active fw-bold{% endif %}" href="#" role="button" data-bs-toggle="dropdown" {% if 'admin.' in request.endpoint %}aria-current="page"{% endif %}>
               Administración
             </a>
             <ul class="dropdown-menu border-0 shadow-sm">
-              {% if current_user.puede('usuarios.ver') %}<li><a class="dropdown-item" href="{{ url_for('admin.usuarios') }}">Gestión de Usuarios</a></li>{% endif %}
-              {% if current_user.puede('pilares.ver') %}<li><a class="dropdown-item" href="{{ url_for('admin.pilares') }}">Gestión de Pilares</a></li>{% endif %}
-              {% if current_user.puede('roles.gestionar') %}<li><a class="dropdown-item" href="{{ url_for('roles.gestionar') }}">Roles y permisos</a></li>{% endif %}
-              {% if current_user.puede('auditoria.ver') %}<li><a class="dropdown-item" href="{{ url_for('roles.auditoria') }}">Auditoría</a></li>{% endif %}
-              {% if current_user.puede('archivos.configurar') %}<li><a class="dropdown-item" href="{{ url_for('archivos.configurar') }}">Límites de archivos</a></li>{% endif %}
+              {% if current_user.puede('usuarios.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.usuarios' %}active{% endif %}" {% if request.endpoint == 'admin.usuarios' %}aria-current="page"{% endif %} href="{{ url_for('admin.usuarios') }}">Gestión de Usuarios</a></li>{% endif %}
+              {% if current_user.puede('pilares.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'admin.pilares' %}active{% endif %}" {% if request.endpoint == 'admin.pilares' %}aria-current="page"{% endif %} href="{{ url_for('admin.pilares') }}">Gestión de Pilares</a></li>{% endif %}
+              {% if current_user.puede('roles.gestionar') %}<li><a class="dropdown-item {% if request.endpoint == 'roles.gestionar' %}active{% endif %}" {% if request.endpoint == 'roles.gestionar' %}aria-current="page"{% endif %} href="{{ url_for('roles.gestionar') }}">Roles y permisos</a></li>{% endif %}
+              {% if current_user.puede('auditoria.ver') %}<li><a class="dropdown-item {% if request.endpoint == 'roles.auditoria' %}active{% endif %}" {% if request.endpoint == 'roles.auditoria' %}aria-current="page"{% endif %} href="{{ url_for('roles.auditoria') }}">Auditoría</a></li>{% endif %}
+              {% if current_user.puede('archivos.configurar') %}<li><a class="dropdown-item {% if request.endpoint == 'archivos.configurar' %}active{% endif %}" {% if request.endpoint == 'archivos.configurar' %}aria-current="page"{% endif %} href="{{ url_for('archivos.configurar') }}">Límites de archivos</a></li>{% endif %}
             </ul>
           </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'dashboard.mis_pendientes' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.mis_pendientes') }}">
+            <a class="nav-link {% if request.endpoint == 'dashboard.mis_pendientes' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.mis_pendientes') }}" {% if request.endpoint == 'dashboard.mis_pendientes' %}aria-current="page"{% endif %}>
               Mis Pendientes
             </a>
           </li>
@@ -80,7 +81,7 @@
   {% endif %}
 
   <!-- Contenido principal que empuja al footer hacia abajo -->
-  <main class="container-fluid px-4 py-3 flex-grow-1">
+  <main id="contenido" tabindex="-1" class="container-fluid px-4 py-3 flex-grow-1">
     {% block content %}{% endblock %}
   </main>
 

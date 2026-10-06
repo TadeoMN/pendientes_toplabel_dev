@@ -509,3 +509,5 @@ table.tabla-dinamica tbody tr td {
 /* Ordenamiento accesible */
 .th-sort-btn { border:0; background:none; color:inherit; font:inherit; width:100%; text-align:left; padding:0; }
 .th-sort-btn:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+
+.skip-link:focus { z-index:1031; }
