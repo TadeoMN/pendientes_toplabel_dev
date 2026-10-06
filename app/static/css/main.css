@@ -33,6 +33,8 @@
   --swal2-cancel-button-background-color: #475569;
   --swal2-action-button-focus-box-shadow: 0 0 0 .25rem var(--bs-focus-ring-color);
 }
+small, .small, .form-text { font-size:max(.8rem, .875em); }
+.badge { --bs-badge-font-size:.8rem; }
 .btn-primary { --bs-btn-color: #000;
   --bs-btn-bg: #0284c7;
   --bs-btn-border-color: #0284c7;
@@ -109,7 +111,7 @@ th.th-sortable { cursor: pointer;
   white-space: nowrap; }
 th.th-sortable:hover { background-color: #e2e8f0 !important;
   color: #0f172a; }
-.sort-icon { font-size: 0.75rem;
+.sort-icon { font-size: 0.8rem;
   margin-left: 4px;
   opacity: 0.6; }
 .table-scroll-container { max-height: 520px;
@@ -129,7 +131,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 .dashboard-direccion .table-scroll-container { scrollbar-color: #94a3b8 #f1f5f9; }
 .vistas-tareas :is(button,.table-scroll-container):focus-visible { outline:2px solid #0284c7; outline-offset:-3px; }
 .tareas-tabla { min-width:1320px; width:100%; table-layout:fixed; }
-.tareas-tabla th { padding:.85rem .75rem; font-size:.72rem; text-transform:uppercase; color:#64748b; }
+.tareas-tabla th { padding:.85rem .75rem; font-size:0.8rem; text-transform:uppercase; color:#475569; }
 .tareas-tabla td { padding:.75rem; overflow-wrap:anywhere; }
 .tareas-tabla th:nth-child(1) { width:110px; white-space:nowrap; }
 .tareas-tabla th:nth-child(2) { width:125px; }
@@ -230,7 +232,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
     justify-content: center;
     height: 30px;
     padding: 0 .65rem;
-    font-size: .75rem;
+    font-size: 0.8rem;
     line-height: 1;
     max-width: 100%;
     overflow: hidden;
@@ -244,22 +246,22 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 @media (max-width: 991.98px) {
   .app-menu .offcanvas-body { display: flex; flex-direction: column; gap: 1.5rem; }
   .app-menu .navbar-nav { width: 100%; }
-  .app-menu .nav-link { padding: 0.75rem; border-radius: 6px; }
+  .app-menu .nav-link { padding: .75rem; border-radius: 6px; }
   .app-menu .nav-link.active { background: #e0f2fe; }
   .app-menu-user { margin-top: auto; flex-direction: column; align-items: stretch !important; border-top: 1px solid #475569; padding-top: 1rem; }
   .app-menu-user .text-end { text-align: left !important; }
-  .dashboard-kpi .card-body { padding: 0.75rem; }
+  .dashboard-kpi .card-body { padding: .75rem; }
   .dashboard-kpi small { display: none; }
-  .dashboard-kpi .text-uppercase { font-size: 0.72rem; }
+  .dashboard-kpi .text-uppercase { font-size: 0.8rem; }
   .dashboard-kpi .fs-2 { font-size: 1.6rem !important; }
   .dashboard-kpi .fs-4 { font-size: 1.1rem !important; }
 }
 @media (max-width: 575.98px) {
-  .navbar > .container-fluid { padding-inline: 0.75rem !important; }
+  .navbar > .container-fluid { padding-inline: .75rem !important; }
   .navbar-brand { margin-right: 0.5rem; font-size: 0.9rem; }
   .navbar-brand .fw-semibold { max-width: 6.5rem; white-space: normal; line-height: 1.2; }
   .navbar-toggler { padding: 0.3rem 0.5rem; }
-  .dashboard-direccion .card-footer { padding: 0.75rem; }
+  .dashboard-direccion .card-footer { padding: .75rem; }
 }
 @media (max-width: 575.98px) {
   #modalDetalleTarea .modal-body { padding: 1rem !important; }

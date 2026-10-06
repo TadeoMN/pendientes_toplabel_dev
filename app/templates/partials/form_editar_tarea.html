@@ -13,13 +13,13 @@
       </div>
       <div class="col-md-6">
         <label for="edit_pilar" class="form-label small fw-bold">Pilar destino</label>
-        <select id="edit_pilar" name="pilar_id" class="form-select"></select>
-        <div class="text-muted" style="font-size: 0.72rem;">Opcional si es una tarea transversal.</div>
+        <select id="edit_pilar" aria-describedby="edit_pilar_ayuda" name="pilar_id" class="form-select"></select>
+        <div class="form-text" id="edit_pilar_ayuda">Opcional si es una tarea transversal.</div>
       </div>
       <div class="col-md-6">
         <label for="edit_responsable" class="form-label small fw-bold">Responsable *</label>
-        <select id="edit_responsable" name="responsable_id" class="form-select" required></select>
-        <div class="text-muted" style="font-size: 0.72rem;">Miembros del pilar y personal sin pilar asignado.</div>
+        <select id="edit_responsable" aria-describedby="edit_responsable_ayuda" name="responsable_id" class="form-select" required></select>
+        <div class="form-text" id="edit_responsable_ayuda">Miembros del pilar y personal sin pilar asignado.</div>
       </div>
       <div class="col-sm-6">
         <label for="edit_prioridad" class="form-label small fw-bold">Prioridad</label>

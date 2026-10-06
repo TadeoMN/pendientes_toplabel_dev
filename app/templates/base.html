@@ -67,7 +67,7 @@
         <div class="d-flex align-items-center gap-3 app-menu-user">
           <div class="text-end text-dark">
             <div class="fw-bold small">{{ current_user.nombre_completo }}</div>
-            <div class="text-secondary" style="font-size: 0.75rem;">
+            <div class="text-secondary small">
               {% set pilares_usuario = current_user.pilares_info() %}
               {{ current_user.nombres_roles }} {% if pilares_usuario %}({{ pilares_usuario | map(attribute='nombre') | join(', ') }}){% endif %}
             </div>
