@@ -16,12 +16,12 @@
         <form method="POST" action="{{ url_for('auth.login') }}">
           <div class="mb-3">
             <label for="username" class="form-label small fw-bold">Usuario o Correo:</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="usuario o correo" required autofocus>
+            <input type="text" id="username" name="username" class="form-control" placeholder="usuario o correo" autocomplete="username" required autofocus>
           </div>
 
           <div class="mb-4">
             <label for="password" class="form-label small fw-bold">Contraseña:</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
           </div>
 
           <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Ingresar al Panel</button>
