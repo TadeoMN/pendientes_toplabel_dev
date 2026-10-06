@@ -19,7 +19,7 @@
   <a href="#contenido" class="skip-link visually-hidden-focusable btn btn-primary position-absolute top-0 start-0 m-2">Saltar al contenido</a>
 
   {% if current_user.is_authenticated %}
-  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top border-bottom px-lg-4 py-2">
     <div class="container-fluid px-4">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('dashboard.index') }}">
         <img src="{{ url_for('static', filename='images/TOPLABEL.png') }}" alt="Top Label" height="30" class="d-inline-block align-text-top">
