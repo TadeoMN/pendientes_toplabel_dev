@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <div>
-    <h3 class="fw-bold mb-1">Administración de Usuarios</h3>
+    <h1 class="h3 fw-bold mb-1">Gestión de usuarios</h1>
     <p class="text-muted small mb-0">Gestiona accesos, contraseñas, pilares asignados y jerarquías operativas.</p>
   </div>
   <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario" {% if not current_user.puede('usuarios.crear') %}disabled{% endif %}>
@@ -128,7 +128,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar Nuevo Usuario</h5>
+        <h2 class="h5 modal-title fw-bold" id="modalNuevoUsuarioTitulo">Registrar Nuevo Usuario</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
@@ -217,7 +217,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar Usuario</h5>
+        <h2 class="h5 modal-title fw-bold" id="modalEditarUsuarioTitulo">Editar Usuario</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formEditarUsuario" method="POST">
@@ -279,7 +279,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalPassTitulo">Cambiar Contraseña</h5>
+        <h2 class="h5 modal-title fw-bold" id="modalPassTitulo">Cambiar Contraseña</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formPassword" method="POST">

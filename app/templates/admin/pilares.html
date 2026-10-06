@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
   <div>
-    <h3 class="fw-bold mb-1">Pilares de la Organización</h3>
+    <h1 class="h3 fw-bold mb-1">Pilares de la organización</h1>
     <p class="text-muted small mb-0">Administra las áreas operativas de Top Label, a sus líderes y colaboradores.</p>
   </div>
   <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoPilar">
@@ -19,7 +19,7 @@
     <div class="card shadow-sm border-0 h-100 border-top border-4" style="border-top-color: {{ p.color_identificador }} !important;">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start mb-2">
-          <h5 class="fw-bold mb-0">{{ p.nombre }}</h5>
+          <h2 class="h5 fw-bold mb-0">{{ p.nombre }}</h2>
           <span class="badge rounded-pill" style="background-color: {{ p.color_identificador }}; color: #fff;">
             {{ p.tareas|length }} pendientes
           </span>
@@ -65,7 +65,7 @@
       <div class="modal-header">
         <div class="d-flex align-items-center gap-2">
           <span id="miembros_color_dot" class="p-2 rounded-circle d-inline-block"></span>
-          <h5 class="modal-title fw-bold" id="miembros_pilar_titulo">Miembros del Pilar</h5>
+          <h2 class="h5 modal-title fw-bold" id="miembros_pilar_titulo">Miembros del Pilar</h2>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
@@ -86,7 +86,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalNuevoPilarTitulo">Registrar Nuevo Pilar</h5>
+        <h2 class="h5 modal-title fw-bold" id="modalNuevoPilarTitulo">Registrar Nuevo Pilar</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_pilar') }}">
@@ -130,7 +130,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalEditarPilarTitulo">Editar Pilar</h5>
+        <h2 class="h5 modal-title fw-bold" id="modalEditarPilarTitulo">Editar Pilar</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form id="formEditarPilar" method="POST">

@@ -10,7 +10,7 @@
             <span id="det_prioridad" class="badge"></span>
             <span id="det_estatus" class="badge bg-secondary"></span>
           </div>
-          <h5 class="modal-title fw-bold text-dark" id="det_titulo"></h5>
+          <h2 class="h5 modal-title fw-bold text-dark" id="det_titulo"></h2>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
@@ -37,12 +37,12 @@
           </div>
 
           <div class="mb-4">
-            <h6 class="fw-bold text-uppercase small text-muted mb-2"><i class="fa-solid fa-clipboard-list fa-fw" aria-hidden="true"></i> Instrucciones Completas:</h6>
+            <h3 class="h6 fw-bold text-uppercase small text-muted mb-2"><i class="fa-solid fa-clipboard-list fa-fw" aria-hidden="true"></i> Instrucciones Completas:</h3>
             <div class="p-3 border rounded bg-white" id="det_descripcion" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.92rem;"></div>
           </div>
         </div>
 
-        <section class="my-3"><h6>Archivos de la tarea</h6><div id="det_adjuntos"></div></section>
+        <section class="my-3"><h3 class="h6">Archivos de la tarea</h3><div id="det_adjuntos"></div></section>
         <form id="formAdjuntosTarea" enctype="multipart/form-data">
           {% with archivos_prefijo='det_archivos' %}{% include 'partials/selector_archivos.html' %}{% endwith %}
           <button type="submit" class="btn btn-outline-primary btn-sm">Adjuntar a la tarea</button>
@@ -51,7 +51,7 @@
 
         <section id="seccion_nota" class="card bg-light border-0 mb-4">
           <div class="card-body">
-            <h6 id="nota_titulo" class="fw-bold">Agregar nota</h6>
+            <h3 id="nota_titulo" class="h6 fw-bold">Agregar nota</h3>
             <form id="formNotaDirecta" enctype="multipart/form-data" onsubmit="enviarNotaModal(event)">
               <input type="hidden" id="modal_nota_tarea_id">
               <div id="nota_tipo_grupo" class="mb-2"><label for="modal_nota_tipo" class="form-label">Tipo de nota</label>
@@ -72,7 +72,7 @@
 
         <div class="mb-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="fw-bold text-uppercase small text-muted mb-0"><i class="fa-solid fa-comments fa-fw" aria-hidden="true"></i> Historial de Seguimiento (Bitácora):</h6>
+            <h3 class="h6 fw-bold text-uppercase small text-muted mb-0"><i class="fa-solid fa-comments fa-fw" aria-hidden="true"></i> Historial de Seguimiento (Bitácora):</h3>
             <span class="badge bg-secondary-subtle text-secondary" id="det_conteo_notas">0 notas</span>
           </div>
           <div id="det_lista_bitacora" class="d-flex flex-column gap-2"></div>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Auditoría del sistema</h2>
+<h1 class="h3">Auditoría del sistema</h1>
 <div class="table-responsive"><table class="table table-striped">
 <thead><tr><th>Fecha UTC</th><th>Usuario (ID)</th><th>Acción</th><th>Detalle</th></tr></thead>
 <tbody>{% for r in registros.items %}<tr><td>{{ r.fecha }}</td><td>{{ r.usuario_id or 'Sistema' }}</td><td>{{ r.accion }}</td><td style="white-space:pre-wrap;overflow-wrap:anywhere">{{ r.detalle }}</td></tr>{% endfor %}</tbody>
