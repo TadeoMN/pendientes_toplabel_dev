@@ -23,8 +23,9 @@
 
         <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="3">
           <option value="">Rol: Todos</option>
-          <option value="Dirección">Dirección</option>
-          <option value="Colaborador">Colaborador</option>
+          {% for rol in roles %}
+          <option value="{{ rol.nombre }}">{{ rol.nombre }}</option>
+          {% endfor %}
         </select>
 
         <select class="form-select form-select-sm w-auto tabla-filtro-select" data-col="5">
