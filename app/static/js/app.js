@@ -405,7 +405,7 @@ function renderizarBitacoraModal(bitacora, permisos = {}) {
       : b.tipo === 'OBSERVACION'
       ? '<span class="badge bg-light text-dark border">Observación</span>'
       : ['NOTA_REUNION','ACUERDO'].includes(b.tipo)
-      ? '<span class="badge bg-primary-subtle text-primary border border-primary"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Acuerdo</span>'
+      ? '<span class="badge bg-primary-subtle text-primary-emphasis border border-primary"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Acuerdo</span>'
       : '<span class="badge bg-success-subtle text-success border border-success"><i class="fa-solid fa-chart-line fa-fw" aria-hidden="true"></i> Avance</span>';
 
     item.innerHTML = `
