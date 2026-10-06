@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "d14c3c1b-0f5a-411a-abda-04301844900f",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+  "output": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+  "specification": {
+    "sha256": "ccd974a447371c847f774980ac8b41e732f5bc4b34c06a6a1114a31a391263c2",
+    "bytes": 7470
+  },
+  "artifact": {
+    "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+    "bytes": 766263
+  }
+}

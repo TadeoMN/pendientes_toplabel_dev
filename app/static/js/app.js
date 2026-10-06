@@ -1,4 +1,3 @@
-// Motor Universal de Tablas Dinámicas, Paginación, Ordenamiento e Implementación de SweetAlert2
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Inicializar todas las tablas del sistema automáticamente
   initMotorTablasDinamicas();
@@ -13,6 +12,8 @@ function initMotorTablasDinamicas() {
   const modulos = document.querySelectorAll('.contenedor-tabla-modulo');
 
   modulos.forEach(modulo => {
+    if (modulo.dataset.inicializado) return;
+    modulo.dataset.inicializado = 'true';
     const table = modulo.querySelector('table.tabla-dinamica');
     if (!table) return;
 
@@ -21,7 +22,7 @@ function initMotorTablasDinamicas() {
 
     // Fila especial de sin resultados (aislada por completo de los datos)
     const noResultRow = tbody.querySelector('.fila-sin-resultados');
-    
+
     // Lista fija de filas de datos reales
     const originalRows = Array.from(tbody.querySelectorAll('tr:not(.fila-sin-resultados)'));
     let currentRows = [...originalRows];
@@ -33,6 +34,24 @@ function initMotorTablasDinamicas() {
     const infoEl = modulo.querySelector('.tabla-info-paginacion');
     const controlsEl = modulo.querySelector('.tabla-controles-paginacion');
 
+    const claveEstado = modulo.dataset.estadoClave;
+    if (claveEstado) {
+      try {
+        const estado = JSON.parse(sessionStorage.getItem(claveEstado) || '{}');
+        if (searchInput) searchInput.value = estado.q || '';
+        selectFilters.forEach((sel,i) => { sel.value = estado.filtros?.[i] || ''; });
+      } catch (_) {}
+    }
+    // Los enlaces anteriores del panel siguen funcionando, sin recortar datos en el servidor.
+    const raizVistas = modulo.closest('[data-ambito="direccion"]');
+    if (raizVistas && modulo.id === `panel-${raizVistas.dataset.inicial}`) {
+      const params = new URLSearchParams(location.search);
+      if (params.has('q') && searchInput) searchInput.value = params.get('q');
+      selectFilters.forEach(sel => { if (params.has(sel.dataset.filtro)) sel.value = params.get(sel.dataset.filtro); });
+    }
+    function guardarFiltros() {
+      if (claveEstado) try { sessionStorage.setItem(claveEstado, JSON.stringify({q:searchInput?.value || '', filtros:Array.from(selectFilters,s=>s.value)})); } catch (_) {}
+    }
     const pageSize = 20;
     let currentPage = 1;
     let currentSortCol = -1;
@@ -122,11 +141,12 @@ function initMotorTablasDinamicas() {
     }
 
     function filtrar() {
+      guardarFiltros();
       const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
       currentRows = originalRows.filter(row => {
         // 1. Comprobar texto global de la fila con el input
-        const textoFila = row.textContent.toLowerCase();
+        const textoFila = Array.from(row.cells, cell => cell.querySelector('select') ? cell.querySelector('select').selectedOptions[0]?.textContent || '' : cell.textContent).join(' ').toLowerCase();
         if (q && !textoFila.includes(q)) return false;
 
         // 2. Comprobar selectores específicos vinculados por data-col
@@ -134,6 +154,10 @@ function initMotorTablasDinamicas() {
           const filterVal = sel.value.toLowerCase().trim();
           if (!filterVal) continue;
 
+          if (sel.dataset.rowField) {
+            if ((row.dataset[sel.dataset.rowField] || '').toLowerCase() !== filterVal) return false;
+            continue;
+          }
           const colIdx = sel.getAttribute('data-col');
           if (colIdx !== null) {
             const cell = row.children[parseInt(colIdx)];
@@ -146,7 +170,7 @@ function initMotorTablasDinamicas() {
               cell.textContent
             ).toLowerCase().trim();
 
-            if (!cellVal.includes(filterVal)) return false;
+            if (cell.hasAttribute('data-val') ? cellVal !== filterVal : !cellVal.includes(filterVal)) return false;
           }
         }
 
@@ -154,7 +178,9 @@ function initMotorTablasDinamicas() {
       });
 
       currentPage = 1;
+      ordenarFilas();
       render();
+      modulo.dispatchEvent(new CustomEvent('tabla:filtrada', {bubbles:true}));
     }
 
     // Eventos de Filtrado en Vivo
@@ -166,10 +192,24 @@ function initMotorTablasDinamicas() {
       clearBtn.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
         selectFilters.forEach(sel => sel.value = '');
-        currentRows = [...originalRows];
-        currentPage = 1;
-        render();
+        filtrar();
       });
+    }
+
+    function ordenarFilas() {
+      if (currentSortCol < 0) return;
+        currentRows.sort((a, b) => {
+          const cellA = a.children[currentSortCol];
+          const cellB = b.children[currentSortCol];
+          if (!cellA || !cellB) return 0;
+          const valA = (cellA.getAttribute('data-timestamp') || cellA.getAttribute('data-val') || cellA.textContent).trim().toLowerCase();
+          const valB = (cellB.getAttribute('data-timestamp') || cellB.getAttribute('data-val') || cellB.textContent).trim().toLowerCase();
+          return sortAsc
+            ? valA.localeCompare(valB, undefined, { numeric: true })
+            : valB.localeCompare(valA, undefined, { numeric: true });
+        });
+
+        currentRows.forEach(r => tbody.appendChild(r));
     }
 
     // Ordenamiento por Encabezados
@@ -191,25 +231,14 @@ function initMotorTablasDinamicas() {
         const icon = th.querySelector('.sort-icon');
         if (icon) icon.textContent = sortAsc ? '▲' : '▼';
 
-        currentRows.sort((a, b) => {
-          const cellA = a.children[col];
-          const cellB = b.children[col];
-          if (!cellA || !cellB) return 0;
-          const valA = (cellA.getAttribute('data-timestamp') || cellA.getAttribute('data-val') || cellA.textContent).trim().toLowerCase();
-          const valB = (cellB.getAttribute('data-timestamp') || cellB.getAttribute('data-val') || cellB.textContent).trim().toLowerCase();
-          return sortAsc 
-            ? valA.localeCompare(valB, undefined, { numeric: true }) 
-            : valB.localeCompare(valA, undefined, { numeric: true });
-        });
-
-        currentRows.forEach(r => tbody.appendChild(r));
+        ordenarFilas();
         currentPage = 1;
         render();
       });
     });
 
-    // Render Inicial
-    render();
+    // Restaurar también el resultado de los filtros de esta pestaña.
+    filtrar();
   });
 }
 
@@ -218,66 +247,14 @@ function initMotorTablasDinamicas() {
 // ==========================================================
 function initCambioEstatus() {
   document.querySelectorAll('.task-status-select').forEach(select => {
+    if (select.dataset.inicializado) return;
+    select.dataset.inicializado = 'true';
+    select.dataset.anterior = select.value;
     select.addEventListener('change', async () => {
-      const tareaId = select.getAttribute('data-tarea-id');
-      const nuevoEstatus = select.value;
-
-      let notaBloqueo = "";
-      if (nuevoEstatus === 'BLOQUEADO') {
-        const { value: texto, isConfirmed } = await Swal.fire({
-          title: '¿Cuál es el motivo del bloqueo?',
-          input: 'textarea',
-          inputPlaceholder: 'Describe el material, persona o área que te detiene...',
-          showCancelButton: true,
-          confirmButtonText: 'Reportar Bloqueo',
-          cancelButtonText: 'Cancelar',
-          confirmButtonColor: '#dc3545',
-          inputValidator: (val) => {
-            if (!val) return 'Debes ingresar una descripción del bloqueo.';
-          }
-        });
-
-        if (!isConfirmed) {
-          location.reload();
-          return;
-        }
-        notaBloqueo = texto;
-      }
-
-      try {
-        const res = await fetch(`/tareas/${tareaId}/actualizar-estatus`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: JSON.stringify({ estatus: nuevoEstatus, nota: notaBloqueo })
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          const dot = document.querySelector(`#semaforo-${tareaId}`);
-          if (dot && data.semaforo) {
-            dot.className = 'semaphore-dot ' + (
-              data.semaforo === 'ROJO' ? 'dot-rojo' :
-              data.semaforo === 'AMARILLO' ? 'dot-amarillo' :
-              data.semaforo === 'VERDE' ? 'dot-verde' : 'dot-azul'
-            );
-            dot.title = data.semaforo;
-          }
-
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: `Estatus actualizado a ${nuevoEstatus}`,
-            showConfirmButton: false,
-            timer: 2000
-          });
-        }
-      } catch (err) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al conectar con el servidor.' });
-      }
+      const destino = select.value;
+      select.value = select.dataset.anterior;
+      if (destino === select.value) return;
+      await abrirNotaTarea(Number(select.dataset.tareaId), {destino, anterior:select.value});
     });
   });
 }
@@ -294,7 +271,7 @@ async function verDetalleTarea(tareaId) {
     // 1. Cargar Encabezado y Folio
     document.getElementById('det_folio').textContent = t.folio;
     document.getElementById('det_titulo').textContent = t.titulo;
-    
+
     // Semáforo circular
     const dot = document.getElementById('det_semaforo_dot');
     dot.className = 'semaphore-dot ' + (
@@ -351,7 +328,7 @@ async function verDetalleTarea(tareaId) {
         badge.className = 'badge p-2 border';
         badge.style.backgroundColor = d.pilar_color;
         badge.style.color = getContrast(d.pilar_color); // Contraste automático blanco/negro
-        badge.innerHTML = `<strong>${d.pilar_nombre}</strong>: ${d.responsable_nombre}`;
+        badge.textContent = `${d.pilar_nombre}: ${d.responsable_nombre}`;
         contDeps.appendChild(badge);
       });
     }
@@ -360,7 +337,12 @@ async function verDetalleTarea(tareaId) {
     document.getElementById('det_descripcion').textContent = t.descripcion;
 
     // 5. Historial de Notas
-    renderizarBitacoraModal(t.bitacora);
+    mostrarAdjuntos(document.getElementById('det_adjuntos'), t.adjuntos || [], t);
+    renderizarBitacoraModal(t.bitacora, t);
+    prepararNotaTarea(t);
+    document.getElementById('formAdjuntosTarea').hidden = !t.puede_subir;
+    document.getElementById('nota_selector_archivos').hidden = !t.puede_subir;
+    prepararEdicionTarea(t);
 
     // 6. Preparar Formulario de Nueva Nota
     document.getElementById('modal_nota_tarea_id').value = t.id;
@@ -370,6 +352,7 @@ async function verDetalleTarea(tareaId) {
     const modalEl = document.getElementById('modalDetalleTarea');
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
     modal.show();
+    return t;
 
   } catch (err) {
     console.error(err);
@@ -377,10 +360,10 @@ async function verDetalleTarea(tareaId) {
   }
 }
 
-function renderizarBitacoraModal(bitacora) {
+function renderizarBitacoraModal(bitacora, permisos = {}) {
   const contenedor = document.getElementById('det_lista_bitacora');
   const badgeConteo = document.getElementById('det_conteo_notas');
-  badgeConteo.textContent = `${bitacora.length} nota(s)`;
+  badgeConteo.textContent = `${bitacora.length} registro(s)`;
   contenedor.innerHTML = '';
 
   if (bitacora.length === 0) {
@@ -396,63 +379,43 @@ function renderizarBitacoraModal(bitacora) {
     const item = document.createElement('div');
     item.className = 'p-3 border rounded bg-white shadow-xs';
 
-    const badgeTipo = b.tipo === 'BLOQUEO' 
-      ? '<span class="badge bg-danger-subtle text-danger border border-danger">⚠️ Bloqueo Reportado</span>'
-      : b.tipo === 'NOTA_REUNION'
-      ? '<span class="badge bg-primary-subtle text-primary border border-primary">Acuerdo de Reunión</span>'
-      : '<span class="badge bg-success-subtle text-success border border-success">Avance Operativo</span>';
+    const badgeTipo = b.tipo === 'MODIFICACION'
+      ? '<span class="badge bg-info-subtle text-dark border"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Modificación de tarea</span>'
+      : b.tipo === 'CAMBIO_ESTATUS'
+      ? '<span class="badge bg-secondary-subtle text-dark border"><i class="fa-solid fa-arrows-rotate fa-fw" aria-hidden="true"></i> Cambio de estatus</span>'
+      : b.tipo === 'BLOQUEO'
+      ? '<span class="badge bg-danger-subtle text-danger border border-danger"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i> Bloqueo</span>'
+      : b.tipo === 'PROBLEMA'
+      ? '<span class="badge bg-warning-subtle text-dark border">Problema</span>'
+      : b.tipo === 'OBSERVACION'
+      ? '<span class="badge bg-light text-dark border">Observación</span>'
+      : ['NOTA_REUNION','ACUERDO'].includes(b.tipo)
+      ? '<span class="badge bg-primary-subtle text-primary border border-primary"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Acuerdo</span>'
+      : '<span class="badge bg-success-subtle text-success border border-success"><i class="fa-solid fa-chart-line fa-fw" aria-hidden="true"></i> Avance</span>';
 
     item.innerHTML = `
-      <div class="d-flex justify-content-between align-items-center mb-1">
-        <div class="d-flex align-items-center gap-2">
-          <strong>${b.autor}</strong>
+      <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-1">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <strong class="bitacora-autor"></strong>
           ${badgeTipo}
         </div>
-        <small class="text-muted">${b.fecha}</small>
+        <small class="text-muted bitacora-fecha"></small>
       </div>
-      <div class="text-dark small" style="white-space: pre-wrap;">${b.comentario}</div>
+      <div class="text-dark small bitacora-comentario" style="white-space: pre-wrap; overflow-wrap: anywhere;"></div>
     `;
+    item.querySelector('.bitacora-autor').textContent = b.autor;
+    item.querySelector('.bitacora-fecha').textContent = b.fecha;
+    const efecto = document.createElement('div'); efecto.className = 'small fw-semibold text-muted mb-2';
+    if (b.transicion) efecto.textContent = b.transicion.anterior === b.transicion.nuevo ? 'Sin cambio de estatus' : `${nombreEstatus(b.transicion.anterior)} → ${nombreEstatus(b.transicion.nuevo)}`;
+    else if (b.tipo === 'BLOQUEO') efecto.textContent = 'Registro histórico · transición no registrada';
+    item.querySelector('.bitacora-comentario').before(efecto);
+    item.querySelector('.bitacora-comentario').textContent = b.comentario;
+    if (b.adjuntos?.length) {
+      const archivos = document.createElement('div');
+      archivos.className = 'mt-2';
+      mostrarAdjuntos(archivos, b.adjuntos, permisos);
+      item.appendChild(archivos);
+    }
     contenedor.appendChild(item);
   });
-}
-
-async function enviarNotaModal(e) {
-  e.preventDefault();
-  const tareaId = document.getElementById('modal_nota_tarea_id').value;
-  const tipo = document.getElementById('modal_nota_tipo').value;
-  const comentario = document.getElementById('modal_nota_comentario').value.trim();
-
-  if (!comentario) return;
-
-  try {
-    const res = await fetch(`/tareas/${tareaId}/agregar-nota`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      body: JSON.stringify({ tipo, comentario })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      const resDetalle = await fetch(`/tareas/${tareaId}/detalle`);
-      const t = await resDetalle.json();
-      renderizarBitacoraModal(t.bitacora);
-      document.getElementById('modal_nota_comentario').value = '';
-
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: 'Nota agregada al historial',
-        showConfirmButton: false,
-        timer: 2000
-      });
-    } else {
-      Swal.fire({ icon: 'error', title: 'Error', text: data.message });
-    }
-  } catch (err) {
-    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar la nota.' });
-  }
 }

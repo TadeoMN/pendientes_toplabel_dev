@@ -1,6 +1,0 @@
-{
-  "backup_failure_no_schema_change": true,
-  "partial_ddl_failure_reported": true,
-  "retry_completed_remaining_steps": true,
-  "only_synthetic_database": true
-}

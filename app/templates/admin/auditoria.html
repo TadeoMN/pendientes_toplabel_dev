@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Auditoría del sistema</h2>
+<div class="table-responsive"><table class="table table-striped">
+<thead><tr><th>Fecha UTC</th><th>Usuario (ID)</th><th>Acción</th><th>Detalle</th></tr></thead>
+<tbody>{% for r in registros.items %}<tr><td>{{ r.fecha }}</td><td>{{ r.usuario_id or 'Sistema' }}</td><td>{{ r.accion }}</td><td style="white-space:pre-wrap;overflow-wrap:anywhere">{{ r.detalle }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% if registros.has_prev %}<a class="btn btn-outline-primary" href="{{ url_for('roles.auditoria', pagina=registros.prev_num) }}">Anterior</a>{% endif %}
+{% if registros.has_next %}<a class="btn btn-outline-primary" href="{{ url_for('roles.auditoria', pagina=registros.next_num) }}">Siguiente</a>{% endif %}
+{% endblock %}

@@ -1,0 +1,114 @@
+<div class="modal fade" id="modalNuevaTarea" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Asignar Nueva Tarea</h5>
+      </div>
+      <form enctype="multipart/form-data" method="POST" action="{{ url_for('tareas.crear') }}">
+        <input type="hidden" name="volver" value="{{ 'mis_pendientes' if request.endpoint == 'dashboard.mis_pendientes' else 'inicio' }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Título de la Tarea / Compromiso: *</label>
+            <input type="text" name="titulo" class="form-control" required placeholder="ej. Calibración de rodillos flexo">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Detalles / Instrucciones Completas:</label>
+            <textarea name="descripcion" class="form-control" rows="3" placeholder="Especificaciones técnicas, entregables esperados..."></textarea>
+          </div>
+
+          <!-- Selección en Cascada: Pilar y Responsable -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Pilar Destino:</label>
+              <select name="pilar_id" id="selectPilarDestino" class="form-select" onchange="filtrarResponsablesPorPilar()">
+                <option value="">Sin pilar asignado (General / Transversal)</option>
+                {% for p in pilares %}
+                  <option value="{{ p.id }}">{{ p.nombre }}</option>
+                {% endfor %}
+              </select>
+              <div class="text-muted" style="font-size: 0.72rem;">Opcional si es una tarea transversal.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Responsable Asignado: *</label>
+              <select name="responsable_id" id="selectResponsableDestino" class="form-select" required>
+                <option value="">Primero selecciona un pilar...</option>
+              </select>
+              <div class="text-muted" style="font-size: 0.72rem;">Miembros del pilar y personal sin pilar asignado.</div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label small fw-bold">Prioridad: *</label>
+              <select name="prioridad" class="form-select">
+                <option value="P0_CRITICA">Crítica (Urgente / Paro)</option>
+                <option value="P1_ALTA">Alta</option>
+                <option value="P2_MEDIA" selected>Media</option>
+                <option value="P3_BAJA">Baja</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-bold">Fecha Límite: *</label>
+              <input type="date" name="fecha_compromiso" class="form-control" required>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: MÚLTIPLES PILARES DE APOYO (DINÁMICO) -->
+          <div class="p-3 bg-light rounded border mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de Apoyo / Dependencias (Opcional):</label>
+              <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" onclick="agregarFilaApoyo()">
+                <i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Agregar Pilar de Apoyo
+              </button>
+            </div>
+            <div class="text-muted small mb-2" style="font-size: 0.75rem;">
+              Puedes añadir múltiples departamentos de apoyo y opcionalmente designar a un responsable específico.
+            </div>
+
+            <div id="contenedorFilasApoyo" class="d-flex flex-column gap-2">
+              <!-- Filas dinámicas generadas con JS -->
+            </div>
+          </div>
+          {% if current_user.puede('archivos.subir') %}
+          {% include 'partials/selector_archivos.html' %}
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i> Cerrar</button>
+          <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk fa-fw" aria-hidden="true"></i> Guardar y Asignar Tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Datos serializados de usuarios y pilares para la lógica en cascada
+const USUARIOS_SISTEMA = {{ usuarios_json|tojson }};
+const RESPONSABLES_PERMITIDOS = {{ responsables_permitidos|default([])|tojson }};
+const USUARIO_ACTUAL = {{ current_user.id }};
+const PILARES_SISTEMA = {{ pilares_json|tojson }};
+
+// Crear y editar comparten grupos, orden y selección en cascada.
+function filtrarResponsablesPorPilar() {
+  const selector = document.getElementById('selectResponsableDestino');
+  const preferido = selector.value || String(USUARIO_ACTUAL);
+  SelectoresTarea.responsables(selector,
+    USUARIOS_SISTEMA.filter(u => RESPONSABLES_PERMITIDOS.includes(u.id)), document.getElementById('selectPilarDestino').value);
+  if (Array.from(selector.options).some(opcion => opcion.value === preferido)) selector.value = preferido;
+}
+
+function agregarFilaApoyo() {
+  document.getElementById('contenedorFilasApoyo').appendChild(
+    SelectoresTarea.filaApoyo(PILARES_SISTEMA, USUARIOS_SISTEMA));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const modalNuevaTarea = document.getElementById('modalNuevaTarea');
+  if (modalNuevaTarea) {
+    modalNuevaTarea.addEventListener('show.bs.modal', () => {
+      filtrarResponsablesPorPilar();
+    });
+  }
+});
+</script>

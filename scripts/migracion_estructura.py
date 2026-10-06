@@ -28,6 +28,7 @@ import pymysql
 MIGRATION_ID = "20260914_estructura_multipilares_v1"
 COLLATION = "utf8mb4_0900_ai_ci"
 DEFAULT_DUMP = r"C:\Program Files\MySQL\MySQL Server 9.5\bin\mysqldump.exe"
+DEFAULT_OUTPUT = r"C:\sites\migraciones_pendientes\revision_migracion\publicaciones"
 ORIGINAL_TABLES = ("usuarios", "pilares", "tareas", "bitacora_tareas")
 NEW_TABLES = ("usuarios_pilares", "tareas_dependencias")
 ID_COLUMN = ("int", "NO", None, "auto_increment")
@@ -235,7 +236,7 @@ def build_plan(schema, database):
         for column, _, _ in FOREIGN_KEYS[table]:
             require(any(i["columns"][0] == column for i in indexes.values()), "Falta índice de FK en " + table + "." + column)
     pending = ["crear_" + t for t in NEW_TABLES if t not in tables]
-    if next(c for c in schema["columns"] if c["TABLE_NAME"] == "tareas" and c["COLUMN_NAME"] == "pilar_id")["IS_NULLABLE"] == "NO":
+    if any(c['TABLE_NAME'] == 'tareas' and c['COLUMN_NAME'] == 'pilar_id' and c['IS_NULLABLE'] == 'NO' for c in schema['columns']):
         pending.append("permitir_tarea_sin_pilar")
     return [{"id": key, "sql": DDLS[key]} for key in pending]
 
@@ -340,11 +341,21 @@ def verify_preservation(before, after):
         require(after[table]["rows"] == 0, "La tabla recién creada contiene filas; revisar escrituras concurrentes.")
 
 
+def validate_output_dir(value):
+    output = Path(value)
+    require(output.is_absolute(), "--output-dir debe ser absoluto.")
+    output = output.resolve()
+    require(not {"static", "public", "wwwroot", "htdocs", ".git"}.intersection(p.lower() for p in output.parts),
+            "No guarde respaldos en directorios publicados ni .git.")
+    return output
+
+
 def parser():
     result = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     result.add_argument("--env-file", required=True, help="Ruta absoluta del .env del destino (también para clones).")
     result.add_argument("--database", required=True, help="Debe coincidir exactamente con DB_NAME del archivo.")
-    result.add_argument("--output-dir", required=True, help="Ruta absoluta privada para informes y respaldos, fuera de contenido web.")
+    result.add_argument("--output-dir", default=DEFAULT_OUTPUT,
+                        help="Ruta absoluta privada de informes y respaldos. Por defecto: " + DEFAULT_OUTPUT)
     mode = result.add_mutually_exclusive_group()
     mode.add_argument("--apply", action="store_true", help="Aplicar después de respaldar; confirma cada DDL implícitamente.")
     mode.add_argument("--dry-run", action="store_true", help="Solo plan (también es el modo predeterminado).")
@@ -356,7 +367,12 @@ def parser():
     return result
 
 
-def run(args):
+def run(args, *, plan_builder=None, migration_id=None, integrity_checker=None, initialize=None, preflight=None, file_backup=None):
+    # Las migraciones versionadas reutilizan estas protecciones. La entrada
+    # histórica conserva exactamente su plan y contrato por defecto.
+    plan_builder = plan_builder or build_plan
+    integrity_checker = integrity_checker or check_integrity
+    migration_id = migration_id or MIGRATION_ID
     config = load_config(args.env_file, args.database)
     require(1 <= args.lock_timeout <= 60 and 30 <= args.backup_timeout <= 3600, "Límites de tiempo fuera de rango.")
     if args.apply:
@@ -364,14 +380,11 @@ def run(args):
         require(args.maintenance_confirmed, "--apply requiere --maintenance-confirmed después de detener todos los escritores.")
     else:
         require(not args.maintenance_confirmed and args.confirm_database is None, "Las confirmaciones solo se usan junto con --apply.")
-    output = Path(args.output_dir)
-    require(output.is_absolute(), "--output-dir debe ser absoluto.")
-    output = output.resolve()
-    require(not {"static", "public", "wwwroot", "htdocs", ".git"}.intersection(p.lower() for p in output.parts), "No guarde respaldos en directorios publicados ni .git.")
+    output = validate_output_dir(args.output_dir)
     run_dir = output / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_" + uuid4().hex[:8])
     private_directory(run_dir)
     report_path = run_dir / "informe.json"
-    report = {"migration": MIGRATION_ID, "started_utc": datetime.now(timezone.utc).isoformat(),
+    report = {"migration": migration_id, "started_utc": datetime.now(timezone.utc).isoformat(),
               "mode": "apply" if args.apply else "dry-run", "database": args.database,
               "host": config["host"], "port": config["port"], "status": "starting", "steps": [],
               "warning": "DDL con commit implícito; no hay rollback global. No importa ni convierte datos."}
@@ -390,8 +403,10 @@ def run(args):
         else:
             execute(conn, "SET SESSION TRANSACTION READ ONLY")
         initial = inspect_schema(conn, args.database)
-        plan = build_plan(initial, args.database)
-        check_integrity(conn, initial)
+        plan = plan_builder(initial, args.database)
+        integrity_checker(conn, initial)
+        if preflight:
+            report['preflight'] = preflight(conn, initial)
         tables = [t["TABLE_NAME"] for t in initial["tables"]]
         before = fingerprint(conn, tables)
         report.update({"server": initial["server"], "schema_before": initial, "data_before": before, "plan": plan,
@@ -401,30 +416,39 @@ def run(args):
         print("Conteos actuales: " + json.dumps({t: v["rows"] for t, v in before.items()}))
         for step in plan:
             print("Pendiente: " + step["id"])
-        if args.apply and plan:
+        if args.apply and (plan or initialize):
             print("Creando respaldo completo antes del primer DDL...")
             report["backup"] = make_backup(config, run_dir, args.mysqldump, tables, args.backup_timeout)
+            if file_backup:
+                report['backup_adjuntos'] = file_backup(run_dir)
             write_report(report_path, report)
             verify_preservation(before, fingerprint(conn, tables))
             require(inspect_schema(conn, args.database) == initial, "El esquema cambió durante el respaldo; no se aplicó DDL.")
             for step in plan:
-                pending = build_plan(inspect_schema(conn, args.database), args.database)
+                pending = plan_builder(inspect_schema(conn, args.database), args.database)
                 require(step in pending, "El estado cambió fuera de esta ejecución; revisar antes de reintentar.")
                 progress = {"id": step["id"], "status": "started", "started_utc": datetime.now(timezone.utc).isoformat()}
                 report["steps"].append(progress)
                 write_report(report_path, report)
                 execute(conn, step["sql"])
-                require(not any(s["id"] == step["id"] for s in build_plan(inspect_schema(conn, args.database), args.database)), "No se pudo verificar el DDL " + step["id"])
+                require(not any(s["id"] == step["id"] for s in plan_builder(inspect_schema(conn, args.database), args.database)), "No se pudo verificar el DDL " + step["id"])
                 progress.update(status="verified", finished_utc=datetime.now(timezone.utc).isoformat())
                 write_report(report_path, report)
                 print("Verificado: " + step["id"])
         if args.apply:
             final_schema = inspect_schema(conn, args.database)
-            require(not build_plan(final_schema, args.database), "Quedan pasos pendientes después de aplicar.")
-            check_integrity(conn, final_schema)
+            require(not plan_builder(final_schema, args.database), "Quedan pasos pendientes después de aplicar.")
+            integrity_checker(conn, final_schema)
             after = fingerprint(conn, [t["TABLE_NAME"] for t in final_schema["tables"]])
             report.update(schema_after=final_schema, data_after=after)
             verify_preservation(before, after)
+            if initialize:
+                report['initialization'] = initialize(conn)
+                integrity_checker(conn, final_schema)
+                final_data = fingerprint(conn, [t['TABLE_NAME'] for t in final_schema['tables']])
+                for table in ORIGINAL_TABLES + NEW_TABLES:
+                    require(final_data[table] == after[table], 'La inicialización alteró datos originales: ' + table)
+                report['data_initialized'] = final_data
             report["status"] = "verified" if plan else "already_applied"
         else:
             report["status"] = "dry_run_ok"

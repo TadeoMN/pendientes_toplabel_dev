@@ -1,0 +1,14 @@
+<div id="{{ 'pendientes' if ambito == 'pendientes' else 'direccion-vistas' }}" class="vistas-tareas" data-ambito="{{ ambito }}" data-inicial="{{ vista_actual|default('mias') }}">
+  <div class="tareas-tabs" role="tablist" aria-label="Vistas de tareas" data-drag-scroll>
+    {% for clave, nombre, tareas in grupos %}
+    <button type="button" class="tareas-tab" role="tab" id="tab-{{ clave }}" aria-controls="panel-{{ clave }}" aria-selected="false" tabindex="-1" data-pestana="{{ clave }}">{{ nombre }} <span class="badge bg-secondary-subtle text-dark">{{ tareas|length }}</span></button>
+    {% endfor %}
+  </div>
+  {% for clave, nombre, tareas in grupos %}
+  <section id="panel-{{ clave }}" role="tabpanel" aria-labelledby="tab-{{ clave }}" class="contenedor-tabla-modulo tareas-modulo" data-estado-clave="tareas-v2-{{ ambito }}-{{ current_user.id }}-{{ clave }}" hidden>
+    {% if ambito == 'direccion' %}{% include 'partials/pilares_tareas.html' %}{% endif %}
+    {% include 'partials/filtros_tareas.html' %}
+    {% include 'partials/tabla_tareas.html' %}
+  </section>
+  {% endfor %}
+</div>

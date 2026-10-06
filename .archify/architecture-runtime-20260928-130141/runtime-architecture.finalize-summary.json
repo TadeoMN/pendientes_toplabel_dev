@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+    "sha256": "ccd974a447371c847f774980ac8b41e732f5bc4b34c06a6a1114a31a391263c2",
+    "bytes": 7470
+  },
+  "artifact": {
+    "path": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+    "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+    "bytes": 766263
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json\".",
+      "subject": {
+        "artifact": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "evidencePath": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.finalize.json",
+    "summaryReceipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.finalize-summary.json",
+    "browserCheckReceipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.0.1",
+    "releaseNotes": null,
+    "checkedAt": "2026-09-28T19:07:27.387Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 940
+}

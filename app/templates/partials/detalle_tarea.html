@@ -1,0 +1,85 @@
+<div class="modal fade" id="modalDetalleTarea" tabindex="-1" aria-labelledby="det_titulo">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-light">
+        <div>
+          <div class="detalle-badges d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span id="det_semaforo_dot" class="semaphore-dot"></span>
+            <span id="det_folio" class="badge bg-dark"></span>
+            <span id="det_pilar" class="badge text-white"></span>
+            <span id="det_prioridad" class="badge"></span>
+            <span id="det_estatus" class="badge bg-secondary"></span>
+          </div>
+          <h5 class="modal-title fw-bold text-dark" id="det_titulo"></h5>
+        </div>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 pb-2">
+          <small class="text-muted">Creación: <span id="det_fecha_creacion"></span></small>
+          <button type="button" id="det_editar" class="btn btn-primary btn-sm" hidden><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Editar tarea</button>
+        </div>
+        {% include 'partials/form_editar_tarea.html' %}
+        <div id="det_lectura">
+          <div class="row g-3 p-3 bg-light rounded-3 mb-4">
+            <div class="col-sm-6">
+              <div class="text-muted small fw-bold text-uppercase">Responsable Asignado</div>
+              <div class="fw-semibold text-dark fs-6" id="det_responsable"></div>
+            </div>
+            <div class="col-sm-6">
+              <div class="text-muted small fw-bold text-uppercase">Fecha Límite Compromiso</div>
+              <div class="fw-semibold text-dark fs-6" id="det_fecha_compromiso"></div>
+            </div>
+            <div class="col-12 border-top pt-2 mt-2">
+              <div class="text-muted small fw-bold text-uppercase mb-1">Pilares de Apoyo / Dependencias Requeridas:</div>
+              <div id="det_dependencias_lista" class="d-flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h6 class="fw-bold text-uppercase small text-muted mb-2"><i class="fa-solid fa-clipboard-list fa-fw" aria-hidden="true"></i> Instrucciones Completas:</h6>
+            <div class="p-3 border rounded bg-white" id="det_descripcion" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.92rem;"></div>
+          </div>
+        </div>
+
+        <section class="my-3"><h6>Archivos de la tarea</h6><div id="det_adjuntos"></div></section>
+        <form id="formAdjuntosTarea" enctype="multipart/form-data">
+          {% include 'partials/selector_archivos.html' %}
+          <button type="submit" class="btn btn-outline-primary btn-sm">Adjuntar a la tarea</button>
+        </form>
+        <hr class="my-4 text-muted">
+
+        <section id="seccion_nota" class="card bg-light border-0 mb-4">
+          <div class="card-body">
+            <h6 id="nota_titulo" class="fw-bold">Agregar nota</h6>
+            <form id="formNotaDirecta" enctype="multipart/form-data" onsubmit="enviarNotaModal(event)">
+              <input type="hidden" id="modal_nota_tarea_id">
+              <div id="nota_tipo_grupo" class="mb-2"><label for="modal_nota_tipo" class="form-label">Tipo de nota</label>
+                <select name="tipo" id="modal_nota_tipo" class="form-select">
+                  <option value="AVANCE">Avance</option><option value="PROBLEMA">Problema</option><option value="BLOQUEO">Bloqueo</option><option value="ACUERDO">Acuerdo</option><option value="OBSERVACION">Observación</option>
+                </select>
+              </div>
+              <label id="nota_bloqueo_opcion" class="form-check mb-2" hidden><input id="nota_cambiar_bloqueo" type="checkbox" class="form-check-input"> Cambiar también el estatus a Bloqueado</label>
+              <p id="nota_efecto" class="small text-muted" aria-live="polite"></p>
+              <label for="modal_nota_comentario" class="form-label">Comentario / motivo</label>
+              <textarea name="comentario" id="modal_nota_comentario" class="form-control mb-3" rows="3" required placeholder="Describe el avance, problema, bloqueo, acuerdo u observación…"></textarea>
+              <div id="nota_selector_archivos">{% include 'partials/selector_archivos.html' %}</div>
+              <div id="nota_error" class="alert alert-danger" role="alert" hidden></div>
+              <div class="text-end"><button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-comment-medical fa-fw" aria-hidden="true"></i> Guardar nota</button></div>
+            </form>
+          </div>
+        </section>
+
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-uppercase small text-muted mb-0"><i class="fa-solid fa-comments fa-fw" aria-hidden="true"></i> Historial de Seguimiento (Bitácora):</h6>
+            <span class="badge bg-secondary-subtle text-secondary" id="det_conteo_notas">0 notas</span>
+          </div>
+          <div id="det_lista_bitacora" class="d-flex flex-column gap-2"></div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i> Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

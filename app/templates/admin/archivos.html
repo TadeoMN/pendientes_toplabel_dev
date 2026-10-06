@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Límites de archivos</h2>
+<p>Se consideran los adjuntos activos existentes y los nuevos por tarea o nota. «Total» limita la cantidad y el peso combinado. Cambiar límites no elimina archivos existentes.</p>
+<form method="post" class="card card-body">
+<div class="table-responsive"><table class="table"><thead><tr><th>Categoría</th><th>Cantidad máxima</th><th>MB por archivo / total</th></tr></thead>
+<tbody>{% for categoria, valores in limites.items() %}<tr><th>{{ categoria|capitalize }}</th>
+<td><input aria-label="Cantidad {{ categoria }}" name="{{ categoria }}_cantidad" type="number" min="1" max="100" required class="form-control" value="{{ valores[0] }}"></td>
+<td><input aria-label="MB {{ categoria }}" name="{{ categoria }}_mb" type="number" min="1" max="1024" required class="form-control" value="{{ valores[1] }}"></td></tr>{% endfor %}</tbody></table></div>
+<button class="btn btn-primary align-self-end">Guardar límites</button></form>
+{% endblock %}

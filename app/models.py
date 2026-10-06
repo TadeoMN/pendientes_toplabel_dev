@@ -50,6 +50,24 @@ class Usuario(UserMixin, db.Model):
     pilar_id = db.Column(db.Integer, db.ForeignKey('pilares.id', ondelete='SET NULL'), nullable=True)
     es_responsable = db.Column(db.Boolean, default=False)
     activo = db.Column(db.Boolean, default=True)
+    roles_sistema = db.relationship('UsuarioRol', back_populates='usuario', cascade='all, delete-orphan')
+
+    def puede(self, permiso, tarea=None):
+        from app.permisos import permite
+        return permite(self, permiso, tarea)
+
+    @property
+    def es_administrador(self):
+        return self.activo and any(a.rol.activo and a.rol.es_administrador for a in self.roles_sistema)
+
+    @property
+    def tiene_rol_administrador(self):
+        # Protege también cuentas desactivadas frente a cambios de terceros.
+        return any(a.rol.es_administrador for a in self.roles_sistema)
+
+    @property
+    def nombres_roles(self):
+        return ', '.join(a.rol.nombre for a in self.roles_sistema if a.rol.activo)
 
     asignaciones_pilar = db.relationship('UsuarioPilar', back_populates='usuario', cascade='all, delete-orphan', lazy=True)
     pilar_historico = db.relationship('Pilar', foreign_keys=[pilar_id])
@@ -62,7 +80,8 @@ class Usuario(UserMixin, db.Model):
 
     @property
     def es_direccion(self):
-        return self.rol == 'DIRECCION'
+        return self.activo and any(a.rol.activo and
+            (a.rol.codigo == 'DIRECCION' or a.rol.es_administrador) for a in self.roles_sistema)
 
     def pilares_info(self):
         """Asignaciones efectivas, con lectura compatible del formato anterior.
@@ -97,6 +116,7 @@ class Usuario(UserMixin, db.Model):
         return {
             'id': self.id,
             'nombre_completo': self.nombre_completo,
+            'rol_sistema_id': self.roles_sistema[0].rol_id if len(self.roles_sistema) == 1 else None,
             'username': self.username,
             'email': self.email,
             'rol': self.rol,

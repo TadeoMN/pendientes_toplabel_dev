@@ -7,7 +7,7 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard.direccion' if current_user.es_direccion else 'dashboard.mis_pendientes'))
+        return redirect(url_for('dashboard.direccion' if current_user.puede('panel.ver') else 'dashboard.mis_pendientes'))
 
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -18,7 +18,7 @@ def login():
         if usuario and usuario.activo and usuario.check_password(password):
             login_user(usuario, remember=True)
             flash(f'¡Bienvenido, {usuario.nombre_completo}!', 'success')
-            return redirect(url_for('dashboard.direccion' if usuario.es_direccion else 'dashboard.mis_pendientes'))
+            return redirect(url_for('dashboard.direccion' if usuario.puede('panel.ver') else 'dashboard.mis_pendientes'))
         else:
             flash('Usuario o contraseña incorrectos.', 'danger')
 

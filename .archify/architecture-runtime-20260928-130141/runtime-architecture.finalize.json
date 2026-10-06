@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-09-28T19:08:16.405Z",
+  "specification": {
+    "path": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+    "sha256": "ccd974a447371c847f774980ac8b41e732f5bc4b34c06a6a1114a31a391263c2",
+    "bytes": 7470
+  },
+  "artifact": {
+    "path": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+    "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+    "bytes": 766263
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\ti\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\sites\\pendientes_toplabel_dev",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "ccd974a447371c847f774980ac8b41e732f5bc4b34c06a6a1114a31a391263c2",
+          "bytes": 7470
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 520,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\ti\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\sites\\pendientes_toplabel_dev",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "64df5e6f-3f49-4a0e-8a54-5cfc39e3f58b",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\candidate.json",
+        "output": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "specification": {
+          "sha256": "ccd974a447371c847f774980ac8b41e732f5bc4b34c06a6a1114a31a391263c2",
+          "bytes": 7470
+        },
+        "artifact": {
+          "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+          "bytes": 766263
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/TadeoMN/pendientes_toplabel_dev",
+          "revision": "2ada95a5a35a90a6dfc23fee8a9416596f54613d",
+          "references": 10
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 131,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\ti\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "check",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "artifact": {
+          "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+          "bytes": 766263
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 45.3,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.2,
+            "maxBends": 0,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 70,
+            "minInteriorSegmentPx": null,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 82,
+            "emptyTopRatio": 0.122,
+            "occupiedTop": 82,
+            "viewBoxTop": 0,
+            "canvasHeight": 672,
+            "typicalNodeHeight": 64,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1280,
+            "actualBudgetPx": 1280,
+            "actualReaderWidth": 1310,
+            "desiredReaderWidth": 1310,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "staff-browser"
+            },
+            "minimumSourceTextPx": 6.2,
+            "minimumProjectedTextPx": 6.2,
+            "semanticTextCount": 28
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "64df5e6f-3f49-4a0e-8a54-5cfc39e3f58b"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 14,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\ti\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "browser-check",
+        "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "64df5e6f-3f49-4a0e-8a54-5cfc39e3f58b",
+        "artifact": {
+          "path": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+          "sha256": "a828d725255cc5a3e69a46dd7831a895cb66b8ff38c7a62424e38687894a1438",
+          "bytes": 766263
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json\".",
+            "subject": {
+              "artifact": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+              "evidencePath": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "runtime-architecture.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json\"."
+      }
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json\".",
+      "subject": {
+        "artifact": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.html",
+        "evidencePath": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.finalize.json",
+    "summaryReceipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.finalize-summary.json",
+    "browserCheckReceipt": "C:\\sites\\pendientes_toplabel_dev\\.archify\\architecture-runtime-20260928-130141\\runtime-architecture.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-09-28T19:08:17.346Z",
+  "durationMs": 940,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.0.1",
+    "releaseNotes": null,
+    "checkedAt": "2026-09-28T19:07:27.387Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

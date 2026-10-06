@@ -1,0 +1,76 @@
+<form id="formEditarTarea" hidden>
+  <fieldset id="det_campos_edicion" class="border rounded-3 p-3 mb-3">
+    <legend class="float-none w-auto px-2 fs-6 fw-bold">Editar tarea</legend>
+    <p class="small text-muted">Los cambios se registrarán en la bitácora. El código y la fecha de creación se conservan.</p>
+    <div class="row g-3">
+      <div class="col-12">
+        <label for="edit_titulo" class="form-label small fw-bold">Título *</label>
+        <input id="edit_titulo" name="titulo" class="form-control" maxlength="200" required>
+      </div>
+      <div class="col-12">
+        <label for="edit_descripcion" class="form-label small fw-bold">Detalles / instrucciones</label>
+        <textarea id="edit_descripcion" name="descripcion" class="form-control" rows="3"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label for="edit_pilar" class="form-label small fw-bold">Pilar destino</label>
+        <select id="edit_pilar" name="pilar_id" class="form-select"></select>
+        <div class="text-muted" style="font-size: 0.72rem;">Opcional si es una tarea transversal.</div>
+      </div>
+      <div class="col-md-6">
+        <label for="edit_responsable" class="form-label small fw-bold">Responsable *</label>
+        <select id="edit_responsable" name="responsable_id" class="form-select" required></select>
+        <div class="text-muted" style="font-size: 0.72rem;">Miembros del pilar y personal sin pilar asignado.</div>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_prioridad" class="form-label small fw-bold">Prioridad</label>
+        <select id="edit_prioridad" name="prioridad" class="form-select">
+          <option value="P0_CRITICA">Crítica (Urgente / Paro)</option><option value="P1_ALTA">Alta</option>
+          <option value="P2_MEDIA">Media</option><option value="P3_BAJA">Baja</option>
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_estatus" class="form-label small fw-bold">Estatus</label>
+        <select id="edit_estatus" name="estatus" class="form-select">
+          <option value="PENDIENTE">Pendiente</option><option value="EN_PROCESO">En proceso</option>
+          <option value="BLOQUEADO">Bloqueado</option><option value="COMPLETADO">Completado</option>
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_inicio" class="form-label small fw-bold">Fecha de inicio *</label>
+        <input id="edit_inicio" name="fecha_inicio" type="date" class="form-control" required>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_limite" class="form-label small fw-bold">Fecha límite *</label>
+        <input id="edit_limite" name="fecha_compromiso" type="date" class="form-control" required>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_cierre" class="form-label small fw-bold">Fecha de cierre</label>
+        <input id="edit_cierre" name="fecha_cierre" type="date" class="form-control" aria-describedby="edit_cierre_ayuda">
+        <div id="edit_cierre_ayuda" class="form-text">Al completar, se usa hoy si no indicas una fecha.</div>
+      </div>
+      <div class="col-sm-6">
+        <label for="edit_fuente" class="form-label small fw-bold">Origen</label>
+        <select id="edit_fuente" name="fuente" class="form-select">
+          <option value="DIRECCION">Dirección</option><option value="INICIATIVA_PROPIA">Iniciativa propia</option>
+          <option value="REUNION_AUDIO_IA">Reunión / audio IA</option>
+        </select>
+      </div>
+      <div class="col-12">
+      <div class="p-3 bg-light rounded border">
+        <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+          <span class="form-label small fw-bold text-dark mb-0"><i class="fa-solid fa-handshake fa-fw" aria-hidden="true"></i> Pilares de Apoyo / Dependencias (Opcional):</span>
+          <button id="edit_agregar_apoyo" type="button" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Agregar Pilar de Apoyo</button>
+        </div>
+        <p class="small text-muted">Puedes añadir múltiples departamentos de apoyo y opcionalmente designar a un responsable específico.</p>
+        <div id="edit_apoyos" class="d-flex flex-column gap-2"></div>
+      </div>
+      </div>
+    </div>
+    <div id="edit_motivo_grupo" class="mt-3" hidden><label for="edit_nota_estatus" class="form-label">Motivo del cambio de estatus</label><textarea id="edit_nota_estatus" name="nota_estatus" class="form-control" rows="3"></textarea><div class="form-text">Obligatorio al bloquear, desbloquear, completar o reabrir. Reabrir regresa a En proceso.</div></div>
+    <div id="edit_error" class="alert alert-danger mt-3 mb-0" role="alert" hidden></div>
+    <div class="d-flex flex-wrap justify-content-end gap-2 mt-3">
+      <button id="edit_cancelar" type="button" class="btn btn-danger"><i class="fa-solid fa-ban fa-fw" aria-hidden="true"></i> Cancelar edición</button>
+      <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk fa-fw" aria-hidden="true"></i> Guardar cambios</button>
+    </div>
+  </fieldset>
+</form>

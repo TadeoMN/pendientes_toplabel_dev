@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "4cf886e7-c5ab-4156-a249-ae57e62d2c0a",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "C:\\sites\\pendientes_toplabel_dev\\.archify\\workflow-sitemap-roles-20260928-132159\\candidate.json",
+  "output": "C:\\sites\\pendientes_toplabel_dev\\.archify\\workflow-sitemap-roles-20260928-132159\\sitemap-roles.html",
+  "specification": {
+    "sha256": "79989b989ba2587d6a1f8c0aefe5964737347bb0b3916f9b1cd8d8e92b6469cf",
+    "bytes": 38400
+  },
+  "artifact": {
+    "sha256": "35b7dbfd9e0ac907351a72c3e8227c93984029459e4e62a5a2731709242598a6",
+    "bytes": 774038
+  }
+}

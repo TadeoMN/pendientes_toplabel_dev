@@ -5,6 +5,9 @@ from flask_login import login_required, current_user
 from sqlalchemy.exc import SQLAlchemyError
 from app import db
 from app.models import Usuario, Pilar, UsuarioPilar
+from app.modelos_acceso import Rol
+from app.permisos import exigir
+from app.routes.roles import asignar_rol, proteger_administradores
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 ROLES = {'DIRECCION', 'LIDER_PILAR', 'COLABORADOR'}
@@ -13,9 +16,13 @@ ROLES = {'DIRECCION', 'LIDER_PILAR', 'COLABORADOR'}
 @admin_bp.before_request
 @login_required
 def verificar_acceso_direccion():
-    if not current_user.es_direccion:
-        flash('Acceso restringido únicamente para el área de Dirección.', 'danger')
-        return redirect(url_for('dashboard.index'))
+    permisos = {
+        'admin.usuarios': 'usuarios.ver', 'admin.crear_usuario': 'usuarios.crear',
+        'admin.editar_usuario': 'usuarios.editar', 'admin.cambiar_password': 'usuarios.password',
+        'admin.pilares': 'pilares.ver',
+    }
+    exigir(permisos.get(request.endpoint, 'pilares.gestionar'))
+
 
 
 def guardar_en(endpoint):
@@ -65,9 +72,7 @@ def datos_usuario(usuario=None):
     nombre = texto('nombre_completo', 100, True)
     username = texto('username', 50, True)
     email = texto('email', 100) or None
-    rol = request.form.get('rol', usuario.rol if usuario else 'COLABORADOR')
-    if rol not in ROLES:
-        raise ValueError('Rol de usuario inválido.')
+    rol = usuario.rol if usuario else 'COLABORADOR'
     duplicados = Usuario.query.filter(Usuario.username == username)
     if usuario is not None:
         duplicados = duplicados.filter(Usuario.id != usuario.id)
@@ -180,7 +185,8 @@ def cambiar_titular(pilar, nuevo):
 def usuarios():
     return render_template('admin/usuarios.html',
         usuarios=Usuario.query.order_by(Usuario.nombre_completo.asc()).all(),
-        pilares=Pilar.query.order_by(Pilar.nombre.asc()).all())
+        pilares=Pilar.query.order_by(Pilar.nombre.asc()).all(),
+        roles=Rol.query.filter_by(activo=True).order_by(Rol.nombre).all())
 
 
 @admin_bp.route('/usuarios/crear', methods=['POST'])
@@ -195,6 +201,7 @@ def crear_usuario():
     nuevo.set_password(password)
     db.session.add(nuevo)
     db.session.flush()
+    asignar_rol(nuevo, request.form.get('rol_id', type=int), nuevo=True)
     reemplazar_asignaciones(nuevo, asignaciones)
     return f'Usuario {nuevo.nombre_completo} registrado exitosamente.'
 
@@ -202,12 +209,18 @@ def crear_usuario():
 @admin_bp.route('/usuarios/<int:usuario_id>/editar', methods=['POST'])
 @guardar_en('admin.usuarios')
 def editar_usuario(usuario_id):
+    Rol.query.filter_by(es_administrador=True).with_for_update().all()
     usuario = Usuario.query.get_or_404(usuario_id)
+    if usuario.tiene_rol_administrador and not current_user.es_administrador:
+        from flask import abort
+        abort(403)
     datos = datos_usuario(usuario)
     asignaciones = leer_asignaciones()
     for campo, valor in datos.items():
         setattr(usuario, campo, valor)
+    asignar_rol(usuario, request.form.get('rol_id', type=int))
     usuario.activo = request.form.get('activo') == '1'
+    proteger_administradores()
     reemplazar_asignaciones(usuario, asignaciones)
     return f'Datos de {usuario.nombre_completo} actualizados.'
 
@@ -216,6 +229,9 @@ def editar_usuario(usuario_id):
 @guardar_en('admin.usuarios')
 def cambiar_password(usuario_id):
     usuario = Usuario.query.get_or_404(usuario_id)
+    if usuario.tiene_rol_administrador and not current_user.es_administrador:
+        from flask import abort
+        abort(403)
     password = request.form.get('password', '').strip()
     if not password:
         raise ValueError('La contraseña no puede estar vacía.')

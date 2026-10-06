@@ -2,15 +2,17 @@ from datetime import datetime, date
 from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy.exc import SQLAlchemyError
 from app import db
+from flask_login import login_required, current_user
 from app.models import Tarea, Pilar, Usuario, BitacoraTarea
 from app.routes.tareas import generar_folio, PRIORIDADES
 
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
 
 @api_bp.route('/tareas', methods=['GET'])
+@login_required
 def listar_tareas():
     tareas = Tarea.query.order_by(Tarea.fecha_compromiso.asc()).all()
-    return jsonify([t.to_dict() for t in tareas])
+    return jsonify([t.to_dict() for t in tareas if current_user.puede('tareas.ver', t)])
 
 @api_bp.route('/tareas/ingesta-ia', methods=['POST'])
 def ingesta_ia():
@@ -24,7 +26,8 @@ def ingesta_ia():
         return jsonify({'error': 'Se requiere una lista de tareas.'}), 400
     tareas_data = data['tareas']
     try:
-        admin_user = Usuario.query.filter_by(rol='DIRECCION', activo=True).order_by(Usuario.id).first()
+        admin_user = next((u for u in Usuario.query.filter_by(activo=True).order_by(Usuario.id).all()
+                           if u.es_direccion and u.puede('tareas.crear') and u.puede('tareas.asignar_todos')), None)
         if admin_user is None:
             raise ValueError('No existe un usuario activo de Dirección para registrar las tareas.')
         for indice, item in enumerate(tareas_data, start=1):

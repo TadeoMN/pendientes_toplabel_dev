@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Top Label - Gestión de Pendientes{% endblock %}</title>
 
@@ -10,37 +11,48 @@
   <!-- CSS Local -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/fontawesome/css/fontawesome.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/fontawesome/css/solid.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
   {% if current_user.is_authenticated %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
     <div class="container-fluid px-4">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('dashboard.index') }}">
-        <span class="badge bg-primary px-2 py-1 fs-6">TOP LABEL</span>
-        <span class="fw-semibold">Control de Pendientes</span>
+        <img src="{{ url_for('static', filename='images/TOPLABEL.png') }}" alt="Top Label" height="30" class="d-inline-block align-text-top">
       </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-label="Abrir menú principal">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="offcanvas offcanvas-start text-bg-light app-menu" tabindex="-1" id="navbarContent" aria-labelledby="menuPrincipalTitulo">
+        <div class="offcanvas-header">
+          <h2 class="offcanvas-title fs-5" id="menuPrincipalTitulo">Menú principal</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar menú"></button>
+        </div>
+        <div class="offcanvas-body align-items-lg-center">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% if current_user.es_direccion %}
+          {% if current_user.puede('panel.ver') %}
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'dashboard.direccion' %}active fw-bold{% endif %}" href="{{ url_for('dashboard.direccion') }}">
               Panel de Dirección
             </a>
           </li>
+          {% endif %}
+          {% if current_user.puede('usuarios.ver') or current_user.puede('pilares.ver') or current_user.puede('roles.gestionar') or current_user.puede('archivos.configurar') or current_user.puede('auditoria.ver') %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle {% if 'admin.' in request.endpoint %}active fw-bold{% endif %}" href="#" role="button" data-bs-toggle="dropdown">
               Administración
             </a>
             <ul class="dropdown-menu border-0 shadow-sm">
-              <li><a class="dropdown-item" href="{{ url_for('admin.usuarios') }}">👥 Gestión de Usuarios</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('admin.pilares') }}">🏢 Gestión de Pilares</a></li>
+              {% if current_user.puede('usuarios.ver') %}<li><a class="dropdown-item" href="{{ url_for('admin.usuarios') }}">Gestión de Usuarios</a></li>{% endif %}
+              {% if current_user.puede('pilares.ver') %}<li><a class="dropdown-item" href="{{ url_for('admin.pilares') }}">Gestión de Pilares</a></li>{% endif %}
+              {% if current_user.puede('roles.gestionar') %}<li><a class="dropdown-item" href="{{ url_for('roles.gestionar') }}">Roles y permisos</a></li>{% endif %}
+              {% if current_user.puede('auditoria.ver') %}<li><a class="dropdown-item" href="{{ url_for('roles.auditoria') }}">Auditoría</a></li>{% endif %}
+              {% if current_user.puede('archivos.configurar') %}<li><a class="dropdown-item" href="{{ url_for('archivos.configurar') }}">Límites de archivos</a></li>{% endif %}
             </ul>
           </li>
           {% endif %}
@@ -51,15 +63,16 @@
           </li>
         </ul>
 
-        <div class="d-flex align-items-center gap-3">
-          <div class="text-end text-light">
+        <div class="d-flex align-items-center gap-3 app-menu-user">
+          <div class="text-end text-dark">
             <div class="fw-bold small">{{ current_user.nombre_completo }}</div>
             <div class="text-secondary" style="font-size: 0.75rem;">
               {% set pilares_usuario = current_user.pilares_info() %}
-              {{ current_user.rol }} {% if pilares_usuario %}({{ pilares_usuario | map(attribute='nombre') | join(', ') }}){% endif %}
+              {{ current_user.nombres_roles }} {% if pilares_usuario %}({{ pilares_usuario | map(attribute='nombre') | join(', ') }}){% endif %}
             </div>
           </div>
-          <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
+          <button type="button" data-logout-url="{{ url_for('auth.logout') }}" class="btn btn-outline-danger btn-sm logout-button">Cerrar Sesión</button>
+        </div>
         </div>
       </div>
     </div>
@@ -85,9 +98,16 @@
   </footer>
 
   <!-- JS Local -->
+  <script src="{{ url_for('static', filename='js/csrf.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard_responsive.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/selectores_tarea.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/editar_tarea.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/archivos.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/notas.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

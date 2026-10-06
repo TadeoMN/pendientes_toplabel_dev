@@ -8,7 +8,7 @@
     <h3 class="fw-bold mb-1">Administración de Usuarios</h3>
     <p class="text-muted small mb-0">Gestiona accesos, contraseñas, pilares asignados y jerarquías operativas.</p>
   </div>
-  <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
+  <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario" {% if not current_user.puede('usuarios.crear') %}disabled{% endif %}>
     + Nuevo Usuario
   </button>
 </div>
@@ -74,8 +74,8 @@
               {% endif %}
             </td>
             <td>
-              <span class="badge {% if u.rol == 'DIRECCION' %}bg-dark{% else %}bg-secondary{% endif %}">
-                {{ 'Dirección' if u.rol == 'DIRECCION' else 'Colaborador' }}
+              <span class="badge {% if u.es_direccion %}bg-dark{% else %}bg-secondary{% endif %}">
+                {{ u.nombres_roles }}
               </span>
             </td>
             <td>
@@ -100,10 +100,10 @@
               {% endif %}
             </td>
             <td class="text-end">
-              <button class="btn btn-outline-primary btn-sm btn-accion me-1" onclick='abrirModalEditar({{ u.to_dict()|tojson }})'>
+              <button class="btn btn-outline-primary btn-sm btn-accion me-1" onclick='abrirModalEditar({{ u.to_dict()|tojson }})' {% if not current_user.puede('usuarios.editar') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
                 Editar
               </button>
-              <button class="btn btn-outline-secondary btn-sm btn-accion" onclick="abrirModalPassword({{ u.id }}, '{{ u.nombre_completo }}')">
+              <button class="btn btn-outline-secondary btn-sm btn-accion" onclick='abrirModalPassword({{ u.id }}, {{ u.nombre_completo|tojson }})' {% if not current_user.puede('usuarios.password') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
                 Clave
               </button>
             </td>
@@ -128,7 +128,6 @@
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h5 class="modal-title fw-bold">Registrar Nuevo Usuario</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
         <div class="modal-body">
@@ -153,9 +152,10 @@
             </div>
             <div class="col-6">
               <label class="form-label small fw-bold">Rol en Sistema: *</label>
-              <select name="rol" class="form-select">
-                <option value="COLABORADOR" selected>Colaborador / Miembro</option>
-                <option value="DIRECCION">Dirección General</option>
+              <select name="rol_id" class="form-select" required>
+                {% for rol in roles %}{% if current_user.puede('usuarios.roles') or rol.codigo == 'COLABORADOR' %}
+                <option value="{{ rol.id }}" {% if rol.codigo == 'COLABORADOR' %}selected{% endif %}>{{ rol.nombre }}</option>
+                {% endif %}{% endfor %}
               </select>
             </div>
           </div>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i> Cerrar</button>
           <button type="submit" class="btn btn-primary btn-sm">Crear Usuario</button>
         </div>
       </form>
@@ -215,7 +215,6 @@
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h5 class="modal-title fw-bold">Editar Usuario</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <form id="formEditarUsuario" method="POST">
         <div class="modal-body">
@@ -236,9 +235,8 @@
           <div class="row g-2 mb-3">
             <div class="col-6">
               <label class="form-label small fw-bold">Rol en Sistema: *</label>
-              <select id="edit_rol" name="rol" class="form-select">
-                <option value="COLABORADOR">Colaborador / Miembro</option>
-                <option value="DIRECCION">Dirección General</option>
+              <select id="edit_rol" name="rol_id" class="form-select" required>
+                {% for rol in roles %}<option value="{{ rol.id }}">{{ rol.nombre }}</option>{% endfor %}
               </select>
             </div>
             <div class="col-6 d-flex align-items-end">
@@ -263,7 +261,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i> Cerrar</button>
           <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
         </div>
       </form>
@@ -277,7 +275,6 @@
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h5 class="modal-title fw-bold" id="modalPassTitulo">Cambiar Contraseña</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <form id="formPassword" method="POST">
         <div class="modal-body">
@@ -287,7 +284,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-xmark fa-fw" aria-hidden="true"></i> Cerrar</button>
           <button type="submit" class="btn btn-danger btn-sm">Actualizar Contraseña</button>
         </div>
       </form>
@@ -341,7 +338,16 @@ function abrirModalEditar(u) {
   document.getElementById('edit_nombre').value = u.nombre_completo;
   document.getElementById('edit_username').value = u.username;
   document.getElementById('edit_email').value = u.email || '';
-  document.getElementById('edit_rol').value = u.rol;
+  document.getElementById('edit_rol').value = u.rol_sistema_id ?? '';
+  const selectorRol = document.getElementById('edit_rol');
+  selectorRol.disabled = {{ ('false' if current_user.puede('usuarios.roles') else 'true') }};
+  let rolConservado = document.getElementById('rol_conservado');
+  if (rolConservado) rolConservado.remove();
+  if (selectorRol.disabled) {
+    rolConservado = document.createElement('input');
+    rolConservado.type = 'hidden'; rolConservado.name = 'rol_id'; rolConservado.id = 'rol_conservado';
+    rolConservado.value = u.rol_sistema_id ?? ''; selectorRol.form.appendChild(rolConservado);
+  }
   document.getElementById('edit_activo').checked = u.activo;
 
   // Limpiar contenedor de pilares en edición

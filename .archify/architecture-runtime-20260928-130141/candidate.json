@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Top Label Pendientes: Runtime Architecture",
+    "subtitle": "Primary interactive task-management request path",
+    "output": ".archify/architecture-runtime-20260928-130141/runtime-architecture.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/TadeoMN/pendientes_toplabel_dev.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "2ada95a5a35a90a6dfc23fee8a9416596f54613d"
+    }
+  },
+  "components": [
+    {
+      "id": "staff-browser",
+      "type": "external",
+      "label": "Staff browser",
+      "sublabel": "Directors, pillar leads, collaborators",
+      "pos": [40, 310],
+      "size": [150, 64]
+    },
+    {
+      "id": "apache-proxy",
+      "type": "cloud",
+      "label": "Apache HTTP proxy",
+      "sublabel": "VirtualHost :80 to 127.0.0.1:5010",
+      "pos": [260, 310],
+      "size": [160, 64],
+      "sources": [
+        {
+          "path": "apache/pendientes.toplabel.conf",
+          "line": 1,
+          "end_line": 5,
+          "label": "Reverse proxy"
+        }
+      ]
+    },
+    {
+      "id": "flask-app",
+      "type": "backend",
+      "label": "Flask application",
+      "sublabel": "App factory and blueprint registry",
+      "pos": [490, 310],
+      "size": [160, 64],
+      "sources": [
+        {
+          "path": "app/__init__.py",
+          "line": 9,
+          "end_line": 40,
+          "label": "Factory and routes"
+        },
+        {
+          "path": "wsgi.py",
+          "line": 1,
+          "end_line": 7,
+          "label": "WSGI entry point"
+        }
+      ]
+    },
+    {
+      "id": "task-routes",
+      "type": "backend",
+      "label": "Task workflow routes",
+      "sublabel": "Create, update status, notes, detail",
+      "pos": [500, 520],
+      "size": [165, 64],
+      "sources": [
+        {
+          "path": "app/routes/tareas.py",
+          "line": 10,
+          "end_line": 199,
+          "label": "Task operations"
+        }
+      ]
+    },
+    {
+      "id": "sqlalchemy-models",
+      "type": "backend",
+      "label": "SQLAlchemy domain layer",
+      "sublabel": "Tasks, users, pillars, task history",
+      "pos": [780, 520],
+      "size": [170, 64],
+      "sources": [
+        {
+          "path": "app/models.py",
+          "line": 1,
+          "end_line": 211,
+          "label": "Persistent domain model"
+        },
+        {
+          "path": "app/__init__.py",
+          "line": 6,
+          "end_line": 18,
+          "label": "ORM initialization"
+        }
+      ]
+    },
+    {
+      "id": "mysql",
+      "type": "database",
+      "label": "MySQL",
+      "sublabel": "Operational task data",
+      "pos": [1060, 520],
+      "size": [145, 64],
+      "sources": [
+        {
+          "path": "app/config.py",
+          "line": 8,
+          "end_line": 21,
+          "label": "Database URI and pool"
+        }
+      ]
+    },
+    {
+      "id": "session-auth",
+      "type": "security",
+      "label": "Session authentication",
+      "sublabel": "Flask-Login identity and access gate",
+      "pos": [480, 110],
+      "size": [180, 64],
+      "sources": [
+        {
+          "path": "app/routes/auth.py",
+          "line": 7,
+          "end_line": 29,
+          "label": "Credential login"
+        },
+        {
+          "path": "app/__init__.py",
+          "line": 16,
+          "end_line": 25,
+          "label": "Login manager"
+        }
+      ]
+    },
+    {
+      "id": "task-ingestion-api",
+      "type": "backend",
+      "label": "Task ingestion API",
+      "sublabel": "POST /api/v1/tareas/ingesta-ia",
+      "pos": [775, 110],
+      "size": [180, 64],
+      "sources": [
+        {
+          "path": "app/routes/api.py",
+          "line": 12,
+          "end_line": 68,
+          "label": "Token-gated ingestion"
+        }
+      ]
+    },
+    {
+      "id": "automation-client",
+      "type": "external",
+      "label": "Task automation client",
+      "sublabel": "AI-generated task batches",
+      "pos": [1070, 110],
+      "size": [170, 64]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Application host trust boundary",
+      "wraps": ["apache-proxy", "flask-app", "task-routes", "session-auth", "task-ingestion-api", "sqlalchemy-models"],
+      "pad": 28
+    },
+    {
+      "kind": "security-group",
+      "label": "Database trust boundary",
+      "wraps": ["mysql"],
+      "pad": 28
+    }
+  ],
+  "connections": [
+    {
+      "id": "browser-to-proxy",
+      "from": "staff-browser",
+      "to": "apache-proxy",
+      "label": "HTTP request",
+      "variant": "emphasis"
+    },
+    {
+      "id": "proxy-to-flask",
+      "from": "apache-proxy",
+      "to": "flask-app",
+      "label": "reverse proxy",
+      "variant": "emphasis"
+    },
+    {
+      "id": "flask-to-task-routes",
+      "from": "flask-app",
+      "to": "task-routes",
+      "label": "dispatch task action",
+      "variant": "emphasis"
+    },
+    {
+      "id": "task-routes-to-models",
+      "from": "task-routes",
+      "to": "sqlalchemy-models",
+      "label": "read and commit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "models-to-mysql",
+      "from": "sqlalchemy-models",
+      "to": "mysql",
+      "label": "SQL via PyMySQL",
+      "variant": "emphasis"
+    },
+    {
+      "id": "flask-to-session-auth",
+      "from": "flask-app",
+      "to": "session-auth",
+      "label": "login-required routes",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "automation-to-ingestion",
+      "from": "automation-client",
+      "to": "task-ingestion-api",
+      "label": "JSON batch + API key",
+      "variant": "security"
+    },
+    {
+      "id": "ingestion-to-models",
+      "from": "task-ingestion-api",
+      "to": "sqlalchemy-models",
+      "label": "validate then commit",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Primary path",
+      "items": [
+        "A staff browser reaches Apache on port 80; Apache proxies to the Flask process on localhost port 5010.",
+        "Flask dispatches task creation, status changes, notes, and task-detail requests.",
+        "The ORM persists task, user, pillar, dependency, and history records in MySQL."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Application behavior",
+      "items": [
+        "The app factory registers authentication, dashboard, task, API, and admin blueprints.",
+        "Task mutations validate request values and commit through the shared SQLAlchemy session.",
+        "The current user is loaded from the user model for session-backed routes."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust controls",
+      "items": [
+        "Browser task routes require a Flask-Login session; credential login checks an active user and password hash.",
+        "The ingestion endpoint accepts only a configured API token, validates every batch item, and rolls back failed writes.",
+        "The diagram distinguishes public/partner clients, the application host, and the database as separate trust boundaries."
+      ]
+    }
+  ]
+}
