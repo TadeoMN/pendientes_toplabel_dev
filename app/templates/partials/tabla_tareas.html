@@ -2,11 +2,11 @@
 <div class="table-scroll-container" role="region" tabindex="0" aria-label="Tabla de {{ nombre|lower }}; desplazamiento horizontal" data-drag-scroll>
 <table class="table table-hover align-middle mb-0 tabla-dinamica tareas-tabla">
   <thead class="table-light"><tr>
-    <th>Semáforo</th><th class="th-sortable" data-col="1">Folio <span class="sort-icon">⇅</span></th>
-    <th class="th-sortable" data-col="2">Pilar / responsable <span class="sort-icon">⇅</span></th>
-    <th class="th-sortable" data-col="3">Tarea / compromiso <span class="sort-icon">⇅</span></th>
-    <th class="th-sortable" data-col="4">Prioridad <span class="sort-icon">⇅</span></th><th>Estatus</th>
-    <th class="th-sortable" data-col="6">Fecha límite <span class="sort-icon">⇅</span></th><th>Pilares de apoyo</th><th>Acciones</th>
+    <th>Semáforo</th><th class="th-sortable" data-col="1"><button type="button" class="th-sort-btn">Folio <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+    <th class="th-sortable" data-col="2"><button type="button" class="th-sort-btn">Pilar / responsable <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+    <th class="th-sortable" data-col="3"><button type="button" class="th-sort-btn">Tarea / compromiso <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+    <th class="th-sortable" data-col="4"><button type="button" class="th-sort-btn">Prioridad <span class="sort-icon" aria-hidden="true">⇅</span></button></th><th>Estatus</th>
+    <th class="th-sortable" data-col="6"><button type="button" class="th-sort-btn">Fecha límite <span class="sort-icon" aria-hidden="true">⇅</span></button></th><th>Pilares de apoyo</th><th>Acciones</th>
   </tr></thead>
   <tbody>{% for t in tareas %}<tr data-tarea-detalle="{{ t.id }}" data-pilar="{{ t.pilar_id if t.pilar_id else 'sin_pilar' }}" data-semaforo="{{ t.semaforo }}">
     <td class="text-center" data-val="{{ t.semaforo }}"><span class="semaphore-dot {{ {'ROJO':'dot-rojo','AMARILLO':'dot-amarillo','AZUL':'dot-azul','VERDE':'dot-verde'}[t.semaforo] }}" title="{{ t.semaforo }}" aria-label="{{ t.semaforo }}"></span></td>

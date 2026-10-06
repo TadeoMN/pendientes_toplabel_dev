@@ -500,3 +500,7 @@ table.tabla-dinamica tbody tr td {
 [data-drag-scroll] { overscroll-behavior-x:contain; scrollbar-color:#94a3b8 #f1f5f9; }
 @media(max-width:767.98px) { .tareas-pilar-select { display:block; min-height:44px; } .tareas-pilares-track { display:none; } .tareas-pilar-alert:not([hidden]) { display:block; } }
 @media(max-width:575.98px) { .tareas-filtros > * { flex:1 1 100% !important; width:100% !important; min-height:44px; } .tareas-tab { padding:.75rem; } }
+
+/* Ordenamiento accesible */
+.th-sort-btn { border:0; background:none; color:inherit; font:inherit; width:100%; text-align:left; padding:0; }
+.th-sort-btn:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }

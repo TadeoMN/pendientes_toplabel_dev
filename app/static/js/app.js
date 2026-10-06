@@ -224,7 +224,7 @@ function initMotorTablasDinamicas() {
     // Ordenamiento por Encabezados
     const headers = table.querySelectorAll('th.th-sortable');
     headers.forEach(th => {
-      th.addEventListener('click', () => {
+      th.querySelector('.th-sort-btn')?.addEventListener('click', () => {
         const col = parseInt(th.getAttribute('data-col'));
         if (currentSortCol === col) {
           sortAsc = !sortAsc;
@@ -234,9 +234,11 @@ function initMotorTablasDinamicas() {
         }
 
         headers.forEach(h => {
+          h.removeAttribute('aria-sort');
           const icon = h.querySelector('.sort-icon');
           if (icon) icon.textContent = '⇅';
         });
+        th.setAttribute('aria-sort', sortAsc ? 'ascending' : 'descending');
         const icon = th.querySelector('.sort-icon');
         if (icon) icon.textContent = sortAsc ? '▲' : '▼';
 
