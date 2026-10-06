@@ -24,5 +24,5 @@
     <td>{% if current_user.puede('notas.crear',t) %}<button type="button" class="btn btn-outline-secondary btn-sm tarea-nota" onclick="abrirNotaTarea({{ t.id }})"><i class="fa-solid fa-comment-medical fa-fw" aria-hidden="true"></i> Nota</button>{% endif %}</td>
   </tr>{% endfor %}<tr class="fila-sin-resultados"><td colspan="9" class="text-center text-muted py-4">No hay tareas que coincidan con esta vista y sus filtros.</td></tr></tbody>
 </table></div>
-<div class="card-footer bg-white border-0 d-flex flex-wrap justify-content-between align-items-center gap-2 py-3"><small class="tabla-info-paginacion text-muted"></small><nav aria-label="Páginas de {{ nombre|lower }}"><ul class="pagination pagination-sm mb-0 tabla-controles-paginacion"></ul></nav></div>
+<div class="card-footer bg-white border-0 d-flex flex-wrap justify-content-between align-items-center gap-2 py-3"><small class="tabla-info-paginacion text-muted" aria-live="polite"></small><nav aria-label="Páginas de {{ nombre|lower }}"><ul class="pagination pagination-sm mb-0 tabla-controles-paginacion"></ul></nav></div>
 </div>

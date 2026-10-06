@@ -99,53 +99,46 @@ function initMotorTablasDinamicas() {
         infoEl.textContent = `Mostrando ${start + 1} - ${Math.min(end, total)} de ${total} registros`;
       }
 
-      // Generar Controles de Paginación
+      // Controles de paginación con nombres accesibles y foco conservado.
       if (controlsEl) {
-        controlsEl.innerHTML = '';
+        controlsEl.replaceChildren();
         if (totalPages <= 1) return;
-
-        // 1. Ir a Primera Página (««)
-        const firstLi = document.createElement('li');
-        firstLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-        firstLi.innerHTML = `<a class="page-link" href="#" title="Primera página">&laquo;&laquo;</a>`;
-        firstLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) { currentPage = 1; render(); } };
-        controlsEl.appendChild(firstLi);
-
-        // 2. Ir a Página Anterior («)
-        const prevLi = document.createElement('li');
-        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-        prevLi.innerHTML = `<a class="page-link" href="#" title="Página anterior">&laquo;</a>`;
-        prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) { currentPage--; render(); } };
-        controlsEl.appendChild(prevLi);
-
-        // 3. Ventana de Páginas Numeradas (máximo 5 visibles)
+        function pagina(etiqueta, texto, destino, deshabilitada = false, actual = false, simbolo = false) {
+          const item = document.createElement('li');
+          item.className = `page-item ${deshabilitada ? 'disabled' : actual ? 'active' : ''}`;
+          const enlace = document.createElement('a');
+          enlace.className = 'page-link';
+          enlace.href = '#';
+          enlace.setAttribute('aria-label', etiqueta);
+          if (actual) enlace.setAttribute('aria-current', 'page');
+          if (deshabilitada) {
+            enlace.setAttribute('aria-disabled', 'true');
+            enlace.tabIndex = -1;
+          }
+          if (simbolo) {
+            const span = document.createElement('span');
+            span.setAttribute('aria-hidden', 'true');
+            span.textContent = texto;
+            enlace.appendChild(span);
+          } else enlace.textContent = texto;
+          enlace.addEventListener('click', evento => {
+            evento.preventDefault();
+            if (deshabilitada) return;
+            currentPage = destino;
+            render();
+            controlsEl.querySelector('[aria-current="page"]')?.focus();
+          });
+          item.appendChild(enlace);
+          controlsEl.appendChild(item);
+        }
+        pagina('Primera página', '««', 1, currentPage === 1, false, true);
+        pagina('Página anterior', '«', currentPage - 1, currentPage === 1, false, true);
         let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
-          startPage = Math.max(1, endPage - 4);
-        }
-
-        for (let p = startPage; p <= endPage; p++) {
-          const pLi = document.createElement('li');
-          pLi.className = `page-item ${p === currentPage ? 'active' : ''}`;
-          pLi.innerHTML = `<a class="page-link" href="#">${p}</a>`;
-          pLi.onclick = ((num) => (e) => { e.preventDefault(); currentPage = num; render(); })(p);
-          controlsEl.appendChild(pLi);
-        }
-
-        // 4. Ir a Página Siguiente (»)
-        const nextLi = document.createElement('li');
-        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-        nextLi.innerHTML = `<a class="page-link" href="#" title="Página siguiente">&raquo;</a>`;
-        nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) { currentPage++; render(); } };
-        controlsEl.appendChild(nextLi);
-
-        // 5. Ir a Última Página (»»)
-        const lastLi = document.createElement('li');
-        lastLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-        lastLi.innerHTML = `<a class="page-link" href="#" title="Última página">&raquo;&raquo;</a>`;
-        lastLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) { currentPage = totalPages; render(); } };
-        controlsEl.appendChild(lastLi);
+        const endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+        for (let p = startPage; p <= endPage; p++) pagina(`Página ${p}`, String(p), p, false, p === currentPage);
+        pagina('Página siguiente', '»', currentPage + 1, currentPage === totalPages, false, true);
+        pagina('Última página', '»»', totalPages, currentPage === totalPages, false, true);
       }
     }
 
