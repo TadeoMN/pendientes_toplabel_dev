@@ -296,25 +296,12 @@ async function verDetalleTarea(tareaId) {
     iconoEstado.setAttribute('aria-hidden', 'true');
     dot.replaceChildren(iconoEstado);
 
-    // Función auxiliar para contraste automático de texto (blanco o negro según fondo)
-    function getContrast(hex) {
-      if (!hex || !hex.startsWith('#')) return '#ffffff';
-      const c = hex.replace('#', '');
-      if (c.length === 6) {
-        const r = parseInt(c.substr(0, 2), 16);
-        const g = parseInt(c.substr(2, 2), 16);
-        const b = parseInt(c.substr(4, 2), 16);
-        const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return lum > 0.55 ? '#0f172a' : '#ffffff';
-      }
-      return '#ffffff';
-    }
-
     // Badge del Pilar
     const badgePilar = document.getElementById('det_pilar');
-    badgePilar.textContent = t.pilar;
-    badgePilar.style.backgroundColor = t.pilar_color;
-    badgePilar.style.color = getContrast(t.pilar_color);
+    const sinPilar = t.pilar === '-';
+    badgePilar.textContent = sinPilar ? 'Sin pilar' : t.pilar;
+    badgePilar.style.backgroundColor = sinPilar ? '#e2e8f0' : t.pilar_color;
+    badgePilar.style.color = sinPilar ? '#0f172a' : colorTextoSobre(t.pilar_color);
 
     // Badge de Prioridad limpia (sin P0, P1...)
     const badgePrio = document.getElementById('det_prioridad');
@@ -342,7 +329,7 @@ async function verDetalleTarea(tareaId) {
         const badge = document.createElement('span');
         badge.className = 'badge p-2 border';
         badge.style.backgroundColor = d.pilar_color;
-        badge.style.color = getContrast(d.pilar_color); // Contraste automático blanco/negro
+        badge.style.color = colorTextoSobre(d.pilar_color); // Contraste automático blanco/negro
         badge.textContent = `${d.pilar_nombre}: ${d.responsable_nombre}`;
         contDeps.appendChild(badge);
       });

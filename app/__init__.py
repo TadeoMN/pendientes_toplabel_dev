@@ -75,15 +75,25 @@ def create_app(test_config=None):
 
     # Filtro Jinja para calcular contraste de texto (blanco o negro) según el fondo
     def color_contraste(hex_color):
-        if not hex_color or not hex_color.startswith('#'):
-            return '#ffffff'
-        c = hex_color.lstrip('#')
-        if len(c) == 6:
-            r, g, b = int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16)
-            # Fórmula estándar de luminosidad relativa W3C
-            luminosidad = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-            return '#0f172a' if luminosidad > 0.55 else '#ffffff'
-        return '#ffffff'
+        oscuro = '#0f172a'
+        if not isinstance(hex_color, str) or not hex_color.startswith('#'):
+            return oscuro
+        c = hex_color[1:]
+        if len(c) not in (3, 6) or any(ch not in '0123456789abcdefABCDEF' for ch in c):
+            return oscuro
+        if len(c) == 3:
+            c = ''.join(ch * 2 for ch in c)
+
+        def luminancia(color):
+            canales = [int(color[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+            lineales = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in canales]
+            return sum(v * peso for v, peso in zip(lineales, (0.2126, 0.7152, 0.0722)))
+
+        fondo = luminancia(c)
+        texto_oscuro = luminancia(oscuro[1:])
+        contraste_blanco = 1.05 / (fondo + 0.05)
+        contraste_oscuro = (max(fondo, texto_oscuro) + 0.05) / (min(fondo, texto_oscuro) + 0.05)
+        return '#ffffff' if contraste_blanco >= contraste_oscuro else oscuro
 
     app.jinja_env.filters['contraste'] = color_contraste
 
