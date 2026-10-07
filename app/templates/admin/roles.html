@@ -2,32 +2,47 @@
 {% block title %}Roles y permisos - Top Label{% endblock %}
 {% block content %}
 <h1 class="h3">Roles y permisos</h1>
-<div class="row g-3">
-  <aside class="col-lg-3"><div class="list-group">
-    <a class="list-group-item list-group-item-action" href="{{ url_for('roles.gestionar') }}">+ Crear rol</a>
+<p class="text-muted small">Selecciona un rol y revisa sus permisos por área. Los cambios se aplican al guardar.</p>
+<div class="row g-3 roles-gestion">
+  <aside class="col-lg-3"><nav class="list-group" aria-label="Roles del sistema">
+    <a class="list-group-item list-group-item-action {{ 'active' if not seleccionado else '' }}" href="{{ url_for('roles.gestionar') }}" {% if not seleccionado %}aria-current="page"{% endif %}><i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Crear rol</a>
     {% for rol in roles %}
       {% if rol.es_administrador %}<div class="list-group-item">{{ rol.nombre }} <small class="d-block text-muted">Acceso total · protegido</small></div>
-      {% else %}<a class="list-group-item list-group-item-action" href="{{ url_for('roles.gestionar', editar=rol.id) }}">{{ rol.nombre }}</a>{% endif %}
+      {% else %}<a class="list-group-item list-group-item-action {{ 'active' if seleccionado and seleccionado.id == rol.id else '' }}" href="{{ url_for('roles.gestionar', editar=rol.id) }}" {% if seleccionado and seleccionado.id == rol.id %}aria-current="page"{% endif %}>{{ rol.nombre }}</a>{% endif %}
     {% endfor %}
-  </div></aside>
-  <section class="col-lg-9"><form method="post" class="card card-body">
+  </nav></aside>
+  <section class="col-lg-9"><form method="post" class="card card-body permisos-formulario">
+    <h2 class="h5">{{ 'Editar rol: ' ~ seleccionado.nombre if seleccionado else 'Crear rol y definir permisos' }}</h2>
     <input type="hidden" name="rol_id" value="{{ seleccionado.id if seleccionado else '' }}">
-    <label for="rol_nombre" class="form-label">Nombre del rol</label>
-    <input id="rol_nombre" name="nombre" class="form-control mb-3" required maxlength="100" value="{{ seleccionado.nombre if seleccionado else '' }}">
-    <label for="rol_descripcion" class="form-label">Descripción</label>
-    <input id="rol_descripcion" name="descripcion" class="form-control mb-3" maxlength="250" value="{{ seleccionado.descripcion if seleccionado else '' }}">
-    <p class="text-muted small">Marca las acciones autorizadas. Los permisos no marcados se deniegan. Para consultar una tarea también debe concederse «Consultar tareas» con el alcance correspondiente.</p>
-    {% for codigo, info in catalogo.items() %}
-    <fieldset class="border rounded p-3 mb-2">
-      <legend class="float-none w-auto fs-6 px-1">{{ info[0] }}</legend>
-      <div class="d-flex flex-wrap gap-3">
-      {% for scope, etiqueta in (alcances.items() if info[1] else [('sistema','Permitir')]) %}
-        <label class="form-check"><input type="checkbox" class="form-check-input" name="permisos" value="{{ codigo }}|{{ scope }}" {% if codigo ~ '|' ~ scope in marcados %}checked{% endif %}> {{ etiqueta }}</label>
-      {% endfor %}
-      </div>
-    </fieldset>
+    <div class="row g-3 mb-3">
+      <div class="col-md-5"><label for="rol_nombre" class="form-label">Nombre del rol</label><input id="rol_nombre" name="nombre" class="form-control" required maxlength="100" value="{{ seleccionado.nombre if seleccionado else '' }}"></div>
+      <div class="col-md-7"><label for="rol_descripcion" class="form-label">Descripción</label><input id="rol_descripcion" name="descripcion" class="form-control" maxlength="250" value="{{ seleccionado.descripcion if seleccionado else '' }}"></div>
+    </div>
+    <p id="permisos-ayuda" class="text-muted small">Los permisos no marcados se deniegan. Para consultar una tarea concede «Consultar tareas» con el alcance correspondiente. Cada área indica la cantidad de casillas seleccionadas.</p>
+    <label for="buscar-permisos" class="form-label">Buscar permiso</label>
+    <div class="input-group mb-3"><span class="input-group-text" aria-hidden="true"><i class="fa-solid fa-magnifying-glass fa-fw"></i></span><input id="buscar-permisos" type="search" class="form-control" placeholder="Por acción o área: editar, archivos, usuarios…" aria-describedby="permisos-ayuda"></div>
+    <div class="permisos-grupos">
+    {% for grupo, titulo in [('panel','Panel general'),('usuarios','Usuarios'),('pilares','Pilares'),('roles','Roles'),('auditoria','Auditoría'),('tareas','Tareas'),('notas','Bitácora'),('archivos','Archivos')] %}
+      <details class="permisos-grupo" {% if loop.first %}open{% endif %}>
+        <summary><span>{{ titulo }}</span><span class="small text-muted permisos-cantidad"></span></summary>
+        <div class="permisos-lista">
+        {% for codigo, info in catalogo.items() if codigo.split('.')[0] == grupo %}
+          <fieldset class="permiso-fila" data-busqueda="{{ titulo }} {{ info[0] }} {{ codigo }}">
+            <legend>{{ info[0] }}</legend>
+            <div class="permiso-alcances">
+            {% for scope, etiqueta in (alcances.items() if info[1] else [('sistema','Permitir')]) %}
+              <label class="form-check"><input type="checkbox" class="form-check-input" name="permisos" value="{{ codigo }}|{{ scope }}" {% if codigo ~ '|' ~ scope in marcados %}checked{% endif %}> <span>{{ etiqueta }}</span></label>
+            {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+        </div>
+      </details>
     {% endfor %}
-    <button class="btn btn-primary align-self-end">Guardar rol y permisos</button>
+    </div>
+    <p class="text-muted mt-3" id="permisos-sin-resultados" hidden role="status">No hay permisos que coincidan con la búsqueda.</p>
+    <div class="permisos-guardar d-flex justify-content-between align-items-center gap-2 mt-3"><span id="permisos-total" class="small text-muted" aria-live="polite"></span><button class="btn btn-primary">Guardar rol y permisos</button></div>
   </form></section>
 </div>
+<script src="{{ url_for('static', filename='js/roles_ui.js') }}"></script>
 {% endblock %}

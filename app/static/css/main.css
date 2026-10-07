@@ -382,3 +382,17 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
   }
 }
 
+/* Permisos agrupados: conservar todas las casillas en el mismo formulario. */
+.permisos-grupo { border:1px solid var(--border-color); border-radius:8px; margin-bottom:.6rem; }
+.permisos-grupo summary { display:flex; align-items:center; gap:.75rem; padding:.85rem; cursor:pointer; font-weight:600; }
+.permisos-grupo summary::before { content:'›'; font-size:1.3rem; }
+.permisos-grupo[open] summary::before { transform:rotate(90deg); }
+.permisos-grupo summary .permisos-cantidad { margin-left:auto; font-weight:400; }
+.permisos-grupo summary:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+.permisos-lista { padding:0 .85rem; }
+.permiso-fila { padding:.75rem 0; border-top:1px solid var(--border-color); min-width:0; }
+.permiso-fila legend { float:none; font-size:.9rem; font-weight:600; margin-bottom:.5rem; }
+.permiso-alcances { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:.5rem .75rem; }
+.permiso-alcances label { margin-bottom:0; font-size:.85rem; }
+.permisos-guardar { position:sticky; bottom:0; background:white; border-top:1px solid var(--border-color); padding:.75rem 0; z-index:2; }
+@media (max-width:575.98px) { .permiso-alcances label { min-height:44px; display:flex; align-items:center; gap:.5rem; } }

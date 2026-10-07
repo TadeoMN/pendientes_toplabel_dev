@@ -61,6 +61,22 @@ class Elementos(HTMLParser):
 
 
 class Verificacion(unittest.TestCase):
+    def test_permisos_agrupados_conservan_catalogo_y_seleccion(self):
+        from app.permisos import CATALOGO, ALCANCES
+        esperados = {codigo + '|' + scope for codigo, (_, scoped) in CATALOGO.items()
+                     for scope in (ALCANCES if scoped else ['sistema'])}
+        marcados = {'usuarios.ver|sistema', 'tareas.ver|asignadas', 'archivos.ver|propias'}
+        with app.test_request_context('/roles/'):
+            html = render_template('admin/roles.html', current_user=usuarios[0], roles=[],
+                                   seleccionado=None, catalogo=CATALOGO, alcances=ALCANCES,
+                                   marcados=marcados)
+        casillas = [a for tag, a in Elementos(html).elementos
+                    if tag == 'input' and a.get('name') == 'permisos']
+        self.assertEqual(len(casillas), len(esperados))
+        self.assertEqual({a['value'] for a in casillas}, esperados)
+        self.assertEqual({a['value'] for a in casillas if 'checked' in a}, marcados)
+        self.assertTrue(all('disabled' not in a for a in casillas))
+
     def test_estado_y_roles(self):
         elementos = Elementos(renderizar('admin/usuarios.html')).elementos
         estados = [a['data-val'] for tag, a in elementos if tag == 'td' and 'data-val' in a]
