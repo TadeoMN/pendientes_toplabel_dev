@@ -118,10 +118,11 @@ function initMotorTablasDinamicas() {
             enlace.tabIndex = -1;
           }
           if (simbolo) {
-            const span = document.createElement('span');
-            span.setAttribute('aria-hidden', 'true');
-            span.textContent = texto;
-            enlace.appendChild(span);
+            const icono = document.createElement('i');
+            const flechas = {'««':'angles-left', '«':'angle-left', '»':'angle-right', '»»':'angles-right'};
+            icono.className = `fa-solid fa-${flechas[texto]} fa-fw`;
+            icono.setAttribute('aria-hidden', 'true');
+            enlace.appendChild(icono);
           } else enlace.textContent = texto;
           enlace.addEventListener('click', evento => {
             evento.preventDefault();

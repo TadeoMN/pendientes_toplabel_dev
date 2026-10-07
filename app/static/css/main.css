@@ -73,6 +73,7 @@ small, .small, .form-text { font-size:max(.8rem, .875em); }
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: #0284c7;
   --bs-btn-focus-shadow-rgb: 2, 132, 199; }
+.pagination .page-link { min-width:36px; min-height:36px; display:flex; align-items:center; justify-content:center; }
 .pagination { --bs-pagination-color: #0369a1;
   --bs-pagination-hover-color: #075985;
   --bs-pagination-focus-color: #075985;
