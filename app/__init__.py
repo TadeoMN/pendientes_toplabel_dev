@@ -93,6 +93,8 @@ def create_app(test_config=None):
         texto_oscuro = luminancia(oscuro[1:])
         contraste_blanco = 1.05 / (fondo + 0.05)
         contraste_oscuro = (max(fondo, texto_oscuro) + 0.05) / (min(fondo, texto_oscuro) + 0.05)
+        if max(contraste_blanco, contraste_oscuro) < 4.5:
+            return '#000000'
         return '#ffffff' if contraste_blanco >= contraste_oscuro else oscuro
 
     app.jinja_env.filters['contraste'] = color_contraste

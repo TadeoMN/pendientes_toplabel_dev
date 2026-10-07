@@ -12,6 +12,7 @@ function colorTextoSobre(hex) {
   const textoOscuro = luminancia(oscuro.slice(1));
   const blanco = 1.05 / (fondo + 0.05);
   const contrasteOscuro = (Math.max(fondo, textoOscuro) + 0.05) / (Math.min(fondo, textoOscuro) + 0.05);
+  if (Math.max(blanco, contrasteOscuro) < 4.5) return '#000000';
   return blanco >= contrasteOscuro ? '#ffffff' : oscuro;
 }
 
