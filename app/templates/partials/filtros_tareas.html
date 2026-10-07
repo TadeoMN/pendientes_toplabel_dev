@@ -1,8 +1,15 @@
-<div class="tareas-filtros" role="search" aria-label="Filtrar {{ nombre|lower }}">
+<div class="tareas-herramientas">
+<div class="tareas-acciones-movil d-flex d-md-none gap-2 mb-2">
+  <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-toggle="collapse" data-bs-target="#filtros-{{ ambito }}-{{ clave }}" aria-controls="filtros-{{ ambito }}-{{ clave }}" aria-expanded="false"><i class="fa-solid fa-filter fa-fw" aria-hidden="true"></i> Filtros</button>
+  {% if current_user.puede('tareas.crear') %}<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevaTarea"><i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Crear tarea</button>{% endif %}
+</div>
+<div id="filtros-{{ ambito }}-{{ clave }}" class="tareas-filtros collapse d-md-flex" role="search" aria-label="Filtrar {{ nombre|lower }}">
   <input class="form-control tabla-buscador" aria-label="Buscar en {{ nombre|lower }}" placeholder="Buscar por tarea, folio, responsable o pilar…">
   <select class="form-select tabla-filtro-select" data-col="0" data-filtro="semaforo" aria-label="Semáforo de {{ nombre|lower }}"><option value="">Semáforo: todos</option><option value="ROJO">Vencidas / bloqueadas</option><option value="AMARILLO">Próximas</option><option value="AZUL">En tiempo</option><option value="VERDE">Completadas</option></select>
   <select class="form-select tabla-filtro-select" data-col="4" data-filtro="prioridad" aria-label="Prioridad de {{ nombre|lower }}"><option value="">Prioridad: todas</option><option value="P0_CRITICA">Crítica</option><option value="P1_ALTA">Alta</option><option value="P2_MEDIA">Media</option><option value="P3_BAJA">Baja</option></select>
   <select class="form-select tabla-filtro-select" data-col="5" data-filtro="estatus" aria-label="Estatus de {{ nombre|lower }}"><option value="">Estatus: todos</option><option value="PENDIENTE">Pendiente</option><option value="EN_PROCESO">En proceso</option><option value="BLOQUEADO">Bloqueado</option><option value="COMPLETADO">Completado</option></select>
   <button class="btn btn-outline-secondary tabla-btn-limpiar" type="button"><i class="fa-solid fa-broom fa-fw" aria-hidden="true"></i> Limpiar</button>
-  {% if current_user.puede('tareas.crear') %}<button type="button" class="btn btn-primary text-nowrap" data-bs-toggle="modal" data-bs-target="#modalNuevaTarea"><i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Crear tarea</button>{% endif %}
+  {% if current_user.puede('tareas.crear') %}<button type="button" class="btn btn-primary text-nowrap d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#modalNuevaTarea"><i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i> Crear tarea</button>{% endif %}
+</div>
+
 </div>

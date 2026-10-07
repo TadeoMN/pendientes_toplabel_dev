@@ -61,7 +61,9 @@ function initMotorTablasDinamicas() {
     function guardarFiltros() {
       if (claveEstado) try { sessionStorage.setItem(claveEstado, JSON.stringify({q:searchInput?.value || '', filtros:Array.from(selectFilters,s=>s.value)})); } catch (_) {}
     }
-    const pageSize = 20;
+    const pantallaMovil = window.matchMedia('(max-width: 767.98px)');
+    const tamanoPagina = () => table.classList.contains('tareas-tabla') && pantallaMovil.matches ? 5 : 20;
+    let pageSize = tamanoPagina();
     let currentPage = 1;
     let currentSortCol = -1;
     let sortAsc = true;
@@ -142,6 +144,12 @@ function initMotorTablasDinamicas() {
       }
     }
 
+    pantallaMovil.addEventListener('change', () => {
+      const primerRegistro = (currentPage - 1) * pageSize;
+      pageSize = tamanoPagina();
+      currentPage = Math.floor(primerRegistro / pageSize) + 1;
+      render();
+    });
     function filtrar() {
       guardarFiltros();
       const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
