@@ -89,7 +89,9 @@ class Verificacion(unittest.TestCase):
             self.assertIn('titleText:', script)
             self.assertIn(r'\u003cimg', script)
             if categoria == 'danger':
-                self.assertIn('showCloseButton: true', script)
+                self.assertIn('showCloseButton: false', script)
+                self.assertIn('showConfirmButton: true', script)
+                self.assertIn("confirmButtonText: 'Cerrar'", script)
                 self.assertNotIn('timer:', script)
             else:
                 self.assertIn('timer: 5000', script)

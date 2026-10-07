@@ -121,13 +121,14 @@
               icon: '{{ "success" if category == "success" else "error" if category == "danger" else "warning" if category == "warning" else "info" }}',
               titleText: {{ message|tojson }},
               {% if category == 'danger' %}
-              showCloseButton: true,
-              closeButtonAriaLabel: 'Cerrar mensaje',
+              showCloseButton: false,
+              showConfirmButton: true,
+              confirmButtonText: 'Cerrar',
               {% else %}
+              showConfirmButton: false,
               timer: 5000,
               timerProgressBar: true,
               {% endif %}
-              showConfirmButton: false,
               toast: true,
               position: 'top-end'
             });

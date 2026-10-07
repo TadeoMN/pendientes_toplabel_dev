@@ -1,9 +1,8 @@
 <div class="modal fade" id="modalNuevaTarea" tabindex="-1" aria-labelledby="modalNuevaTareaTitulo">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border-0 shadow">
       <div class="modal-header">
         <h2 class="h5 modal-title fw-bold" id="modalNuevaTareaTitulo">Asignar nueva tarea</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <form enctype="multipart/form-data" method="POST" action="{{ url_for('tareas.crear') }}">
         <input type="hidden" name="volver" value="{{ 'mis_pendientes' if request.endpoint == 'dashboard.mis_pendientes' else 'inicio' }}">
