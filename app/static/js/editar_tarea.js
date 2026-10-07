@@ -4,6 +4,7 @@ let detalleModificado = false;
 
 function prepararEdicionTarea(tarea) {
   detalleEditable = tarea;
+  document.getElementById('det_titulo').textContent = `Detalle de tarea: ${tarea.titulo}`;
   document.getElementById('det_fecha_creacion').textContent = tarea.fecha_creacion;
   document.getElementById('det_editar').hidden = !tarea.puede_editar;
   document.getElementById('formEditarTarea').hidden = true;
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.elements.estatus.disabled = !detalleEditable.puede_estatus;
     estadoCierre();
     error.hidden = true;
+    document.getElementById('det_titulo').textContent = `Editar tarea: ${detalleEditable.titulo}`;
     form.hidden = false;
     document.getElementById('det_lectura').hidden = true;
     document.getElementById('det_editar').hidden = true;

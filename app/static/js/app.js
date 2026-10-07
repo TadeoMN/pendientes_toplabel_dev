@@ -282,7 +282,7 @@ async function verDetalleTarea(tareaId) {
 
     // 1. Cargar Encabezado y Folio
     document.getElementById('det_folio').textContent = t.folio;
-    document.getElementById('det_titulo').textContent = t.titulo;
+    document.getElementById('det_titulo').textContent = `Detalle de tarea: ${t.titulo}`;
 
     // Semáforo circular
     const dot = document.getElementById('det_semaforo_dot');

@@ -26,6 +26,15 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
 
 /* Base */
+.accion-icono { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-width:40px; min-height:40px; }
+.accion-icono i { font-size:1.1rem; }
+.tareas-filtros .buscador-tareas { flex:3 1 240px; min-width:0; }
+.tareas-filtros .buscador-tareas .tabla-buscador { flex:1 1 auto; width:1%; }
+@media (min-width:768px) and (hover:hover) and (pointer:fine) {
+  .accion-texto { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .accion-icono { padding-inline:.75rem; }
+}
+
 .icono-lider { color:#facc15; -webkit-text-stroke:.5px #713f12; }
 html, body { max-width:100%; overflow-x:clip; }
 #contenido, .vistas-tareas, .tareas-modulo { min-width:0; max-width:100%; }
@@ -85,6 +94,8 @@ small, .small, .form-text { font-size:max(.8rem, .875em); }
 .skip-link:focus { z-index:1031; }
 
 /* Tablas */
+.tabla-cabecera nav { max-width:100%; }
+.tabla-cabecera .pagination { flex-wrap:wrap; row-gap:4px; }
 .indicador-tarea { --bs-badge-font-size:.9rem; flex-shrink:0; }
 .tarea-resumen { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 8px; align-items:start; }
 .tarea-resumen .tarea-titulo { grid-column:1; grid-row:1 / span 2; min-width:0; line-height:20px; }
@@ -227,6 +238,9 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 [data-drag-scroll] { overscroll-behavior-x:contain; scrollbar-color:#94a3b8 #f1f5f9; }
 
 /* Modales */
+.modal-content > form { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }
+.modal-content > form > .modal-body { min-height:0; overflow-y:auto; }
+.modal-content > form > .modal-footer { flex-shrink:0; }
 #modalDetalleTarea .modal-header > div { min-width: 0; width: 100%; }
 #modalDetalleTarea .detalle-badges .badge { display: inline-flex;
     align-items: center;
@@ -274,6 +288,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 }
 
 @media (max-width: 767.98px) {
+  .accion-icono { min-height:44px; min-width:44px; }
   .tareas-herramientas { position:sticky; top:56px; z-index:20; background:var(--bg-main); padding-block:.5rem; }
   .tareas-herramientas .tareas-filtros { max-height:calc(100dvh - 180px); overflow-y:auto; margin-bottom:0; }
   .tareas-herramientas .tareas-filtros.show { display:flex; }
