@@ -26,6 +26,7 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
 
 /* Base */
+.icono-lider { color:#facc15; -webkit-text-stroke:.5px #713f12; }
 html, body { max-width:100%; overflow-x:clip; }
 #contenido, .vistas-tareas, .tareas-modulo { min-width:0; max-width:100%; }
 

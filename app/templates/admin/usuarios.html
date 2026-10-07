@@ -85,7 +85,7 @@
                 <div class="d-flex flex-wrap gap-1">
                   {% for a in asignaciones_usuario %}
                     <span class="badge" style="background-color: {{ a.color }}; color: {{ a.color | contraste }};">
-                      {{ a.nombre }} {% if a.es_lider %}<i class="fa-solid fa-star fa-fw" aria-hidden="true"></i> (Líder){% else %}<i class="fa-solid fa-user fa-fw" aria-hidden="true"></i>{% endif %}
+                      {{ a.nombre }} {% if a.es_lider %}<i class="fa-solid fa-star fa-fw icono-lider" aria-hidden="true"></i> (Líder){% else %}<i class="fa-solid fa-user fa-fw" aria-hidden="true"></i>{% endif %}
                     </span>
                   {% endfor %}
                 </div>

@@ -120,6 +120,17 @@ const enviar = formulario => {
   const lista = nodos.lista_miembros_contenedor;
   assert.equal(lista.childNodes.length, 1);
   assert.ok(lista.textContent.includes(carga));
+  datos.miembros = [
+    {nombre_completo:'Zoé',username:'zoe',email:'',es_responsable:false},
+    {nombre_completo:'Zeta',username:'zeta',email:'',es_responsable:true},
+    {nombre_completo:'Ángel',username:'angel',email:'',es_responsable:false},
+    {nombre_completo:'María',username:'maria',email:'',es_responsable:true}
+  ];
+  await seguro.verMiembrosPilar(1);
+  assert.deepEqual(lista.childNodes.map(n => n.textContent.match(/María|Zeta|Ángel|Zoé/)[0]),
+    ['María','Zeta','Ángel','Zoé'], 'Líderes primero y nombres alfabéticos en español');
+  assert.equal(datos.miembros[0].nombre_completo, 'Zoé', 'No modificar los datos recibidos');
+  console.log('C6: líderes primero; orden alfabético con acentos; datos originales conservados: OK');
   datos.miembros = [];
   await seguro.verMiembrosPilar(1);
   assert.ok(lista.htmlFijo.includes('No hay colaboradores'));
