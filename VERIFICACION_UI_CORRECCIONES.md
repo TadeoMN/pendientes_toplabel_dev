@@ -49,3 +49,14 @@ Capturas en C:\Users\ti\.codex\visualizations\2026\10\06\01a112b4-b9aa-7b21-b31a
 - correcciones-escritorio.png: Panel de Dirección a 1440 px.
 - correcciones-movil.png: controles móviles y paginación a 375 px.
 - correcciones-modal-movil.png: formulario largo con cierre en el pie a 375 px.
+# Segunda revisión de detalles — 6 de octubre de 2026
+
+- **D1:** los tooltips se ocultan antes de ejecutar una acción y se liberan al retirar su botón. Reproducción en Edge: Quitar apoyo tenía una ayuda visible; después del clic quedaron cero tooltips y cero botones de quitar apoyo, sin crear ni guardar tareas.
+- **D2:** filtros distribuidos según el ancho del módulo, con Crear y Limpiar juntos. A 768 y 900 px, búsqueda en la primera fila y los tres selectores más las acciones en una segunda fila equilibrada. En móvil siguen disponibles los filtros desplegables. A 375 px el cuerpo y el área visible miden 360 px, sin desbordamiento horizontal del cuerpo.
+- **D2:** título y descripción comparten una columna; notas y archivos tienen otra columna independiente. Todos los indicadores visibles comprobados miden 22 px y caben en su celda; las filas conservan 84 px.
+- **D2:** columna Rol de Usuarios de 120 px; Administrador del sistema ocupa dos líneas. Nuevo usuario está dentro de la barra de filtros, con su condición original de permisos.
+- **D3:** Roles y permisos tiene ocho áreas desplegables, buscador, conteos y botón de guardar fijo al fondo durante el desplazamiento. La búsqueda oculta contenido sin desactivar ni desmarcar permisos. Se conservan los 59 valores originales del catálogo y los valores seleccionados. La protección del administrador y las rutas no cambian. No se guardaron cambios en roles durante la comprobación.
+
+Verificación: seis pruebas Python y los controles JavaScript de doble envío, XSS y orden de líderes pasaron. Sintaxis de los dos scripts nuevos/modificados y `git diff --check` correctos. No se repitió Lighthouse en esta revisión. Producción no se modificó.
+
+Evidencia en `C:/Users/ti/.codex/visualizations/2026/10/06/01a112b4-b9aa-7b21-b31a-3e07e6249d81/`: `detalles-roles.png` y `detalles-filtros-900.png`.
