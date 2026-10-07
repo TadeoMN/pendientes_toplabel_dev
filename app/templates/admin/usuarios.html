@@ -65,21 +65,21 @@
 
           {% for u in usuarios %}
           <tr>
-            <td class="fw-bold">@{{ u.username }}</td>
-            <td class="fw-semibold">{{ u.nombre_completo }}</td>
-            <td>
+            <td class="fw-bold"><div class="tabla-celda">@{{ u.username }}</div></td>
+            <td class="fw-semibold"><div class="tabla-celda">{{ u.nombre_completo }}</div></td>
+            <td><div class="tabla-celda">
               {% if u.email %}
                 {{ u.email }}
               {% else %}
                 <span class="text-muted fst-italic small">Sin correo</span>
               {% endif %}
-            </td>
-            <td>
+            </div></td>
+            <td><div class="tabla-celda">
               <span class="badge {% if u.es_direccion %}bg-dark{% else %}bg-secondary{% endif %}">
                 {{ u.nombres_roles }}
               </span>
-            </td>
-            <td>
+            </div></td>
+            <td><div class="tabla-celda">
               {% set asignaciones_usuario = u.pilares_info() %}
               {% if asignaciones_usuario %}
                 <div class="d-flex flex-wrap gap-1">
@@ -92,15 +92,15 @@
               {% else %}
                 <span class="text-muted small">Sin pilares asignados</span>
               {% endif %}
-            </td>
-            <td data-val="{{ 'Activo' if u.activo else 'Inactivo' }}">
+            </div></td>
+            <td data-val="{{ 'Activo' if u.activo else 'Inactivo' }}"><div class="tabla-celda">
               {% if u.activo %}
                 <span class="badge bg-success">Activo</span>
               {% else %}
                 <span class="badge bg-danger">Inactivo</span>
               {% endif %}
-            </td>
-            <td class="text-end">
+            </div></td>
+            <td class="text-end"><div class="tabla-celda">
               <div class="d-flex justify-content-end gap-2">
               <button class="btn btn-outline-primary btn-sm btn-accion" onclick='abrirModalEditar({{ u.to_dict()|tojson }})' {% if not current_user.puede('usuarios.editar') or (u.tiene_rol_administrador and not current_user.es_administrador) %}disabled{% endif %}>
                 Editar
@@ -109,7 +109,7 @@
                 Clave
               </button>
               </div>
-            </td>
+            </div></td>
           </tr>
           {% endfor %}
         </tbody>

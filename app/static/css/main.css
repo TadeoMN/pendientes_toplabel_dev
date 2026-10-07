@@ -86,21 +86,12 @@ small, .small, .form-text { font-size:max(.8rem, .875em); }
 /* Tablas */
 .tarea-descripcion { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .tareas-tabla td:nth-child(2), .tareas-tabla td:nth-child(7), .tabla-info-paginacion { font-variant-numeric:tabular-nums; }
-.semaphore-dot { display: inline-flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  font-size:0.8rem;
-  color:#0f172a;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0,0,0,0.15);
-  vertical-align: middle; }
-.dot-rojo { background-color: #ef4444; }
-.dot-amarillo { background-color: #f59e0b; }
-.dot-verde { background-color: #10b981; }
-.dot-azul { background-color: #3b82f6; }
+.semaphore-dot { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:24px; height:24px; border-radius:6px; font-size:14px; color:#fff; vertical-align:middle; }
+.semaphore-dot i { display:inline-flex; align-items:center; justify-content:center; width:1em; height:1em; line-height:1; }
+.dot-rojo { background-color:#b91c1c; }
+.dot-amarillo { background-color:#facc15; color:#0f172a; }
+.dot-verde { background-color:#15803d; }
+.dot-azul { background-color:#0369a1; }
 .btn-accion { width: 68px !important;
   height: 31px !important;
   display: inline-flex !important;
@@ -138,7 +129,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 .tareas-tabla { min-width:1320px; width:100%; table-layout:fixed; }
 .tareas-tabla th { padding:.85rem .75rem; font-size:0.8rem; text-transform:uppercase; color:#475569; }
 .tareas-tabla td { padding:.75rem; overflow-wrap:anywhere; }
-.tareas-tabla th:nth-child(1) { width:110px; white-space:nowrap; }
+.tareas-tabla th:nth-child(1) { width:96px; white-space:nowrap; }
 .tareas-tabla th:nth-child(2) { width:125px; }
 .tareas-tabla th:nth-child(3) { width:180px; }
 .tareas-tabla th:nth-child(4) { width:280px; }
@@ -248,6 +239,20 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 #modalDetalleTarea #det_dependencias_lista .badge { white-space: normal; text-align: left; }
 
 /* Media queries */
+@media (min-width:768px) {
+  .tabla-dinamica { border-collapse:separate; border-spacing:0; }
+  .tabla-dinamica tbody tr:not(.fila-sin-resultados) > td { position:relative; }
+  .tabla-dinamica tbody tr:not(.fila-sin-resultados) > td::after { content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--border-color); pointer-events:none; }
+  .tareas-tabla td:nth-child(1) .tabla-celda { align-items:center; }
+  .tabla-dinamica tbody tr:not(.fila-sin-resultados) { height:84px; box-shadow:inset 0 -1px var(--border-color); }
+  .tabla-dinamica tbody tr:not(.fila-sin-resultados) > td { height:84px; padding-top:12px; padding-bottom:12px; border-bottom:0; }
+  .tabla-celda { height:60px; min-height:60px; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+  .tabla-celda > * { flex-shrink:0; }
+  .tabla-celda .tarea-apoyos { max-height:60px; }
+  .tarea-titulo { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .tarea-descripcion { -webkit-line-clamp:1; }
+}
+
 @media (max-width: 575.98px) {
   .btn-sm, .form-select-sm, .form-control-sm { min-height:44px; font-size:1rem; }
   .btn-accion { height:auto !important; min-height:44px; font-size:1rem !important; }
