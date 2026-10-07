@@ -26,6 +26,9 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
 
 /* Base */
+html, body { max-width:100%; overflow-x:clip; }
+#contenido, .vistas-tareas, .tareas-modulo { min-width:0; max-width:100%; }
+
 .swal2-container {
   --swal2-color: #0f172a;
   --swal2-confirm-button-background-color: #0284c7;
@@ -116,7 +119,7 @@ th.th-sortable:hover { background-color: #e2e8f0 !important;
 .sort-icon { font-size: 0.8rem;
   margin-left: 4px;
   opacity: 0.6; }
-.table-scroll-container { max-height: max(360px, calc(100dvh - 260px));
+.table-scroll-container { position:relative; min-width:0; max-width:100%; max-height: max(360px, calc(100dvh - 260px));
   overflow-y: auto;
   overflow-x: auto;
   border: 1px solid #e2e8f0;
@@ -260,7 +263,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
 }
 
 @media (max-width: 767.98px) {
-  .table-scroll-container { max-height:none; overflow-y:visible; }
+  .table-scroll-container { position:relative; min-width:0; max-width:100%; max-height:none; overflow-y:visible; }
   .tareas-tabla { min-width:0; table-layout:auto; display:block; }
   .tareas-tabla thead:not(:focus-within) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   .tareas-tabla thead:focus-within { display:block; }
