@@ -99,8 +99,10 @@ small, .small, .form-text { font-size:max(.8rem, .875em); }
 .tabla-cabecera .pagination { flex-wrap:wrap; row-gap:4px; }
 .indicador-tarea { --bs-badge-font-size:.9rem; flex-shrink:0; }
 .tarea-resumen { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 8px; align-items:start; }
-.tarea-resumen .tarea-titulo { grid-column:1; grid-row:1 / span 2; min-width:0; line-height:20px; }
-.tarea-resumen .indicador-tarea { grid-column:2; padding-block:3px; line-height:1; }
+.tarea-textos { min-width:0; }
+.tarea-resumen .tarea-titulo { min-width:0; line-height:20px; }
+.tarea-indicadores { display:flex; flex-direction:column; gap:2px; align-items:flex-end; }
+.tarea-resumen .indicador-tarea { display:inline-flex; align-items:center; gap:4px; min-height:22px; padding:0 6px; line-height:20px; white-space:nowrap; }
 .tarea-descripcion { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .tareas-tabla td:nth-child(2), .tareas-tabla td:nth-child(7), .tabla-info-paginacion { font-variant-numeric:tabular-nums; }
 .semaphore-dot { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:24px; height:24px; border-radius:6px; font-size:14px; color:#fff; vertical-align:middle; }
@@ -271,7 +273,7 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
   .tabla-celda .tarea-apoyos { max-height:60px; }
   .tarea-titulo { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .tarea-descripcion { -webkit-line-clamp:1; line-height:20px; }
-  .tarea-resumen .indicador-tarea { padding-block:1px; }
+
 }
 
 @media (max-width: 575.98px) {
@@ -359,3 +361,24 @@ table.tabla-dinamica tbody tr td { vertical-align: middle; }
     scroll-behavior: auto !important;
   }
 }
+/* Filtros: distribución según el espacio del módulo, con acciones juntas. */
+.filtros-acciones { display:flex; gap:.6rem; align-items:center; flex:0 0 auto; }
+#tablaUsuarios .columna-rol { width:120px; max-width:120px; }
+#tablaUsuarios .columna-rol .badge { white-space:normal; line-height:1.3; max-width:110px; align-self:flex-start; }
+.tareas-herramientas, .contenedor-tabla-modulo { container-type:inline-size; }
+@media (min-width:768px) {
+  .tareas-filtros { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) auto; }
+  .tareas-filtros .buscador-tareas { grid-column:1 / -1; width:100%; }
+  .tareas-filtros .tabla-filtro-select { width:100%; }
+  .filtros-usuarios { grid-template-columns:repeat(2,minmax(0,1fr)) auto; }
+  @container (min-width:900px) {
+    .tareas-filtros { grid-template-columns:minmax(200px,2fr) repeat(3,minmax(140px,1fr)) auto; }
+    .tareas-filtros .buscador-tareas { grid-column:auto; }
+    .filtros-usuarios { grid-template-columns:minmax(200px,2fr) repeat(2,minmax(140px,1fr)) auto; }
+  }
+  @container (max-width:650px) {
+    .tareas-filtros { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .filtros-acciones { justify-content:flex-end; }
+  }
+}
+

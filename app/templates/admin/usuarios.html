@@ -8,9 +8,7 @@
     <h1 class="h3 fw-bold mb-1">Gestión de usuarios</h1>
     <p class="text-muted small mb-0">Gestiona accesos, contraseñas, pilares asignados y jerarquías operativas.</p>
   </div>
-  <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario" {% if not current_user.puede('usuarios.crear') %}disabled{% endif %}>
-    + Nuevo usuario
-  </button>
+
 </div>
 
 <!-- CONTENEDOR DEL MÓDULO DE TABLA DE USUARIOS -->
@@ -18,7 +16,7 @@
   <!-- Filtros en una sola línea -->
   <div class="card shadow-sm border-0 mb-3">
     <div class="card-body py-2 px-3">
-      <div class="tareas-filtros mb-0" role="search">
+      <div class="tareas-filtros filtros-usuarios mb-0" role="search">
         <div class="input-group buscador-tareas"><span class="input-group-text" aria-hidden="true"><i class="fa-solid fa-magnifying-glass fa-fw"></i></span><input type="text" aria-label="Buscar usuarios" placeholder="Buscar por clave, nombre o correo..." class="form-control form-control-sm tabla-buscador"></div>
 
         <select class="form-select form-select-sm tabla-filtro-select" data-col="3" aria-label="Filtrar por rol">
@@ -34,9 +32,14 @@
           <option value="Inactivo">Inactivos</option>
         </select>
 
+        <div class="filtros-acciones">
+  <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario" {% if not current_user.puede('usuarios.crear') %}disabled{% endif %}>
+    + Nuevo usuario
+  </button>
         <button type="button" class="btn btn-outline-secondary btn-sm tabla-btn-limpiar">
           <i class="fa-solid fa-broom fa-fw" aria-hidden="true"></i> Limpiar
         </button>
+        </div>
       </div>
     </div>
   </div>
@@ -54,7 +57,7 @@
             <th class="th-sortable" data-col="0" style="width: 140px;"><button type="button" class="th-sort-btn">Clave / usuario <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
             <th class="th-sortable" data-col="1"><button type="button" class="th-sort-btn">Nombre completo <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
             <th class="th-sortable" data-col="2"><button type="button" class="th-sort-btn">Correo electrónico <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
-            <th class="th-sortable" data-col="3" style="width: 140px;"><button type="button" class="th-sort-btn">Rol <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
+            <th class="th-sortable columna-rol" data-col="3" style="width: 120px;"><button type="button" class="th-sort-btn">Rol <span class="sort-icon" aria-hidden="true">⇅</span></button></th>
             <th style="width: 240px;">Pilares asignados</th>
             <th style="width: 100px;">Estado</th>
             <th class="text-end" style="width: 160px;">Acciones</th>
@@ -78,7 +81,7 @@
                 <span class="text-muted fst-italic small">Sin correo</span>
               {% endif %}
             </div></td>
-            <td><div class="tabla-celda">
+            <td class="columna-rol"><div class="tabla-celda">
               <span class="badge {% if u.es_direccion %}bg-dark{% else %}bg-secondary{% endif %}">
                 {{ u.nombres_roles }}
               </span>
